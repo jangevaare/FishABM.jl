@@ -19,7 +19,7 @@ February 2015
   This function will move agents based on current for larvae, current and carrying capacity for juveniles
   """
 
-# function inject_agents!(agent_db::agent_db, age::integer, location, size)
+# function inject_juveniles!(agent_db::agent_db, location, size)
   """
-  This function will inject an agent of a specified stage into an `agent_db` to simulate stock rehabilitation efforts (i.e. stocking). If age is specified as 0, the agent will either be made up of eggs or larvae based on the time of year. If age is specificed as 1, the agent will be a juvenile.
+  This function will inject juveniles into an `agent_db` to simulate stocking efforts.
   """
