@@ -1,6 +1,6 @@
 module Fish_ABM
 
-using DataFrames, Distributions
+using DataFrames, Distributions, Gadfly
 include("agents.jl")
 include("stock.jl")
 include("agent_stock_interaction.jl")
