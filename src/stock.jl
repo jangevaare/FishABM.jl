@@ -1,7 +1,7 @@
 """
 Functions and types for structured stock-level model components
 Justin Angevaare
-February 2015
+April 2015
 """
 
 type stock_db
@@ -9,7 +9,6 @@ type stock_db
   A database which contains population size data for each time step and adult class. For more complicated applications where seperate causes of mortality are being tracked for adults, this may have seperate components for each cause of removal.
   """
   population::DataFrame
-  #general_mortality::Array
   #natural_mortality::Array
   #fishing_mortality::Array
 end
@@ -30,7 +29,7 @@ function age_adults!(stock_db::stock_db, stock_assumptions::stock_assumptions)
   This function will apply transition probabilities to the current adult population. In the future this function may also apply annual removals due to fishing or other causes of mortality.
   """
   stock_size = fill(0, size(stock_assumptions.survivorship))
-  for i = 1:(size(stock_assumptions.survivorship)[1]-1)
+  for i = 1:(length(stock_assumptions.survivorship)-1)
     stock_size[i+1] = rand(Binomial(stock_db.population[end,i], stock_assumptions.survivorship[i]))
   end
   stock_size[end] += rand(Binomial(stock_db.population[end,end], stock_assumptions.survivorship[end]))

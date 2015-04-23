@@ -1,13 +1,14 @@
 """
 Functions and types for agent-level model components
 Justin Angevaare
-February 2015
+April 2015
 """
 
-# type agent_db
+type agent_db
   """
   A hierarchical database which contains information on all agents. The hierarchy of this database is cohort -> time step -> agent. The agent entries will include current location (tuple), stage (egg, larvae, juvenile, or adult), and fate (tuple of living, natural death, and any additional risks)
   """
+end
 
 # function kill!(agent_db::agent_db, life_map::life_map)
   """
