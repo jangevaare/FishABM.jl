@@ -21,11 +21,8 @@ function spawn!(stock_db::stock_db, stock_assumptions::stock_assumptions, life_m
   brood_size = rand(Poisson(stock_assumptions.mean_brood_size[1]), rand(Binomial(stock_db.population[end,1], stock_assumptions.proportion_sexually_mature[1]*0.5)))
   for i = 2:length(stock_assumptions.proportion_sexually_mature)
     append!(brood_size, rand(Poisson(stock_assumptions.mean_brood_size[i]), rand(Binomial(stock_db.population[end,i], stock_assumptions.proportion_sexually_mature[i]*0.5))))
-    end
-  brood_location = rand(reshape(life_map.id[life_map.spawning], prod(size(life_map.id))))
-   for b = 2:length(brood_size)
-    append!(brood_location, rand(reshape(life_map.id[life_map.spawning], prod(size(life_map.id)))))
   end
+  brood_location = rand(life_map.id[life_map.spawning], length(brood_size))
   return vcat(brood_size, brood_location)
 end
 
