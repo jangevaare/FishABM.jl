@@ -22,8 +22,8 @@ function spawn!(stock_db::stock_db, stock_assumptions::stock_assumptions, life_m
   for i = 2:length(stock_assumptions.proportion_sexually_mature)
     append!(brood_size, rand(Poisson(stock_assumptions.mean_brood_size[i]), rand(Binomial(stock_db.population[end,i], stock_assumptions.proportion_sexually_mature[i]*0.5))))
   end
-  brood_location = rand(life_map.id[life_map.spawning], length(brood_size))
-  return vcat(brood_size, brood_location)
+  brood_location = sample(life_map.id[life_map.spawning], length(brood_size))
+  return hcat(brood_size, brood_location)
 end
 
 # function graduate!(agent_db::agent_db, stock_db::stock_db, stage::integer)
