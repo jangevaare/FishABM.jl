@@ -4,10 +4,21 @@ Justin Angevaare
 April 2015
 """
 
-type agent_db
+function create_agent_db(years)
   """
-  A hierarchical database which contains information on all agents. The hierarchy of this database is cohort -> time step -> agent. The agent entries will include current location (tuple), stage (egg, larvae, juvenile, or adult), and fate (tuple of living, natural death, and any additional risks)
+  A function which will create an empty agent_db for the specified simulation length
   """
+  sub_agent_db = DataFrame(cohort = DataFrame(stage=[], location=[], alive=[], dead_natural=[], dead_risk=[]))
+  int_agent_db = hcat(sub_agent_db, sub_agent_db)
+  for i = 1:50
+    int_agent_db=hcat(int_agent_db, sub_agent_db)
+  end
+  agent_db = vcat(int_agent_db, int_agent_db)
+  for i = 1:(years-2)
+    agent_db = vcat(agent_db, int_agent_db)
+  end
+  names!(agent_db, [symbol("week_$i") for i in 1:52])
+  return agent_db
 end
 
 # function kill!(agent_db::agent_db, life_map::life_map)

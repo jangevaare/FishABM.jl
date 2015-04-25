@@ -11,7 +11,7 @@ type life_map
   id::Array
   spawning::Array
   habitat::Array
-  risk1::Array
+  risk::Array
 end
 
 function spawn!(stock_db::stock_db, stock_assumptions::stock_assumptions, life_map::life_map)
