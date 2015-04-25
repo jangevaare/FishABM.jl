@@ -22,8 +22,7 @@ l_m = life_map(reshape(1:9, (3,3)),
                rand(1:2, (3,3)),
                rand(Bool, (3,3)))
 
-# Try the spawn! the function
-broods=spawn!(s_db, s_a, l_m)
+
 
 plot(x=broods[:,2],y=broods[:,1])
 
@@ -31,4 +30,9 @@ plot(x=broods[:,2],y=broods[:,1])
 age_adults!(s_db, s_a)
 
 # Try create_agent_db
-a_db = create_agent_db(50)
+a_db = create_agent_db()
+
+append!(a_db, a_db)
+
+# Try the spawn! the function
+spawn!(s_db, s_a, l_m, a_db)
