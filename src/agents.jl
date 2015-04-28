@@ -11,7 +11,7 @@ April 2015
 #   DataFrame
 # end
 
-function create_agent_db()
+function create_agent_db(cohorts)
   """
   A function which will create an empty agent_db for the specified simulation length
   """
@@ -21,12 +21,12 @@ function create_agent_db()
     int_agent_db=hcat(int_agent_db, sub_agent_db)
   end
   names!(int_agent_db, [symbol("week_$i") for i in 1:52])
-#   agent_db = vcat(int_agent_db, int_agent_db)
-#   for i = 1:(years-2)
-#     agent_db = vcat(agent_db, int_agent_db)
-#   end
-#   return agent_db
-  return int_agent_db
+  agent_db = vcat(int_agent_db, int_agent_db)
+  for i = 1:(cohorts-2)
+    agent_db = vcat(agent_db, int_agent_db)
+  end
+  return agent_db
+#   return int_agent_db
 end
 
 function kill!(agent_db::DataFrame, life_map::life_map, week::Int64)

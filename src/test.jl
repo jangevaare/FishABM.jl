@@ -23,19 +23,10 @@ l_m = life_map(reshape(1:9, (3,3)),
                rand(Bool, (3,3)))
 
 # Try create_agent_db
-a_db = create_agent_db()
-
-
+a_db = create_agent_db(10)
 
 # Try the spawn! the function
-spawn!(s_db, s_a, l_m, a_db)
-
-a_db
-
-size(a_db)[1]
-
-append!(a_db, a_db[1,:])
-
+spawn!(s_db, s_a, l_m, a_db, 1)
 
 # Try the age_adults! function
 age_adults!(s_db, s_a)
