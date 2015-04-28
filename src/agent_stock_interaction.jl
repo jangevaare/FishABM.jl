@@ -14,7 +14,7 @@ type life_map
   risk::Array
 end
 
-function spawn!(stock_db::stock_db, stock_assumptions::stock_assumptions, life_map::life_map, agent_db::DataFrame, cohort::Int64)
+function spawn!(agent_db::DataFrame, stock_db::stock_db, stock_assumptions::stock_assumptions, life_map::life_map, cohort::Int64)
   """
   This function creates a new cohort of agents based on an structured adult population, spawning area information contained in a `life_map`, and `fecundity_assumptions`.
   """
