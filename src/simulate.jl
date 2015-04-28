@@ -10,7 +10,7 @@ type simulation_db
   """
   agent_db::agent_db
   stock_db::stock_db
-  life_map::life_map
+  environment_assumptions::environment_assumptions
   fecundity_assumptions::fecundity_assumptions
   transition_matrix::transition_matrix
 end
@@ -21,6 +21,6 @@ function Initialize(years::int, )
   """
   sim_db = simulation_db(agent_db = agent_db(),
                          stock_db = stock_db(),
-                         life_map = life_map(),
+                         environment_assumptions = environment_assumptions(),
                          fecundity_assumptions = fecundity_assumptions(),
                          transition_matrix = transition_matrix())

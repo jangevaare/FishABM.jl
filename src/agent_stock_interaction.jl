@@ -4,9 +4,9 @@ Justin Angevaare
 April 2015
 """
 
-type life_map
+type environment_assumptions
   """
-  A specialized map which contains layers of information to indicate spawning area, habitat preferability, and additional risks
+  A specialized type which contains layers of information to indicate spawning area, habitat type, and additional risks
   """
   id::Array
   spawning::Array
@@ -14,15 +14,15 @@ type life_map
   risk::Array
 end
 
-function spawn!(agent_db::DataFrame, stock_db::stock_db, stock_assumptions::stock_assumptions, life_map::life_map, cohort::Int64)
+function spawn!(agent_db::DataFrame, stock_db::stock_db, stock_assumptions::stock_assumptions, environment_assumptions::environment_assumptions, cohort::Int64)
   """
-  This function creates a new cohort of agents based on an structured adult population, spawning area information contained in a `life_map`, and `fecundity_assumptions`.
+  This function creates a new cohort of agents based on an structured adult population, spawning area information contained in a `environment_assumptions`, and `fecundity_assumptions`.
   """
   brood_size = rand(Poisson(stock_assumptions.mean_brood_size[1]), rand(Binomial(stock_db.population[end,1], stock_assumptions.proportion_sexually_mature[1]*0.5)))
   for i = 2:length(stock_assumptions.proportion_sexually_mature)
     append!(brood_size, rand(Poisson(stock_assumptions.mean_brood_size[i]), rand(Binomial(stock_db.population[end,i], stock_assumptions.proportion_sexually_mature[i]*0.5))))
   end
-  brood_location = sample(life_map.id[life_map.spawning], length(brood_size))
+  brood_location = sample(environment_assumptions.id[environment_assumptions.spawning], length(brood_size))
   agent_db[cohort,1] = DataFrame(stage=fill("egg", length(brood_size)), location=brood_location, alive=brood_size, dead_natural=fill(0, length(brood_size)), dead_risk=fill(0, length(brood_size)))
   return agent_db
 end

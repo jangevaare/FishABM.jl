@@ -22,8 +22,8 @@ a_a = agent_assumptions([[0.05 0.1 0.05]
                          [0.1, 0.2, 0.15],
                          [19, 52, 104])
 
-# Randomly generate a simple 3x3 life_map (id, spawning areas, habitat type and risk1)
-l_m = life_map(reshape(1:9, (3,3)),
+# Randomly generate a simple 3x3 environment_assumptions (id, spawning areas, habitat type and risk1)
+e_a = environment_assumptions(reshape(1:9, (3,3)),
                rand(Bool, (3,3)),
                rand(1:2, (3,3)),
                rand(Bool, (3,3)))
@@ -32,11 +32,11 @@ l_m = life_map(reshape(1:9, (3,3)),
 a_db = create_agent_db(10)
 
 # Try the spawn! function
-spawn!(a_db, s_db, s_a, l_m, 1)
+spawn!(a_db, s_db, s_a, e_a, 1)
 
 
 # Try the kill! function
-kill!(a_db, l_m)
+kill!(a_db, e_a)
 
 # Try the age_adults! function
 age_adults!(s_db, s_a)

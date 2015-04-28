@@ -40,9 +40,9 @@ function create_agent_db(cohorts)
 #   return int_agent_db
 end
 
-function kill!(agent_db::DataFrame, life_map::life_map, agent_assumptions::agent_assumptions, cohort::Int64, week::Int64)
+function kill!(agent_db::DataFrame, environment_assumptions::environment_assumptions, agent_assumptions::agent_assumptions, cohort::Int64, week::Int64)
   """
-  This function will kill agents based on all stage and location specific risk factors described in a `life_map`
+  This function will kill agents based on all stage and location specific risk factors described in a `environment_assumptions`
   """
   agent_db[cohort, week][:stage]
   agent_db[cohort, week][:alive]
@@ -50,7 +50,7 @@ for i = 1:length(agent_db[cohort, week][:alive])
   Poisson(agent_db[cohort, week][:alive][i]*agent_db[cohort, week][:stage])
 end
 
-function move!(agent_db::DataFrame, life_map::life_map)
+function move!(agent_db::DataFrame, environment_assumptions::environment_assumptions)
   """
   This function will move agents based on current for larvae, current and carrying capacity for juveniles
   """
