@@ -4,6 +4,13 @@ Justin Angevaare
 April 2015
 """
 
+# type agent_db
+#   """
+#   A very basic type specified for conveinence; methods can be created for the type
+#   """
+#   DataFrame
+# end
+
 function create_agent_db()
   """
   A function which will create an empty agent_db for the specified simulation length
@@ -22,7 +29,7 @@ function create_agent_db()
   return int_agent_db
 end
 
-# function kill!(agent_db::agent_db, life_map::life_map)
+function kill!(agent_db::agent_db, life_map::life_map, week::Int64)
   """
   This function will kill agents based on all stage and location specific risk factors described in a `life_map`
   """
