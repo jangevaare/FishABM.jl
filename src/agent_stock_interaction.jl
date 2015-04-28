@@ -24,7 +24,7 @@ function spawn!(stock_db::stock_db, stock_assumptions::stock_assumptions, life_m
   end
   brood_location = sample(life_map.id[life_map.spawning], length(brood_size))
   append!(agent_db[end,:], agent_db)
-  agent_db[end-1,1] = DataFrame(stage=fill("egg", length(brood_size)), location=brood_location, alive=brood_size, dead_natural=fill(0, length(brood_size)), dead_risk=fill(0, length(brood_size)))
+  append!(DataFrame(stage=fill("egg", length(brood_size)), location=brood_location, alive=brood_size, dead_natural=fill(0, length(brood_size)), dead_risk=fill(0, length(brood_size))), agent_db[end-1,1])
   return agent_db
 end
 
