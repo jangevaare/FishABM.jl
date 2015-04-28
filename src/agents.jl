@@ -29,17 +29,20 @@ function create_agent_db()
   return int_agent_db
 end
 
-function kill!(agent_db::agent_db, life_map::life_map, week::Int64)
+function kill!(agent_db::DataFrame, life_map::life_map, week::Int64)
   """
   This function will kill agents based on all stage and location specific risk factors described in a `life_map`
   """
+end
 
-# function move!(agent_db::agent_db, life_map::life_map)
+function move!(agent_db::DataFrame, life_map::life_map)
   """
   This function will move agents based on current for larvae, current and carrying capacity for juveniles
   """
+end
 
-# function inject_juveniles!(agent_db::agent_db, location, size)
+function inject_juveniles!(agent_db::DataFrame, location::Int64, size::Int64)
   """
   This function will inject juveniles into an `agent_db` to simulate stocking efforts.
   """
+end
