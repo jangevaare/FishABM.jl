@@ -34,11 +34,8 @@ a_db = create_agent_db(10)
 # Try the spawn! function
 spawn!(a_db, s_db, s_a, e_a, 1)
 
-
 # Try the kill! function
 kill!(a_db, e_a)
 
 # Try the age_adults! function
 age_adults!(s_db, s_a)
-
-

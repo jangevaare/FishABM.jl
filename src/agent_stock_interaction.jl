@@ -14,7 +14,7 @@ type environment_assumptions
   risk::Array
 end
 
-function spawn!(agent_db::DataFrame, stock_db::stock_db, stock_assumptions::stock_assumptions, environment_assumptions::environment_assumptions, cohort::Int64)
+function spawn!(agent_db::DataFrame, stock_db::stock_db, stock_assumptions::stock_assumptions, environment_assumptions::environment_assumptions, cohort::Int)
   """
   This function creates a new cohort of agents based on an structured adult population, spawning area information contained in a `environment_assumptions`, and `fecundity_assumptions`.
   """
@@ -23,7 +23,7 @@ function spawn!(agent_db::DataFrame, stock_db::stock_db, stock_assumptions::stoc
     append!(brood_size, rand(Poisson(stock_assumptions.mean_brood_size[i]), rand(Binomial(stock_db.population[end,i], stock_assumptions.proportion_sexually_mature[i]*0.5))))
   end
   brood_location = sample(environment_assumptions.id[environment_assumptions.spawning], length(brood_size))
-  agent_db[cohort,1] = DataFrame(stage=fill("egg", length(brood_size)), location=brood_location, alive=brood_size, dead_natural=fill(0, length(brood_size)), dead_risk=fill(0, length(brood_size)))
+  agent_db[cohort,1] = DataFrame(stage=fill(1, length(brood_size)), location=brood_location, alive=brood_size, dead_natural=fill(0, length(brood_size)), dead_risk=fill(0, length(brood_size)))
   return agent_db
 end
 

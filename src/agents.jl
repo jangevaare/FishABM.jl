@@ -21,12 +21,11 @@ type agent_assumptions
 #   movement
 end
 
-
 function create_agent_db(cohorts)
   """
   A function which will create an empty agent_db for the specified simulation length
   """
-  sub_agent_db = DataFrame(cohort = DataFrame(stage=ASCIIString[], location=Int[], alive=Int[], dead_natural=Int[], dead_risk=Int[]))
+  sub_agent_db = DataFrame(cohort = DataFrame(stage=Int[], location=Int[], alive=Int[], dead_natural=Int[], dead_risk=Int[]))
   int_agent_db = hcat(sub_agent_db, sub_agent_db)
   for i = 1:50
     int_agent_db=hcat(int_agent_db, sub_agent_db)
@@ -46,8 +45,16 @@ function kill!(agent_db::DataFrame, environment_assumptions::environment_assumpt
   """
   agent_db[cohort, week][:stage]
   agent_db[cohort, week][:alive]
-for i = 1:length(agent_db[cohort, week][:alive])
-  Poisson(agent_db[cohort, week][:alive][i]*agent_db[cohort, week][:stage])
+  for i = 1:length(agent_db[cohort, week][:alive])
+    killed = minimum([Poisson(agent_db[cohort, week][:alive][i]*agent_assumptions.mortality_natural[environment_assumptions.habitat[agent_db[cohort, week][:location][i].==environment_assumptions.id],agent_db[cohort, week][:stage][i]]), agent_db[cohort, week][:alive][i]])
+    agent_db[cohort, week][:dead_natural][i] += killed
+    agent_db[cohort, week][:alive][i] -= killed
+    if environment_assumptions.risk[agent_db[cohort, week][:location][i].==environment_assumptions.id]
+      killed = minimum([Poisson(agent_db[cohort, week][:alive][i]*agent_assumptions.mortality_risk[agent_db[cohort, week][:stage][i]]), agent_db[cohort, week][:alive][i]])
+      agent_db[cohort, week][:dead_risk][i] += killed
+      agent_db[cohort, week][:alive][i] -= killed
+    end
+  end
 end
 
 function move!(agent_db::DataFrame, environment_assumptions::environment_assumptions)
@@ -56,7 +63,7 @@ function move!(agent_db::DataFrame, environment_assumptions::environment_assumpt
   """
 end
 
-function inject_juveniles!(agent_db::DataFrame, location::Int64, size::Int64)
+function inject_juveniles!(agent_db::DataFrame, location::Int, size::Int)
   """
   This function will inject juveniles into an `agent_db` to simulate stocking efforts.
   """
