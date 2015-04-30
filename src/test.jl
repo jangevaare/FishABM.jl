@@ -54,3 +54,8 @@ age_adults!(s_db, s_a)
 graduate!(a_db, s_db, a_a, 1, 1)
 
 a_db[1,1]
+
+# Try the inject_agents! function
+inject_agents!(a_db, 9, 10000, 1, 1)
+
+a_db[1,1]
