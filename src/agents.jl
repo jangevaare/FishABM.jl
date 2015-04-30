@@ -57,8 +57,9 @@ function move!(agent_db::DataFrame, agent_assumptions::agent_assumptions, cohort
   end
 end
 
-function inject_juveniles!(agent_db::DataFrame, location::Int, size::Int, cohort::Int, week::Int)
+function inject_agents!(agent_db::DataFrame, location::Int, size::Int, cohort::Int, week::Int)
   """
-  This function will inject juveniles into an `agent_db` to simulate stocking efforts.
+  This function will inject agents into an `agent_db` to simulate stocking efforts. These stocked agents will take their stage information from the `agent_db`
   """
+  push!(agent_db[cohort,week], [maximum(agent_db[cohort,week][:stage]), location, size, 0, 0])
 end
