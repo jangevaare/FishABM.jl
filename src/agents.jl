@@ -53,7 +53,7 @@ function move!(agent_db::DataFrame, agent_assumptions::agent_assumptions, cohort
   This function will move agents based on stage and location
   """
   for i = 1:length(agent_db[cohort, week][:alive])
-   agent_db[cohort, week][:location][i] = rand(Multinomial(1, agent_assumptions.movement[agent_db[cohort, week][:location][i],:,agent_db[cohort, week][:stage][i]][:]))[1]
+   agent_db[cohort, week][:location][i] = find(rand(Multinomial(1, agent_assumptions.movement[agent_db[cohort, week][:location][i],:,agent_db[cohort, week][:stage][i]][:])) .==1)[1]
   end
 end
 
