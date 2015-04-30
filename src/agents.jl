@@ -36,8 +36,6 @@ function kill!(agent_db::DataFrame, environment_assumptions::environment_assumpt
   """
   This function will kill agents based on all stage and location specific risk factors described in a `environment_assumptions`
   """
-  agent_db[cohort, week][:stage]
-  agent_db[cohort, week][:alive]
   for i = 1:length(agent_db[cohort, week][:alive])
     killed = minimum([rand(Poisson(agent_db[cohort, week][:alive][i]*agent_assumptions.mortality_natural[environment_assumptions.habitat[agent_db[cohort, week][:location][i].==environment_assumptions.id],agent_db[cohort, week][:stage][i]][1])), agent_db[cohort, week][:alive][i]])
     agent_db[cohort, week][:dead_natural][i] += killed
@@ -52,8 +50,11 @@ end
 
 function move!(agent_db::DataFrame, agent_assumptions::agent_assumptions, cohort::Int, week::Int)
   """
-  This function will move agents based on current for larvae, current and carrying capacity for juveniles
+  This function will move agents based on stage and location
   """
+  for i = 1:length(agent_db[cohort, week][:alive])
+   agent_db[cohort, week][:location][i] = rand(Multinomial(1, agent_assumptions.movement[agent_db[cohort, week][:location][i],:,agent_db[cohort, week][:stage][i]]))
+  end
 end
 
 function inject_juveniles!(agent_db::DataFrame, location::Int, size::Int)
