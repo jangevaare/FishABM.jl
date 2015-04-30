@@ -4,13 +4,6 @@ Justin Angevaare
 April 2015
 """
 
-# type agent_db
-#   """
-#   A very basic type specified for conveinence; methods can be created for the type
-#   """
-#   DataFrame
-# end
-
 type agent_assumptions
   """
   Assumptions regarding mortality, movement, and growth
@@ -18,7 +11,7 @@ type agent_assumptions
   mortality_natural::Array
   mortality_risk::Vector
   growth::Vector
-#   movement
+  movement::Array
 end
 
 function create_agent_db(cohorts)
@@ -57,7 +50,7 @@ function kill!(agent_db::DataFrame, environment_assumptions::environment_assumpt
   end
 end
 
-function move!(agent_db::DataFrame, environment_assumptions::environment_assumptions)
+function move!(agent_db::DataFrame, agent_assumptions::agent_assumptions, cohort::Int, week::Int)
   """
   This function will move agents based on current for larvae, current and carrying capacity for juveniles
   """

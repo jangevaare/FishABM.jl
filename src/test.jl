@@ -20,8 +20,9 @@ s_a = stock_assumptions([0.35, 0.45, 0.4, 0.35, 0.2],
 a_a = agent_assumptions([[0.05 0.1 0.05]
                          [0.05 0.1 0.05]],
                          [0.1, 0.2, 0.15],
-                         [19, 52, 104])
-
+                         [19, 52, 104],
+                         fill(0.0, (9,9,3)))
+                        a_a.movement[:,:,1]
 # Randomly generate a simple 3x3 environment_assumptions (id, spawning areas, habitat type and risk1)
 e_a = environment_assumptions(reshape(1:9, (3,3)),
                rand(Bool, (3,3)),
@@ -36,6 +37,8 @@ spawn!(a_db, s_db, s_a, e_a, 1)
 
 # Try the kill! function
 kill!(a_db, e_a, a_a, 1, 1)
+
+a_db
 
 # Try the age_adults! function
 age_adults!(s_db, s_a)
