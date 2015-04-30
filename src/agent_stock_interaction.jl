@@ -31,4 +31,13 @@ function graduate!(agent_db::DataFrame, stock_db::stock_db, stage::Int, cohort::
   """
   This function will advance an agent currently in a specified stage to its next life stage. If this function is applied to juveniles, it will also add their information to the stock_db
   """
-end
+  if any(agent_assumptions.growth .== week)
+    for i = 1:length(agent_db[cohort, week][:stage])
+      if week == agent_assumptions.growth[agent_db[cohort, week][:stage][i]]
+        agent_db[cohort, week][:stage][i] += 1
+        if agent_db[cohort, week][:stage][i] == 4
+          stock_db.population[:end, 1] += agent_db[cohort, week][:alive][i]
+        end
+      end
+    end
+  end
