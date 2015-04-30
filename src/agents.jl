@@ -53,11 +53,11 @@ function move!(agent_db::DataFrame, agent_assumptions::agent_assumptions, cohort
   This function will move agents based on stage and location
   """
   for i = 1:length(agent_db[cohort, week][:alive])
-   agent_db[cohort, week][:location][i] = rand(Multinomial(1, agent_assumptions.movement[agent_db[cohort, week][:location][i],:,agent_db[cohort, week][:stage][i]]))
+   agent_db[cohort, week][:location][i] = rand(Multinomial(1, agent_assumptions.movement[agent_db[cohort, week][:location][i],:,agent_db[cohort, week][:stage][i]][:]))
   end
 end
 
-function inject_juveniles!(agent_db::DataFrame, location::Int, size::Int)
+function inject_juveniles!(agent_db::DataFrame, location::Int, size::Int, cohort::Int, week::Int)
   """
   This function will inject juveniles into an `agent_db` to simulate stocking efforts.
   """
