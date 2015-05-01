@@ -35,12 +35,12 @@ a_db = create_agent_db(10)
 # Try the spawn! function
 spawn!(a_db, s_db, s_a, e_a, 1)
 
+a_db[1,1]
+
 # Try the kill! function
 kill!(a_db, e_a, a_a, 1, 1)
 
 a_db[1,1]
-
-
 
 # Try the move! function
 move!(a_db, a_a, 1, 1)
