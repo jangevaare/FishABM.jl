@@ -16,8 +16,7 @@ s_a = stock_assumptions([0.35, 0.45, 0.4, 0.35, 0.2],
 a_a = agent_assumptions([[0.05 0.1 0.05]
                          [0.05 0.1 0.05]],
                          [0.1, 0.2, 0.15],
-                         [1,52,104],
-                         #[19, 52, 104],
+                         [19, 52, 104],
                          fill(0.0, (9,9,3)))
 
 # Set movement transition probabilities
@@ -34,17 +33,14 @@ a_db = create_agent_db(10)
 
 # Try the spawn! function
 spawn!(a_db, s_db, s_a, e_a, 1)
-
 a_db[1,1]
 
 # Try the kill! function
 kill!(a_db, e_a, a_a, 1, 1)
-
 a_db[1,1]
 
 # Try the move! function
 move!(a_db, a_a, 1, 1)
-
 a_db[1,1]
 
 # Try the age_adults! function
@@ -52,10 +48,8 @@ age_adults!(s_db, s_a)
 
 # Try the graduate! function
 graduate!(a_db, s_db, a_a, 1, 1)
-
 a_db[1,1]
 
 # Try the inject_agents! function
 inject_agents!(a_db, 9, 10000, 1, 1)
-
 a_db[1,1]

@@ -16,7 +16,7 @@ end
 
 function spawn!(agent_db::DataFrame, stock_db::stock_db, stock_assumptions::stock_assumptions, environment_assumptions::environment_assumptions, cohort::Int)
   """
-  This function creates a new cohort of agents based on an structured adult population, spawning area information contained in a `environment_assumptions`, and `fecundity_assumptions`.
+  This function creates a new cohort of agents based on an structured adult population, spawning area information contained in a `environment_assumptions`, and `stock_assumptions`.
   """
   brood_size = rand(Poisson(stock_assumptions.mean_brood_size[1]), rand(Binomial(stock_db.population[end,1], stock_assumptions.proportion_sexually_mature[1]*0.5)))
   for i = 2:length(stock_assumptions.proportion_sexually_mature)
