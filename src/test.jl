@@ -61,3 +61,5 @@ a_db[1,1]
 # Try the simulate function
 a_db = simulate(5, s_db, s_a, a_a, e_a)
 s_db
+
+a_db[1,2]

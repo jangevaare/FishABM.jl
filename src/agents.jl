@@ -27,13 +27,15 @@ function kill!(agent_db::DataFrame, environment_assumptions::environment_assumpt
   This function will kill agents based on all stage and location specific risk factors described in a `environment_assumptions`
   """
   for i = 1:length(agent_db[cohort, week][:alive])
-    killed = minimum([rand(Poisson(agent_db[cohort, week][:alive][i]*agent_assumptions.mortality_natural[environment_assumptions.habitat[agent_db[cohort, week][:location][i].==environment_assumptions.id],agent_db[cohort, week][:stage][i]][1])), agent_db[cohort, week][:alive][i]])
-    agent_db[cohort, week][:dead_natural][i] += killed
-    agent_db[cohort, week][:alive][i] -= killed
-    if environment_assumptions.risk[agent_db[cohort, week][:location][i].==environment_assumptions.id][1]
-      killed = minimum([rand(Poisson(agent_db[cohort, week][:alive][i]*agent_assumptions.mortality_risk[agent_db[cohort, week][:stage][i]][1])), agent_db[cohort, week][:alive][i]])
-      agent_db[cohort, week][:dead_risk][i] += killed
+    if agent_db[cohort, week][:alive][i] > 0
+      killed = minimum([rand(Poisson(agent_db[cohort, week][:alive][i]*agent_assumptions.mortality_natural[environment_assumptions.habitat[agent_db[cohort, week][:location][i].==environment_assumptions.id],agent_db[cohort, week][:stage][i]][1])), agent_db[cohort, week][:alive][i]])
+      agent_db[cohort, week][:dead_natural][i] += killed
       agent_db[cohort, week][:alive][i] -= killed
+      if environment_assumptions.risk[agent_db[cohort, week][:location][i].==environment_assumptions.id][1]
+        killed = minimum([rand(Poisson(agent_db[cohort, week][:alive][i]*agent_assumptions.mortality_risk[agent_db[cohort, week][:stage][i]][1])), agent_db[cohort, week][:alive][i]])
+        agent_db[cohort, week][:dead_risk][i] += killed
+        agent_db[cohort, week][:alive][i] -= killed
+      end
     end
   end
 end
