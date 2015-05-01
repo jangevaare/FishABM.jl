@@ -1,3 +1,9 @@
+"""
+Type definitions for the structured stock-level and agent-level model components
+Justin Angevaare
+May 2015
+"""
+
 type agent_assumptions
   """
   Assumptions regarding mortality, movement, and growth

@@ -1,5 +1,5 @@
 """
-Functions and types for agent-level model components
+Functions for agent-level model components
 Justin Angevaare
 May 2015
 """
