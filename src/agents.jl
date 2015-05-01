@@ -1,7 +1,7 @@
 """
 Functions and types for agent-level model components
 Justin Angevaare
-April 2015
+May 2015
 """
 
 type agent_assumptions

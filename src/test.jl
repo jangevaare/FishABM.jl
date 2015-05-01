@@ -1,3 +1,9 @@
+"""
+Informally test Fish_ABM functions
+Justin Angevaare
+May 2015
+"""
+
 include("Fish_ABM.jl")
 
 # Initial age distribution of adults
@@ -53,3 +59,4 @@ a_db[1,1]
 # Try the inject_agents! function
 inject_agents!(a_db, 9, 10000, 1, 1)
 a_db[1,1]
+
