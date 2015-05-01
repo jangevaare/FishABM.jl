@@ -60,6 +60,6 @@ a_db[1,1]
 
 # Try the simulate function
 a_db = simulate(2, s_db, s_a, a_a, e_a)
-s_db
+s_db.population
 
 a_db[1,2]
