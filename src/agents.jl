@@ -4,16 +4,6 @@ Justin Angevaare
 May 2015
 """
 
-type agent_assumptions
-  """
-  Assumptions regarding mortality, movement, and growth
-  """
-  mortality_natural::Array
-  mortality_risk::Vector
-  growth::Vector
-  movement::Array
-end
-
 function create_agent_db(cohorts)
   """
   A function which will create an empty agent_db for the specified simulation length

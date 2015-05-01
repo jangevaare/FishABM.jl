@@ -4,16 +4,6 @@ Justin Angevaare
 May 2015
 """
 
-type environment_assumptions
-  """
-  A specialized type which contains layers of information to indicate spawning area, habitat type, and additional risks
-  """
-  id::Array
-  spawning::Array
-  habitat::Array
-  risk::Array
-end
-
 function spawn!(agent_db::DataFrame, stock_db::stock_db, stock_assumptions::stock_assumptions, environment_assumptions::environment_assumptions, cohort::Int)
   """
   This function creates a new cohort of agents based on an structured adult population, spawning area information contained in a `environment_assumptions`, and `stock_assumptions`.
