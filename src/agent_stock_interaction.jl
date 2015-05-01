@@ -26,7 +26,7 @@ function graduate!(agent_db::DataFrame, stock_db::stock_db, agent_assumptions::a
       if week == agent_assumptions.growth[agent_db[cohort, week][:stage][i]]
         agent_db[cohort, week][:stage][i] += 1
         if week == agent_assumptions.growth[end]
-          stock_db.population[:end, 1] += agent_db[cohort, week][:alive][i]
+          stock_db.population[end, 1] += agent_db[cohort, week][:alive][i]
         end
       end
     end
