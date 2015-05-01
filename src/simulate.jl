@@ -31,7 +31,8 @@ function simulate(years::Int, s_db::stock_db, s_a::stock_assumptions, a_a::agent
         age_adults!(s_db, s_a)
       end
       graduate!(a_db, s_db, a_a, y, w)
+      graduate!(a_db, s_db, a_a, y-1, w+52)
     end
   end
-  return a_db, s_db
+  return a_db
 end

@@ -4,8 +4,6 @@ Justin Angevaare
 May 2015
 """
 
-include("Fish_ABM.jl")
-
 # Initial age distribution of adults
 s_db = stock_db(DataFrame(age_2=30000,
                           age_3=20000,
@@ -60,3 +58,6 @@ a_db[1,1]
 inject_agents!(a_db, 9, 10000, 1, 1)
 a_db[1,1]
 
+# Try the simulate function
+a_db = simulate(5, s_db, s_a, a_a, e_a)
+s_db
