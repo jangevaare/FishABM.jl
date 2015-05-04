@@ -44,8 +44,8 @@ function movement_matrix(weights::Array, environment_assumptions::environment_as
           movement[environment_assumptions.id[r,c], environment_assumptions.id[r+1,c+1]] = weights[3,3]
         end
       end
-      #tempsum = sum(movement[environment_assumptions.id[r,c],:])
-      #movement[environment_assumptions.id[r,c],:] = movement[environment_assumptions.id[r,c],:]./tempsum
+      tempsum = sum(movement[environment_assumptions.id[r,c],:])
+      movement[environment_assumptions.id[r,c],:] = movement[environment_assumptions.id[r,c],:]./tempsum
     end
   end
   return movement
