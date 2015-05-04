@@ -16,7 +16,7 @@ end
 
 type environment_assumptions
   """
-  A specialized type which contains layers of information to indicate spawning area, habitat type, and additional risks
+  A specialized type which contains layers of information to indicate spawning area, habitat type, and additional risks. location id should be specified as NaN when a valid location does not exist.
   """
   id::Array
   spawning::Array
