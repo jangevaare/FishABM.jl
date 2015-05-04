@@ -4,7 +4,7 @@ Justin Angevaare
 May 2015
 """
 
-function simulate(years::Int, s_db::stock_db, s_a::stock_assumptions, a_a::agent_assumptions, e_a::environment_assumptions)
+function simulate(years::Int, harvest_effort::Vector, s_db::stock_db, s_a::stock_assumptions, a_a::agent_assumptions, e_a::environment_assumptions)
   """
   Brings together all of the functions necessary for a life cycle simulation
   """
@@ -18,6 +18,7 @@ function simulate(years::Int, s_db::stock_db, s_a::stock_assumptions, a_a::agent
       kill!(a_db, e_a, a_a, y, w)
       move!(a_db, a_a, y, w)
       if w==52
+        harvest!(harvest_effort[y], s_db, s_a)
         age_adults!(s_db, s_a)
       end
       graduate!(a_db, s_db, a_a, y, w)
@@ -39,6 +40,7 @@ function simulate(years::Int, s_db::stock_db, s_a::stock_assumptions, a_a::agent
       move!(a_db, a_a, y, w)
       move!(a_db, a_a, y-1, w+52)
       if w==52
+        harvest!(harvest_effort[y], s_db, s_a)
         age_adults!(s_db, s_a)
       end
       graduate!(a_db, s_db, a_a, y, w)
