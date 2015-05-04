@@ -8,7 +8,8 @@ May 2015
 s_a = stock_assumptions([0.35, 0.45, 0.4, 0.35, 0.2],
                         [0.1, 0.5, 0.9, 1, 1],
                         [7500, 15000, 20000, 22500, 25000],
-                        [50000, NaN, NaN, NaN, NaN])
+                        [50000, NaN, NaN, NaN, NaN],
+                        [0.00001, 0.00002, 0.000025, 0.000025, 0.000025])
 
 # Randomly generate a simple 3x3 environment_assumptions (id, spawning areas, habitat type and risk1)
 e_a = environment_assumptions(reshape(1:(3*3), (3,3)),
