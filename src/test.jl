@@ -7,7 +7,8 @@ May 2015
 # Stock assumptions - survivorship and fecundity (proportion sexually mature and mean brood size at age)
 s_a = stock_assumptions([0.35, 0.45, 0.4, 0.35, 0.2],
                         [0.1, 0.5, 0.9, 1, 1],
-                        [7500, 15000, 20000, 22500, 25000])
+                        [7500, 15000, 20000, 22500, 25000],
+                        [50000, NaN, NaN, NaN, NaN])
 
 # Randomly generate a simple 3x3 environment_assumptions (id, spawning areas, habitat type and risk1)
 e_a = environment_assumptions(reshape(1:(3*3), (3,3)),

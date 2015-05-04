@@ -10,7 +10,11 @@ function age_adults!(stock_db::stock_db, stock_assumptions::stock_assumptions)
   """
   stock_size = fill(0, size(stock_assumptions.survivorship))
   for i = 1:(length(stock_assumptions.survivorship)-1)
-    stock_size[i+1] = rand(Binomial(stock_db.population[end,i], stock_assumptions.survivorship[i]))
+    if stock_assumptions.carrying_capacity[i] == NaN
+      stock_size[i+1] = rand(Binomial(stock_db.population[end,i], stock_assumptions.survivorship[i]))
+    else
+      stock_size[i+1] = rand(Binomial(stock_db.population[end,i], stock_assumptions.survivorship[i]*stock_assumptions.carrying_capacity[i]/stock_db.population[end,i]))
+    end
   end
   stock_size[end] += rand(Binomial(stock_db.population[end,end], stock_assumptions.survivorship[end]))
   push!(stock_db.population, DataArray(stock_size))

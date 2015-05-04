@@ -38,8 +38,10 @@ type stock_assumptions
   Age specific survivorship
   Age specific sexual maturity (i.e. percentage of females that will spawn)
   Age specific fecundity (i.e. mean quantity of eggs each spawning female will produce)
+  Age specific carrying carrying_capacity (specify as NaN if density dependence does not occur)
   """
   survivorship::Vector
   proportion_sexually_mature::Vector
   mean_brood_size::Vector
+  carrying_capacity::Vector
 end
