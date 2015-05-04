@@ -25,6 +25,10 @@ function simulate(years::Int, s_db::stock_db, s_a::stock_assumptions, a_a::agent
   end
   for y = 2:years
     spawn!(a_db, s_db, s_a, e_a, y)
+    if shape(a_db[y,1])[1] > 1000000
+      print("> 1000000 agents in current simulation, stopping here.")
+      break
+    end
     for w = 1:52
       if w > 1
         a_db[y,w] = a_db[y,w-1]
