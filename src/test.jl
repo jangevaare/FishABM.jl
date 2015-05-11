@@ -4,6 +4,8 @@ Justin Angevaare
 May 2015
 """
 
+using Fish_ABM
+
 # Stock assumptions - survivorship and fecundity (proportion sexually mature and mean brood size at age)
 s_a = stock_assumptions([0.35, 0.45, 0.4, 0.35, 0.2],
                         [0.1, 0.5, 0.9, 1, 1],
@@ -48,5 +50,5 @@ s_db = stock_db(DataFrame(age_2=30000,
                           age_6=Int[]))
 
 # Try the simulate function
-a_db = simulate(25, fill(1000., 25), s_db, s_a, a_a, e_a)
+a_db = simulate(25, fill(0., 25), s_db, s_a, a_a, e_a)
 s_d
