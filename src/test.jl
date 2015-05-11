@@ -4,6 +4,10 @@ Justin Angevaare
 May 2015
 """
 
+# To download package in Julia
+Pkg.clone("https://github.com/jangevaa/fish_abm.jl.git")
+
+# To use package
 using Fish_ABM
 
 # Stock assumptions - survivorship and fecundity (proportion sexually mature and mean brood size at age)
