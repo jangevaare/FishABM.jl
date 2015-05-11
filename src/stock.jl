@@ -10,7 +10,7 @@ function harvest!(effort::Float64, stock_db::stock_db, stock_assumptions::stock_
   """
   harvest_size = fill(0, size(stock_assumptions.catchability))
   if effort > 0
-    for i = 1:size(stock_assumptions.catchability)
+    for i = 1:length(stock_assumptions.catchability)
       harvest_size[i] = rand(Poisson(stock_db.population[end,i]*stock_assumptions.catchability[i]*effort))
       stock_db.population[end, i] -= harvest_size[i]
     end
