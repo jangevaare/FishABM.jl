@@ -26,7 +26,7 @@ function simulate(years::Int, harvest_effort::Vector, s_db::stock_db, s_a::stock
   end
   for y = 2:years
     spawn!(a_db, s_db, s_a, e_a, y)
-    if shape(a_db[y,1])[1] > 1000000
+    if size(a_db[y,1])[1] > 1000000
       print("> 1000000 agents in current simulation, stopping here.")
       break
     end

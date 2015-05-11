@@ -4,9 +4,6 @@ Justin Angevaare
 May 2015
 """
 
-# To download package in Julia
-Pkg.clone("https://github.com/jangevaa/fish_abm.jl.git")
-
 # To use package
 using Fish_ABM
 
@@ -14,7 +11,7 @@ using Fish_ABM
 s_a = stock_assumptions([0.35, 0.45, 0.4, 0.35, 0.2],
                         [0.1, 0.5, 0.9, 1, 1],
                         [7500, 15000, 20000, 22500, 25000],
-                        [50000, NaN, NaN, NaN, NaN],
+                        [100000, NaN, NaN, NaN, NaN],
                         [0.00001, 0.00002, 0.000025, 0.000025, 0.000025])
 
 # Randomly generate a simple 3x3 environment_assumptions (id, spawning areas, habitat type and risk1)
@@ -54,5 +51,5 @@ s_db = stock_db(DataFrame(age_2=30000,
                           age_6=Int[]))
 
 # Try the simulate function
-a_db = simulate(25, fill(0., 25), s_db, s_a, a_a, e_a)
+@time a_db = simulate(25, fill(0., 25), s_db, s_a, a_a, e_a)
 s_db.population
