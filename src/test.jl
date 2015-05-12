@@ -8,7 +8,7 @@ May 2015
 using Fish_ABM
 
 # Stock assumptions - survivorship and fecundity (proportion sexually mature and mean brood size at age)
-s_a = stock_assumptions([0.35, 0.45, 0.4, 0.35, 0.2],
+s_a = stock_assumptions([0.2, 0.45, 0.4, 0.35, 0.2],
                         [0., 0.1, 0.4, 0.7, 1],
                         [7500, 15000, 20000, 22500, 25000],
                         [100000, NaN, NaN, NaN, NaN],
