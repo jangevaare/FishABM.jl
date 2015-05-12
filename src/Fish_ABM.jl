@@ -4,24 +4,24 @@ using DataFrames, Distributions, Gadfly
 
 export
   # Types
-  agent_assumptions
-  environment_assumptions
-  stock_assumptions
-  stock_db
+  agent_assumptions,
+  environment_assumptions,
+  stock_assumptions,
+  stock_db,
 
   # Agent functions
-  create_agent_db
-  kill!
-  move!
-  inject_agents!
+  create_agent_db,
+  kill!,
+  move!,
+  inject_agents!,
 
   # Stock functions
-  harvest!
-  age_adults!
+  harvest!,
+  age_adults!,
 
   # Agent-Stock function
-  spawn!
-  graduate!
+  spawn!,
+  graduate!,
 
   # Utilities
   movement_matrix
