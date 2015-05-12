@@ -30,7 +30,7 @@ function age_adults!(stock_db::stock_db, stock_assumptions::stock_assumptions)
       stock_size[i+1] = rand(Binomial(stock_db.population[end,i], stock_assumptions.survivorship[i]*max(0,(1-(stock_db.population[end,i]/stock_assumptions.carrying_capacity[i])))))
     end
   end
-  if isnan(stock_assumptions.carrying_capacity[i])
+  if isnan(stock_assumptions.carrying_capacity[end])
     stock_size[end] += rand(Binomial(stock_db.population[end,end], stock_assumptions.survivorship[end]))
   else
     stock_size[end] += rand(Binomial(stock_db.population[end,end], stock_assumptions.survivorship[end]*max(0,(1-(stock_db.population[end,end]/stock_assumptions.carrying_capacity[end])))))
