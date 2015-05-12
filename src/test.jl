@@ -54,3 +54,5 @@ s_db = stock_db(DataFrame(age_2=30000,
 @time a_db = simulate(25, fill(0., 25), s_db, s_a, a_a, e_a)
 s_db.population
 
+#write.table("adult_.csv", s_db.population)
+
