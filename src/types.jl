@@ -34,7 +34,7 @@ end
 
 type stock_assumptions
   """
-  Age specific survivorship (asymptotic survivorship if density depedence occurs)
+  Age specific survivorship (survivorship at carrying capacity if density depedence occurs)
   Age specific sexual maturity (i.e. percentage of females that will spawn)
   Age specific fecundity (i.e. mean quantity of eggs each spawning female will produce)
   Age specific carrying carrying_capacity (specify as NaN if density dependence does not occur).
