@@ -5,7 +5,7 @@ May 2015
 """
 
 # To use package
-using Fish_ABM
+using DataFrames, Fish_ABM
 
 # Stock assumptions - survivorship and fecundity (proportion sexually mature and mean brood size at age)
 s_a = stock_assumptions([0.15, 0.30, 0.35, 0.4, 0.4],
@@ -27,10 +27,10 @@ a_a = agent_assumptions([[0.005 0.005 0.005]
                          [19, 52, 104],
                          fill(0.0, (9,9,3)))
 
-# Set movement transition probabilities to identity matrices by default
-for i =1:3 a_a.movement[:,:,i] = eye(9) end
-
 # Try the movement_matrix function to specify the movement transition probability matrix
+a_a.movement[:,:,1] = movement_matrix([[0 0 0]
+                                       [0 1 0]
+                                       [0 0 0]], e_a)
 a_a.movement[:,:,2] = movement_matrix([[1 1 2]
                                        [1 6 3]
                                        [1 2 2]], e_a)

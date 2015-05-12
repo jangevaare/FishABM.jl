@@ -24,7 +24,10 @@ export
   graduate!,
 
   # Utilities
-  movement_matrix
+  movement_matrix,
+
+  # Simulate
+  simulate
 
 include("types.jl")
 include("utilities.jl")
