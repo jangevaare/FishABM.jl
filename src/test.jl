@@ -5,8 +5,7 @@ May 2015
 """
 
 # To use package
-using DataFrames, Fish_ABM
-using Distributions
+using DataFrames, Distributions, Fish_ABM
 
 # Stock assumptions - survivorship and fecundity (proportion sexually mature and mean brood size at age)
 s_a = stock_assumptions([0.15, 0.30, 0.35, 0.4, 0.4],
