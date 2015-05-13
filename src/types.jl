@@ -37,7 +37,7 @@ type stock_assumptions
   Age specific survivorship (survivorship at carrying capacity if density depedence occurs)
   Age specific sexual maturity (i.e. percentage of females that will spawn)
   Age specific fecundity (i.e. mean quantity of eggs each spawning female will produce)
-  Compensatory parameters - overall carrying capacity, and compensatory strength (mean and standard deviation of Normal CDF to adjust mean fecundity)
+  Compensatory parameters - overall carrying capacity, and compensatory strength. Compensatory strength is the distance from K which will result in a 68% change in fecundity - larger values indicate lower compensation strength. Compensation function based on Normal CDF. Use NaN if compensation is assumed to not occur.
   Age specific catachability
   """
   survivorship::Vector
