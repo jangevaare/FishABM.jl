@@ -13,6 +13,7 @@ function spawn!(agent_db::DataFrame, stock_db::stock_db, stock_assumptions::stoc
   else
     compensation_factor = 2*(1-cdf(Normal(stock_assumptions.compensatory_parameters[1], stock_assumptions.compensatory_parameters[2]), sum(stock_db.population[end,:][1,])))
   end
+  @assert(0.01 <compensation_factor < 1.99, "Population regulation has failed wildly, respecify simulation parameters")
   brood_size = rand(Poisson(compensation_factor*stock_assumptions.mean_brood_size[1]), rand(Binomial(stock_db.population[end,1], stock_assumptions.proportion_sexually_mature[1]*0.5)))
   for i = 2:length(stock_assumptions.proportion_sexually_mature)
     append!(brood_size, rand(Poisson(compensation_factor*stock_assumptions.mean_brood_size[i]), rand(Binomial(stock_db.population[end,i], stock_assumptions.proportion_sexually_mature[i]*0.5))))

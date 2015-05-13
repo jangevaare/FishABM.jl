@@ -8,10 +8,10 @@ May 2015
 using DataFrames, Distributions, Fish_ABM
 
 # Stock assumptions - survivorship and fecundity (proportion sexually mature and mean brood size at age)
-s_a = stock_assumptions([0.15, 0.30, 0.35, 0.4, 0.4],
+s_a = stock_assumptions([0.30, 0.30, 0.35, 0.4, 0.4],
                         [0., 0.1, 0.4, 0.7, 1],
                         [7500, 15000, 20000, 22500, 25000],
-                        [1000000, 500000],
+                        [600000, 600000],
                         [0.00001, 0.00002, 0.000025, 0.000025, 0.000025])
 
 # Randomly generate a simple 3x3 environment_assumptions (id, spawning areas, habitat type and risk1)
@@ -22,7 +22,7 @@ e_a = environment_assumptions(reshape(1:(3*3), (3,3)),
 
 # Agent assumptions - weekly mortality risks and growth (weeks until next stage)
 a_a = agent_assumptions([[0.01 0.01 0.01]
-                         [0.025 0.025 0.025]],
+                         [0.03 0.03 0.03]],
                          [0.1, 0.1, 0.1],
                          [19, 52, 104],
                          fill(0.0, (9,9,3)))
@@ -52,8 +52,6 @@ s_db = stock_db(DataFrame(age_2=500000,
 
 # Try the simulate function
 @time a_db = simulate(25, fill(0., 25), s_db, s_a, a_a, e_a)
-
 s_db.population
 
-sum(s_db.population[end,:][1,])
 #write.table("adult.csv", s_db.population)
