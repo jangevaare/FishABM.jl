@@ -12,9 +12,9 @@ s_a = stock_assumptions([0.50, 0.50, 0.55, 0.6, 0.6],
                         5,
                         [7500, 15000, 20000, 22500, 25000],
                         500000,
-                        0.5,
-                        0.5,
-                        0.5,
+                        0.25,
+                        0.25,
+                        0.25,
                         [0.00001, 0.00002, 0.000025, 0.000025, 0.000025])
 
 # Randomly generate a simple 3x3 environment_assumptions (id, spawning areas, habitat type and risk1)

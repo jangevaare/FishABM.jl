@@ -35,7 +35,7 @@ end
 type stock_assumptions
   """
   Age specific survivorship (survivorship at carrying capacity if density depedence occurs)
-  Age at 50% mature (Geometric cdf assumed)
+  Age at 50% mature (Binomial cdf assumed)
   Age specific fecundity (i.e. mean quantity of eggs each spawning female will produce)
   Carrying capacity - overall carrying capacity
   Compensatory fecundity - compensatory strength for changes in fecundity. Compensatory strength is a divisor of K which will result in a 68% change in fecundity - smaller values indicate lower compensation strength. Compensation function based on Normal CDF. Use NaN if compensation is assumed to not occur.
