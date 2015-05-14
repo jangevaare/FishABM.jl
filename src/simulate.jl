@@ -12,7 +12,7 @@ function simulate(years::Int, harvest_effort::Vector, s_db::stock_db, s_a::stock
   if fast
     c=fill(0, 104)
     for i = 1:104
-      c[i] = find([0, a_a.growth[1:end-1]] .< i .<= [a_a.growth])[1]
+      c[i] = find([0, a_a.growth[1:end-1]] .<= i .< [a_a.growth])[1]
     end
   else
     c = 1:104

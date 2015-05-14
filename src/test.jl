@@ -53,7 +53,25 @@ s_db = stock_db(DataFrame(age_2=500000,
                           age_5=Int[],
                           age_6=Int[]))
 
-# Try the simulate function
-@time a_db = simulate(5, fill(0., 5), s_db, s_a, a_a, e_a, true)
+# Try "fast" mode
+@time a_db1 = simulate(5, fill(0., 5), s_db, s_a, a_a, e_a, true)
 s_db.population
 
+size(a_db1)
+
+s_db = stock_db(DataFrame(age_2=500000,
+                          age_3=50000,
+                          age_4=20000,
+                          age_5=6000,
+                          age_6=4000),
+                DataFrame(age_2=Int[],
+                          age_3=Int[],
+                          age_4=Int[],
+                          age_5=Int[],
+                          age_6=Int[]))
+
+# Try "slow" mode
+
+@time a_db2 = simulate(5, fill(0., 5), s_db, s_a, a_a, e_a, false)
+
+size(a_db2)
