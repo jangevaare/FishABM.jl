@@ -48,6 +48,7 @@ function simulate(years::Int, harvest_effort::Vector, s_db::stock_db, s_a::stock
         age_adults!(s_db, s_a)
       end
       graduate!(a_db, s_db, a_a, y, w, c[w])
+      graduate!(a_db, s_db, a_a, y-1, w+52, c[w+52])
     end
   end
   return a_db
