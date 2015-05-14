@@ -56,3 +56,4 @@ s_db = stock_db(DataFrame(age_2=500000,
 # Try the simulate function
 @time a_db = simulate(5, fill(0., 5), s_db, s_a, a_a, e_a, true)
 s_db.population
+
