@@ -20,9 +20,9 @@ function spawn!(agent_db::DataFrame, stock_db::stock_db, stock_assumptions::stoc
     compensation_factor_b = 2*(cdf(Normal(stock_assumptions.carrying_capacity, stock_assumptions.carrying_capacity/stock_assumptions.maturity_compensation), sum(stock_db.population[end,:][1,])))
   end
   @assert(0.01 < compensation_factor_b < 1.99, "Population regulation has failed, respecify simulation parameters")
-  brood_size = rand(Poisson(compensation_factor_a*stock_assumptions.mean_brood_size[1]), rand(Binomial(stock_db.population[end,1], cdf(Binomial(length(stock_assumptions.mean_brood_size)+2, max(1, compensation_factor_b*stock_assumptions.age_at_half_mature/(length(stock_assumptions.mean_brood_size)+2))), 2)*0.5)))
+  brood_size = rand(Poisson(compensation_factor_a*stock_assumptions.mean_brood_size[1]), rand(Binomial(stock_db.population[end,1], cdf(Binomial(length(stock_assumptions.mean_brood_size)+2, min(1, compensation_factor_b*stock_assumptions.age_at_half_mature/(length(stock_assumptions.mean_brood_size)+2))), 2)*0.5)))
   for i = 2:length(stock_assumptions.mean_brood_size)
-    append!(brood_size, rand(Poisson(compensation_factor_a*stock_assumptions.mean_brood_size[i]), rand(Binomial(stock_db.population[end,i], cdf(Binomial(length(stock_assumptions.mean_brood_size)+2, max(1, compensation_factor_b*stock_assumptions.age_at_half_mature/(length(stock_assumptions.mean_brood_size)+2))), i+1)*0.5))))
+    append!(brood_size, rand(Poisson(compensation_factor_a*stock_assumptions.mean_brood_size[i]), rand(Binomial(stock_db.population[end,i], cdf(Binomial(length(stock_assumptions.mean_brood_size)+2, min(1, compensation_factor_b*stock_assumptions.age_at_half_mature/(length(stock_assumptions.mean_brood_size)+2))), i+1)*0.5))))
   end
   brood_location = sample(environment_assumptions.id[environment_assumptions.spawning], length(brood_size))
   agent_db[cohort,1] = DataFrame(stage=fill(1, length(brood_size)), location=brood_location, alive=brood_size, dead_natural=fill(0, length(brood_size)), dead_risk=fill(0, length(brood_size)))
