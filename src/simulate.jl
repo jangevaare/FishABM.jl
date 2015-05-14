@@ -8,7 +8,7 @@ function simulate(years::Int, harvest_effort::Vector, s_db::stock_db, s_a::stock
   """
   Brings together all of the functions necessary for a life cycle simulation
   """
-  a_db = create_agent_db(years, fast)
+  a_db = create_agent_db(years, a_a, fast)
   if fast
     c = find([0, a_a.growth[1:end-1]] .< 1:104 .<= [a_a.growth])[1]
   else
