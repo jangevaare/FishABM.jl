@@ -8,15 +8,21 @@ function spawn!(agent_db::DataFrame, stock_db::stock_db, stock_assumptions::stoc
   """
   This function creates a new cohort of agents based on an structured adult population, spawning area information contained in a `environment_assumptions`, and `stock_assumptions`.
   """
-  if isnan(stock_assumptions.compensatory_parameters[1]) || isnan(stock_assumptions.compensatory_parameters[2])
-    compensation_factor = 1
+  if isnan(stock_assumptions.fecundity_compensation)
+    compensation_factor_a = 1
   else
-    compensation_factor = 2*(1-cdf(Normal(stock_assumptions.compensatory_parameters[1], stock_assumptions.compensatory_parameters[2]), sum(stock_db.population[end,:][1,])))
+    compensation_factor_a = 2*(1-cdf(Normal(stock_assumptions.carrying_capacity, stock_assumptions.carrying_capacity/stock_assumptions.fecundity_compensation), sum(stock_db.population[end,:][1,])))
   end
-  @assert(0.01 <compensation_factor < 1.99, "Population regulation has failed wildly, respecify simulation parameters")
-  brood_size = rand(Poisson(compensation_factor*stock_assumptions.mean_brood_size[1]), rand(Binomial(stock_db.population[end,1], stock_assumptions.proportion_sexually_mature[1]*0.5)))
+  @assert(0.01 < compensation_factor_a < 1.99, "Population regulation has failed, respecify simulation parameters")
+  if isnan(stock_assumptions.maturity_compensation)
+    compensation_factor_b = 1
+  else
+    compensation_factor_b = 2*(1-cdf(Normal(stock_assumptions.carrying_capacity, stock_assumptions.carrying_capacity/stock_assumptions.maturity_compensation), sum(stock_db.population[end,:][1,])))
+  end
+  @assert(0.01 < compensation_factor_b < 1.99, "Population regulation has failed, respecify simulation parameters")
+  brood_size = rand(Poisson(compensation_factor_a*stock_assumptions.mean_brood_size[1]), rand(Binomial(stock_db.population[end,1], cdf(Geometric(1/(compensation_factor_b*stock_assumptions.age_at_half_mature-3)),0)*0.5)))
   for i = 2:length(stock_assumptions.proportion_sexually_mature)
-    append!(brood_size, rand(Poisson(compensation_factor*stock_assumptions.mean_brood_size[i]), rand(Binomial(stock_db.population[end,i], stock_assumptions.proportion_sexually_mature[i]*0.5))))
+    append!(brood_size, rand(Poisson(compensation_factor_a*stock_assumptions.mean_brood_size[i]), rand(Binomial(stock_db.population[end,i], cdf(Geometric(1/(compensation_factor_b*stock_assumptions.age_at_half_mature-3)),i-1)*0.5))))
   end
   brood_location = sample(environment_assumptions.id[environment_assumptions.spawning], length(brood_size))
   agent_db[cohort,1] = DataFrame(stage=fill(1, length(brood_size)), location=brood_location, alive=brood_size, dead_natural=fill(0, length(brood_size)), dead_risk=fill(0, length(brood_size)))

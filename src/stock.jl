@@ -22,10 +22,16 @@ function age_adults!(stock_db::stock_db, stock_assumptions::stock_assumptions)
   """
   This function will apply transition probabilities to the current adult population. In the future this function may also apply annual removals due to fishing or other causes of mortality.
   """
-  stock_size = fill(0, size(stock_assumptions.survivorship))
-  for i = 1:(length(stock_assumptions.survivorship)-1)
-    stock_size[i+1] = rand(Binomial(stock_db.population[end,i], stock_assumptions.survivorship[i]))
+  stock_size = fill(0, size(stock_assumptions.natural_mortality))
+  if isnan(stock_assumptions.mortality_compensation)
+    compensation_factor = 1
+  else
+    compensation_factor = 2*(cdf(Normal(stock_assumptions.carrying_capacity, stock_assumptions.carrying_capacity/stock_assumptions.mortality_compensation), sum(stock_db.population[end,:][1,])))
   end
-  stock_size[end] += rand(Binomial(stock_db.population[end,end], stock_assumptions.survivorship[end]))
+  @assert(0.01 < compensation_factor < 1.99, "Population regulation has failed, respecify simulation parameters")
+  for i = 1:(length(stock_assumptions.natural_mortality)-1)
+    stock_size[i+1] = rand(Binomial(stock_db.population[end,i], 1-(stock_assumptions.natural_mortality[i]*compensation_factor)))
+  end
+  stock_size[end] += rand(Binomial(stock_db.population[end,end], 1-(stock_assumptions.natural_mortality[end]*compensation_factor)))
   push!(stock_db.population, DataArray(stock_size))
 end

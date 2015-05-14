@@ -35,14 +35,20 @@ end
 type stock_assumptions
   """
   Age specific survivorship (survivorship at carrying capacity if density depedence occurs)
-  Age specific sexual maturity (i.e. percentage of females that will spawn)
+  Age at 50% mature (Geometric cdf assumed)
   Age specific fecundity (i.e. mean quantity of eggs each spawning female will produce)
-  Compensatory parameters - overall carrying capacity, and compensatory strength. Compensatory strength is the distance from K which will result in a 68% change in fecundity - larger values indicate lower compensation strength. Compensation function based on Normal CDF. Use NaN if compensation is assumed to not occur.
-  Age specific catachability
+  Carrying capacity - overall carrying capacity
+  Compensatory fecundity - compensatory strength for changes in fecundity. Compensatory strength is a divisor of K which will result in a 68% change in fecundity - smaller values indicate lower compensation strength. Compensation function based on Normal CDF. Use NaN if compensation is assumed to not occur.
+  Compensatory sexual maturity - compensatory strength for changes in age of sexual maturity. Compensatory strength is a divisor of K which will result in a 68% change in age of sexual maturity - smaller values indicate lower compensation strength. Compensation function based on Normal CDF. Use NaN if compensation is assumed to not occur.
+  Compensatory mortality - compensatory strength for changes in age of sexual maturity. Compensatory strength is a divisor of K which will result in a 68% change in natural mortality - smaller values indicate lower compensation strength. Compensation function based on Normal CDF. Use NaN if compensation is assumed to not occur.
+Age specific catachability
   """
-  survivorship::Vector
-  proportion_sexually_mature::Vector
+  natural_mortality::Vector
+  age_at_half_mature::Float64
   mean_brood_size::Vector
-  compensatory_parameters::Vector
+  carrying_capacity::Float64
+  fecundity_compensation::Float64
+  maturity_compensation::Float64
+  mortality_compensation::Float64
   catchability::Vector
 end

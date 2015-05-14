@@ -8,24 +8,24 @@ May 2015
 using DataFrames, Distributions, Fish_ABM
 
 # Stock assumptions - survivorship and fecundity (proportion sexually mature and mean brood size at age)
-s_a = stock_assumptions([0.40, 0.40, 0.45, 0.5, 0.5],
+s_a = stock_assumptions([0.50, 0.50, 0.55, 0.6, 0.6],
                         [0., 0.1, 0.4, 0.7, 1],
                         [7500, 15000, 20000, 22500, 25000],
                         [500000, 1000000],
                         [0.00001, 0.00002, 0.000025, 0.000025, 0.000025])
 
 # Randomly generate a simple 3x3 environment_assumptions (id, spawning areas, habitat type and risk1)
-e_a = environment_assumptions(reshape(1:(3*3), (3,3)),
-                              rand(Bool, (3,3)),
-                              rand(1:2, (3,3)),
-                              rand(Bool, (3,3)))
+e_a = environment_assumptions(reshape(1:(4*4), (4,4)),
+                              rand(Bool, (4,4)),
+                              rand(1:2, (4,4)),
+                              rand(Bool, (4,4)))
 
 # Agent assumptions - weekly mortality risks and growth (weeks until next stage)
-a_a = agent_assumptions([[0.02 0.02 0.02]
-                         [0.04 0.04 0.04]],
-                         [0.1, 0.1, 0.1],
+a_a = agent_assumptions([[0.005 0.005 0.005]
+                         [0.01 0.01 0.01]],
+                         [0.01, 0.01, 0.01],
                          [19, 52, 104],
-                         fill(0.0, (9,9,3)))
+                         fill(0.0, (16,16,3)))
 
 # Try the movement_matrix function to specify the movement transition probability matrix
 a_a.movement[:,:,1] = movement_matrix([[0 0 0]
