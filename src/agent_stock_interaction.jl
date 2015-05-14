@@ -17,11 +17,11 @@ function spawn!(agent_db::DataFrame, stock_db::stock_db, stock_assumptions::stoc
   if isnan(stock_assumptions.maturity_compensation)
     compensation_factor_b = 1
   else
-    compensation_factor_b = 2*(1-cdf(Normal(stock_assumptions.carrying_capacity, stock_assumptions.carrying_capacity/stock_assumptions.maturity_compensation), sum(stock_db.population[end,:][1,])))
+    compensation_factor_b = 2*(cdf(Normal(stock_assumptions.carrying_capacity, stock_assumptions.carrying_capacity/stock_assumptions.maturity_compensation), sum(stock_db.population[end,:][1,])))
   end
   @assert(0.01 < compensation_factor_b < 1.99, "Population regulation has failed, respecify simulation parameters")
-  brood_size = rand(Poisson(compensation_factor_a*stock_assumptions.mean_brood_size[1]), rand(Binomial(stock_db.population[end,1], cdf(Geometric(1/(compensation_factor_b*stock_assumptions.age_at_half_mature-3)),0)*0.5)))
-  for i = 2:length(stock_assumptions.proportion_sexually_mature)
+  brood_size = rand(Poisson(compensation_factor_a*stock_assumptions.mean_brood_size[1]), rand(Binomial(stock_db.population[end,1], cdf(Geometric(1/min(compensation_factor_b*stock_assumptions.age_at_half_mature-3,1)),0)*0.5)))
+  for i = 2:length(stock_assumptions.mean_brood_size)
     append!(brood_size, rand(Poisson(compensation_factor_a*stock_assumptions.mean_brood_size[i]), rand(Binomial(stock_db.population[end,i], cdf(Geometric(1/(compensation_factor_b*stock_assumptions.age_at_half_mature-3)),i-1)*0.5))))
   end
   brood_location = sample(environment_assumptions.id[environment_assumptions.spawning], length(brood_size))

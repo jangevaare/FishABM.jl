@@ -7,11 +7,14 @@ May 2015
 # To use package
 using DataFrames, Distributions, Fish_ABM
 
-# Stock assumptions - survivorship and fecundity (proportion sexually mature and mean brood size at age)
+# Stock assumptions
 s_a = stock_assumptions([0.50, 0.50, 0.55, 0.6, 0.6],
-                        [0., 0.1, 0.4, 0.7, 1],
+                        5,
                         [7500, 15000, 20000, 22500, 25000],
-                        [500000, 1000000],
+                        500000,
+                        0.5,
+                        0.5,
+                        0.5,
                         [0.00001, 0.00002, 0.000025, 0.000025, 0.000025])
 
 # Randomly generate a simple 3x3 environment_assumptions (id, spawning areas, habitat type and risk1)
