@@ -13,7 +13,7 @@ function simulate(years::Int, harvest_effort::Vector, s_db::stock_db, s_a::stock
     spawn!(a_db, s_db, s_a, e_a, y)
     for w = 1:52
       if w > 1
-        a_db[y,w] = a_db[y,w-1]
+        a_db[y,w] = deepcopy(a_db[y,w-1])
       end
       kill!(a_db, e_a, a_a, y, w)
       move!(a_db, a_a, y, w)
@@ -29,9 +29,9 @@ function simulate(years::Int, harvest_effort::Vector, s_db::stock_db, s_a::stock
     @assert(size(a_db[y,1])[1] < 100000, "> 100000 agents in current simulation, stopping here.")
     for w = 1:52
       if w > 1
-        a_db[y,w] = a_db[y,w-1]
+        a_db[y,w] = deepcopy(a_db[y,w-1])
       end
-      a_db[y-1,w+52] = a_db[y-1,w+51]
+      a_db[y-1,w+52] = deepcopy(a_db[y-1,w+51])
       kill!(a_db, e_a, a_a, y, w)
       kill!(a_db, e_a, a_a, y-1, w+52)
       move!(a_db, a_a, y, w)

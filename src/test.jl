@@ -24,8 +24,8 @@ e_a = environment_assumptions(reshape(1:(4*4), (4,4)),
                               rand(Bool, (4,4)))
 
 # Agent assumptions - weekly mortality risks and growth (weeks until next stage)
-a_a = agent_assumptions([[0.02 0.02 0.02]
-                         [0.04 0.04 0.04]],
+a_a = agent_assumptions([[0.03 0.03 0.03]
+                         [0.05 0.05 0.05]],
                          [0.05, 0.05, 0.05],
                          [19, 52, 104],
                          fill(0.0, (16,16,3)))
@@ -54,7 +54,5 @@ s_db = stock_db(DataFrame(age_2=500000,
                           age_6=Int[]))
 
 # Try the simulate function
-@time a_db = simulate(25, fill(0., 25), s_db, s_a, a_a, e_a)
+@time a_db = simulate(5, fill(0., 5), s_db, s_a, a_a, e_a)
 s_db.population
-
-#write.table("adult.csv", s_db.population)
