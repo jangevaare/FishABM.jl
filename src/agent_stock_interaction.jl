@@ -29,16 +29,16 @@ function spawn!(agent_db::DataFrame, stock_db::stock_db, stock_assumptions::stoc
   return agent_db
 end
 
-function graduate!(agent_db::DataFrame, stock_db::stock_db, agent_assumptions::agent_assumptions, cohort::Int, week::Int)
+function graduate!(agent_db::DataFrame, stock_db::stock_db, agent_assumptions::agent_assumptions, cohort::Int, week::Int, column::Int)
   """
   This function will advance an agent currently in a specified stage to its next life stage. If this function is applied to juveniles, it will also add their information to the stock_db
   """
   if any(agent_assumptions.growth .== week)
-    for i = 1:length(agent_db[cohort, week][:stage])
-      if week == agent_assumptions.growth[agent_db[cohort, week][:stage][i]]
-        agent_db[cohort, week][:stage][i] += 1
+    for i = 1:length(agent_db[cohort, column][:stage])
+      if week == agent_assumptions.growth[agent_db[cohort, column][:stage][i]]
+        agent_db[cohort, column][:stage][i] += 1
         if week == agent_assumptions.growth[end]
-          stock_db.population[end, 1] += agent_db[cohort, week][:alive][i]
+          stock_db.population[end, 1] += agent_db[cohort, column][:alive][i]
         end
       end
     end
