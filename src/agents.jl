@@ -4,7 +4,7 @@ Justin Angevaare
 May 2015
 """
 
-function create_agent_db(cohorts, agent_assumptions::agent_assumptions, fast::bool)
+function create_agent_db(cohorts, agent_assumptions::agent_assumptions, fast::Bool)
   """
   A function which will create an empty agent_db for the specified simulation length
   """
