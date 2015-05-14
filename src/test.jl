@@ -8,7 +8,7 @@ May 2015
 using DataFrames, Distributions, Fish_ABM
 
 # Stock assumptions
-s_a = stock_assumptions([0.50, 0.50, 0.55, 0.6, 0.6],
+s_a = stock_assumptions([0.50, 0.50, 0.45, 0.4, 0.4],
                         5,
                         [7500, 15000, 20000, 22500, 25000],
                         500000,
@@ -24,9 +24,9 @@ e_a = environment_assumptions(reshape(1:(4*4), (4,4)),
                               rand(Bool, (4,4)))
 
 # Agent assumptions - weekly mortality risks and growth (weeks until next stage)
-a_a = agent_assumptions([[0.005 0.005 0.005]
-                         [0.01 0.01 0.01]],
-                         [0.01, 0.01, 0.01],
+a_a = agent_assumptions([[0.02 0.02 0.02]
+                         [0.04 0.04 0.04]],
+                         [0.05, 0.05, 0.05],
                          [19, 52, 104],
                          fill(0.0, (16,16,3)))
 
