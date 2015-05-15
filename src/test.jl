@@ -42,7 +42,6 @@ a_a.movement[:,:,3] = movement_matrix([[1 1 2]
                                        [1 2 2]], e_a)
 
 # Must set initial age distribution of adults, and create an empty dataframe for fishing mortality
-# Try "fast" mode
 s_db1 = stock_db(DataFrame(age_2=500000,
                            age_3=50000,
                            age_4=20000,
@@ -54,24 +53,8 @@ s_db1 = stock_db(DataFrame(age_2=500000,
                            age_5=Int[],
                            age_6=Int[]))
 
-@time a_db1 = simulate(100, fill(0., 100), s_db1, s_a, a_a, e_a, true)
-size(a_db1)
+# Note: in reduced output mode
+@time a_db1 = simulate(75, fill(0., 75), s_db1, s_a, a_a, e_a, true)
 s_db1.population
-
-# Try "slow" mode
-s_db2 = stock_db(DataFrame(age_2=500000,
-                           age_3=50000,
-                           age_4=20000,
-                           age_5=6000,
-                           age_6=4000),
-                 DataFrame(age_2=Int[],
-                           age_3=Int[],
-                           age_4=Int[],
-                           age_5=Int[],
-                           age_6=Int[]))
-
-@time a_db2 = simulate(10, fill(0., 10), s_db2, s_a, a_a, e_a, false)
-size(a_db2)
-s_db2.population
 
 
