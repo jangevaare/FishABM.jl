@@ -24,8 +24,8 @@ e_a = environment_assumptions(reshape(1:(4*4), (4,4)),
                               rand(Bool, (4,4)))
 
 # Agent assumptions - weekly mortality risks and growth (weeks until next stage)
-a_a = agent_assumptions([[0.03 0.03 0.03]
-                         [0.05 0.05 0.05]],
+a_a = agent_assumptions([[0.03 0.05 0.03]
+                         [0.04 0.05 0.05]],
                          [0.05, 0.05, 0.05],
                          [19, 52, 104],
                          fill(0.0, (16,16,3)))
@@ -42,36 +42,36 @@ a_a.movement[:,:,3] = movement_matrix([[1 1 2]
                                        [1 2 2]], e_a)
 
 # Must set initial age distribution of adults, and create an empty dataframe for fishing mortality
-s_db = stock_db(DataFrame(age_2=500000,
-                          age_3=50000,
-                          age_4=20000,
-                          age_5=6000,
-                          age_6=4000),
-                DataFrame(age_2=Int[],
-                          age_3=Int[],
-                          age_4=Int[],
-                          age_5=Int[],
-                          age_6=Int[]))
-
 # Try "fast" mode
-@time a_db1 = simulate(5, fill(0., 5), s_db, s_a, a_a, e_a, true)
-s_db.population
+s_db1 = stock_db(DataFrame(age_2=500000,
+                           age_3=50000,
+                           age_4=20000,
+                           age_5=6000,
+                           age_6=4000),
+                 DataFrame(age_2=Int[],
+                           age_3=Int[],
+                           age_4=Int[],
+                           age_5=Int[],
+                           age_6=Int[]))
 
+@time a_db1 = simulate(10, fill(0., 10), s_db1, s_a, a_a, e_a, true)
 size(a_db1)
-
-s_db = stock_db(DataFrame(age_2=500000,
-                          age_3=50000,
-                          age_4=20000,
-                          age_5=6000,
-                          age_6=4000),
-                DataFrame(age_2=Int[],
-                          age_3=Int[],
-                          age_4=Int[],
-                          age_5=Int[],
-                          age_6=Int[]))
+s_db1.population
 
 # Try "slow" mode
+s_db2 = stock_db(DataFrame(age_2=500000,
+                           age_3=50000,
+                           age_4=20000,
+                           age_5=6000,
+                           age_6=4000),
+                 DataFrame(age_2=Int[],
+                           age_3=Int[],
+                           age_4=Int[],
+                           age_5=Int[],
+                           age_6=Int[]))
 
-@time a_db2 = simulate(5, fill(0., 5), s_db, s_a, a_a, e_a, false)
-
+@time a_db2 = simulate(10, fill(0., 10), s_db2, s_a, a_a, e_a, false)
 size(a_db2)
+s_db2.population
+
+

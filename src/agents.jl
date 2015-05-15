@@ -4,13 +4,13 @@ Justin Angevaare
 May 2015
 """
 
-function create_agent_db(cohorts, agent_assumptions::agent_assumptions, fast::Bool)
+function create_agent_db(cohorts, agent_assumptions::agent_assumptions, reduced::Bool)
   """
   A function which will create an empty agent_db for the specified simulation length
   """
   sub_agent_db = DataFrame(cohort = DataFrame(stage=Int[], location=Int[], alive=Int[], dead_natural=Int[], dead_risk=Int[]))
   int_agent_db = hcat(sub_agent_db, sub_agent_db)
-  if fast
+  if reduced
     columns = length(agent_assumptions.growth)
   else
     columns = 104
@@ -18,7 +18,7 @@ function create_agent_db(cohorts, agent_assumptions::agent_assumptions, fast::Bo
   for i = 1:(columns-2)
     int_agent_db=hcat(int_agent_db, sub_agent_db)
   end
-  if fast
+  if reduced
     names!(int_agent_db, [symbol("stage_$i") for i in 1:columns])
   else
     names!(int_agent_db, [symbol("week_$i") for i in 1:columns])
