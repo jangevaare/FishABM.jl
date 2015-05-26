@@ -1,5 +1,5 @@
 """
-Informally test Fish_ABM functions
+Demonstrate Fish_ABM functionality
 Justin Angevaare
 May 2015
 """
@@ -42,7 +42,7 @@ a_a.movement[:,:,3] = movement_matrix([[1 1 2]
                                        [1 2 2]], e_a)
 
 # Must set initial age distribution of adults, and create an empty dataframe for fishing mortality
-s_db1 = stock_db(DataFrame(age_2=500000,
+s_db = stock_db(DataFrame(age_2=500000,
                            age_3=50000,
                            age_4=20000,
                            age_5=6000,
@@ -58,7 +58,7 @@ s_db1 = stock_db(DataFrame(age_2=500000,
                            age_8=Int[]))
 
 # Note: in reduced output mode
-@time a_db1 = simulate(75, fill(0., 75), s_db1, s_a, a_a, e_a, true)
-s_db1.population
+@time a_db = simulate(75, fill(0., 75), s_db, s_a, a_a, e_a, true)
+s_db.population
 
 
