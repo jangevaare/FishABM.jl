@@ -35,15 +35,26 @@ e_a = environment_assumptions(readdlm(Pkg.dir("Fish_ABM")"/examples/LakeHuron_1k
                               readdlm(Pkg.dir("Fish_ABM")"/examples/LakeHuron_1km_habitat.csv", ',', Int),
                               readdlm(Pkg.dir("Fish_ABM")"/examples/LakeHuron_1km_risk.csv", ',', Bool))
 
+# OPTIONAL VISUALIZATIONS
+# warning: computationally intensive to render
+spy(e_a.id)
+spy(e_a.spawning)
+spy(e_a.habitat)
+spy(e_a.risk)
+
 # AGENT ASSUMPTIONS
 # Weekly natural mortality rate (by habitat type in the rows, and stage in the columns)
 # Weekly risk mortality (by stage)
 # Stage length (in weeks)
 # Movement weight matrices
 
-a_a = agent_assumptions([[0.05 0.05 0.05]
-                         [0.05 0.05 0.05]],
-                         [0.05, 0.05, 0.05],
+a_a = agent_assumptions([[0.90 0.05 0.05]
+                         [0.05 0.05 0.05]
+                         [0.05 0.05 0.05]
+                         [0.90 0.90 0.05]
+                         [0.90 0.90 0.90]
+                         [0.90 0.90 0.90]],
+                         [0.1, 0.1, 0.1],
                          [19, 52, 104],
                          Array[Array[[0 0 0]
                                      [0 1 0]

@@ -24,7 +24,7 @@ function simulate(years::Int, harvest_effort::Vector, s_db::stock_db, s_a::stock
         a_db[y,c[w]] = deepcopy(a_db[y,c[w-1]])
       end
       kill!(a_db, e_a, a_a, y, c[w])
-      move!(a_db, a_a, y, c[w])
+      move!(a_db, a_a, e_a, y, c[w])
       if w==52
         harvest!(harvest_effort[y], s_db, s_a)
         age_adults!(s_db, s_a)
@@ -44,8 +44,8 @@ function simulate(years::Int, harvest_effort::Vector, s_db::stock_db, s_a::stock
       end
       kill!(a_db, e_a, a_a, y, c[w])
       kill!(a_db, e_a, a_a, y-1, c[w+52])
-      move!(a_db, a_a, y, c[w])
-      move!(a_db, a_a, y-1, c[w+52])
+      move!(a_db, a_a, e_a, y, c[w])
+      move!(a_db, a_a, e_a, y-1, c[w+52])
       if w==52
         harvest!(harvest_effort[y], s_db, s_a)
         age_adults!(s_db, s_a)
