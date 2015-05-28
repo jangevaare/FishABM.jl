@@ -39,7 +39,7 @@ e_a = environment_assumptions(readdlm(Pkg.dir("Fish_ABM")"/examples/LakeHuron_1k
 # Weekly natural mortality rate (by habitat type in the rows, and stage in the columns)
 # Weekly risk mortality (by stage)
 # Stage length (in weeks)
-# Movement matrices
+# Movement weight matrices
 
 a_a = agent_assumptions([[0.05 0.05 0.05]
                          [0.05 0.05 0.05]],
@@ -48,11 +48,11 @@ a_a = agent_assumptions([[0.05 0.05 0.05]
                          Array[Array[[0 0 0]
                                      [0 1 0]
                                      [0 0 0]]
-                               Array[[1 1 2]
-                                     [1 6 3]
-                                     [1 2 2]]
-                               Array[[1 1 2]
-                                     [1 3 3]
+                               Array[[1 2 2]
+                                     [1 6 2]
+                                     [1 1 1]]
+                               Array[[1 2 2]
+                                     [1 3 2]
                                      [1 2 2]]])
 
 # STOCK DATABASE
@@ -70,7 +70,7 @@ s_db = stock_db(DataFrame(age_2=500000,
                            age_4=Int[],
                            age_5=Int[],
                            age_6=Int[],
-                           age_7=Int[]
+                           age_7=Int[],
                            age_8=Int[]))
 
 # SIMULATE
