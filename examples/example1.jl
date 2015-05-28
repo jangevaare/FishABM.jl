@@ -30,10 +30,10 @@ s_a = stock_assumptions([0.50, 0.50, 0.50, 0.50, 0.50, 0.50, 0.50],
 # Spawning areas
 # Habitat types
 # Risk areas
-e_a = environment_assumptions(readdlm(Pkg.dir("Fish_ABM")"/examples/LakeHuron_id.csv", ',', Int),
-                              readdlm(Pkg.dir("Fish_ABM")"/examples/LakeHuron_spawning.csv", ',', Bool),
-                              readdlm(Pkg.dir("Fish_ABM")"/examples/LakeHuron_habitat.csv", ',', Int),
-                              readdlm(Pkg.dir("Fish_ABM")"/examples/LakeHuron_risk.csv", ',', Bool))
+e_a = environment_assumptions(readdlm(Pkg.dir("Fish_ABM")"/examples/LakeHuron_1km_id.csv", ',', Int),
+                              readdlm(Pkg.dir("Fish_ABM")"/examples/LakeHuron_1km_spawning.csv", ',', Bool),
+                              readdlm(Pkg.dir("Fish_ABM")"/examples/LakeHuron_1km_habitat.csv", ',', Int),
+                              readdlm(Pkg.dir("Fish_ABM")"/examples/LakeHuron_1km_risk.csv", ',', Bool))
 
 # AGENT ASSUMPTIONS
 # Weekly natural mortality rate (by habitat type in the rows, and stage in the columns)
