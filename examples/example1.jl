@@ -37,10 +37,10 @@ e_a = environment_assumptions(readdlm(Pkg.dir("Fish_ABM")"/examples/LakeHuron_1k
 
 # OPTIONAL VISUALIZATIONS
 # warning: computationally intensive to render
-spy(e_a.id)
-spy(e_a.spawning)
-spy(e_a.habitat)
-spy(e_a.risk)
+#spy(e_a.id)
+#spy(e_a.spawning)
+#spy(e_a.habitat)
+#spy(e_a.risk)
 
 # AGENT ASSUMPTIONS
 # Weekly natural mortality rate (by habitat type in the rows, and stage in the columns)
@@ -56,15 +56,15 @@ a_a = agent_assumptions([[0.90 0.05 0.05]
                          [0.90 0.90 0.90]],
                          [0.1, 0.1, 0.1],
                          [19, 52, 104],
-                         Array[Array[[0 0 0]
-                                     [0 1 0]
-                                     [0 0 0]]
-                               Array[[1 2 2]
-                                     [1 6 2]
-                                     [1 1 1]]
-                               Array[[1 2 2]
-                                     [1 3 2]
-                                     [1 2 2]]])
+                         Array[[[0 0 0]
+                                [0 1 0]
+                                [0 0 0]]
+                               [[1 2 2]
+                                [1 6 2]
+                                [1 1 1]]
+                               [[1 2 2]
+                                [1 3 2]
+                                [1 2 2]]])
 
 # STOCK DATABASE
 # Must set initial age distribution of adults
@@ -97,3 +97,5 @@ s_db = stock_db(DataFrame(age_2=500000,
 # OUTPUT
 # Adult age distribution through time
 s_db.population
+
+a_a.movement[1]
