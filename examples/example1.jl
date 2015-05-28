@@ -5,7 +5,7 @@ May 2015
 """
 
 # To use package
-using DataFrames, Distributions, Fish_ABM
+using DataFrames, Distributions, Gadfly, Fish_ABM
 
 # Stock assumptions
 s_a = stock_assumptions([0.50, 0.50, 0.50, 0.50, 0.50, 0.50, 0.50],
@@ -18,10 +18,12 @@ s_a = stock_assumptions([0.50, 0.50, 0.50, 0.50, 0.50, 0.50, 0.50],
                         [0.00001, 0.00002, 0.000025, 0.000025, 0.000025, 0.000025, 0.000025])
 
 # Randomly generate a simple 3x3 environment_assumptions (id, spawning areas, habitat type and risk1)
-e_a = environment_assumptions(readdlm(Pkg.dir("Fish_ABM")"/examples/LakeHuron_id.csv", ','),
-                              readdlm(Pkg.dir("Fish_ABM")"/examples/LakeHuron_spawning.csv", ','),
-                              readdlm(Pkg.dir("Fish_ABM")"/examples/LakeHuron_habitat.csv", ','),
-                              readdlm(Pkg.dir("Fish_ABM")"/examples/LakeHuron_risk.csv", ','))
+e_a = environment_assumptions(readdlm(Pkg.dir("Fish_ABM")"/examples/LakeHuron_id.csv", ',', Int),
+                              readdlm(Pkg.dir("Fish_ABM")"/examples/LakeHuron_spawning.csv", ',', Bool),
+                              readdlm(Pkg.dir("Fish_ABM")"/examples/LakeHuron_habitat.csv", ',', Int),
+                              readdlm(Pkg.dir("Fish_ABM")"/examples/LakeHuron_risk.csv", ',', Bool))
+
+spy(e_a.id .== -1)
 
 # Agent assumptions - weekly mortality risks and growth (weeks until next stage)
 a_a = agent_assumptions([[0.05 0.05 0.05]
