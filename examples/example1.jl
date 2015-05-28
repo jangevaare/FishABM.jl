@@ -81,7 +81,7 @@ s_db = stock_db(DataFrame(age_2=500000,
 # Agent assumptions
 # Environment assumptions
 # Reduced output mode (true = reduced output mode, false = full output mode)
-@time a_db = simulate(75, fill(0., 75), s_db, s_a, a_a, e_a, false)
+@time a_db = simulate(5, fill(0., 5), s_db, s_a, a_a, e_a, false)
 
 # OUTPUT
 # Adult age distribution through time
