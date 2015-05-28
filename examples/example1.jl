@@ -39,25 +39,21 @@ e_a = environment_assumptions(readdlm(Pkg.dir("Fish_ABM")"/examples/LakeHuron_id
 # Weekly natural mortality rate (by habitat type in the rows, and stage in the columns)
 # Weekly risk mortality (by stage)
 # Stage length (in weeks)
-# Specify empty array for movement
+# Movement matrices
 
 a_a = agent_assumptions([[0.05 0.05 0.05]
                          [0.05 0.05 0.05]],
                          [0.05, 0.05, 0.05],
                          [19, 52, 104],
-                         fill(0.0, (16,16,3)))
-
-# MOVEMENT MATRICES
-# Stage specific
-a_a.movement[:,:,1] = movement_matrix([[0 0 0]
-                                       [0 1 0]
-                                       [0 0 0]], e_a)
-a_a.movement[:,:,2] = movement_matrix([[1 1 2]
-                                       [1 6 3]
-                                       [1 2 2]], e_a)
-a_a.movement[:,:,3] = movement_matrix([[1 1 2]
-                                       [1 3 3]
-                                       [1 2 2]], e_a)
+                         Array[Array[[0 0 0]
+                                     [0 1 0]
+                                     [0 0 0]]
+                               Array[[1 1 2]
+                                     [1 6 3]
+                                     [1 2 2]]
+                               Array[[1 1 2]
+                                     [1 3 3]
+                                     [1 2 2]]])
 
 # STOCK DATABASE
 # Must set initial age distribution of adults
