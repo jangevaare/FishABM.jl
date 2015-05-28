@@ -18,10 +18,10 @@ s_a = stock_assumptions([0.50, 0.50, 0.50, 0.50, 0.50, 0.50, 0.50],
                         [0.00001, 0.00002, 0.000025, 0.000025, 0.000025, 0.000025, 0.000025])
 
 # Randomly generate a simple 3x3 environment_assumptions (id, spawning areas, habitat type and risk1)
-e_a = environment_assumptions(reshape(1:(4*4), (4,4)),
-                              rand(Bool, (4,4)),
-                              rand(1:2, (4,4)),
-                              rand(Bool, (4,4)))
+e_a = environment_assumptions(readdlm(Pkg.dir("Fish_ABM")"/examples/LakeHuron_id.csv", ','),
+                              readdlm(Pkg.dir("Fish_ABM")"/examples/LakeHuron_spawning.csv", ','),
+                              readdlm(Pkg.dir("Fish_ABM")"/examples/LakeHuron_habitat.csv", ','),
+                              readdlm(Pkg.dir("Fish_ABM")"/examples/LakeHuron_risk.csv", ','))
 
 # Agent assumptions - weekly mortality risks and growth (weeks until next stage)
 a_a = agent_assumptions([[0.05 0.05 0.05]
