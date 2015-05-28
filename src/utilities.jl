@@ -4,8 +4,9 @@ Justin Angevaare
 May 2015
 """
 
-function movement_matrix(weights::Array, environment_assumptions::environment_assumptions)
+function MovementMatrix(weights::Array, environment_assumptions::environment_assumptions)
   """
+  DEPRECIATED
   When a valid neighbour id exists, a movement probability will be given to that id according to the weight matrix. The weight matrix is a 3x3 numerical indicating movemment probabilities.
   """
   movement = eye(prod(size(environment_assumptions.id)))
@@ -49,43 +50,4 @@ function movement_matrix(weights::Array, environment_assumptions::environment_as
     end
   end
   return movement
-end
-
-function LocalMovement(location, weights::Array, environment_assumptions::environment_assumptions)
-  """
-  A function which creates a reduced movement matrix (3,3) for any current location
-  """
-  # Match location id to map index
-  id_ind=findn(environment_assumptions.id .== location)
-  choices=[location, weights[2,2]]
-  if id_ind[1][1] > 1
-    if id_ind[2][1] > 1 && environment_assumptions.id[id_ind[1][1]-1, id_ind[2][1]-1] != -1
-      choices = vcat(choices, [environment_assumptions.id[id_ind[1][1]-1, id_ind[2][1]-1], weights[1,1]])
-    end
-    if environment_assumptions.id[id_ind[1][1]-1, id_ind[2][1]] != -1
-      choices = vcat(choices, [environment_assumptions.id[id_ind[1][1]-1, id_ind[2][1]], weights[1,2]])
-    end
-    if id_ind[2][1] < size(environment_assumptions.id, 2) && environment_assumptions.id[id_ind[1][1]-1, id_ind[2][1]+1] != -1
-      choices = vcat(choices, [environment_assumptions.id[id_ind[1][1]-1, id_ind[2][1]+1], weights[1,3]])
-    end
-  end
-  if id_ind[2][1] > 1 && environment_assumptions.id[id_ind[1][1], id_ind[2][1]-1] != -1
-    choices = vcat(choices, [environment_assumptions.id[id_ind[1][1], id_ind[2][1]-1], weights[2,1]])
-  end
-  if id_ind[2][1] < size(environment_assumptions.id, 2) && environment_assumptions.id[id_ind[1][1], id_ind[2][1]+1] != -1
-    choices = vcat(choices, [environment_assumptions.id[id_ind[1][1], id_ind[2][1]+1], weights[2,3]])
-  end
-  if id_ind[1][1] < size(environment_assumptions.id, 1)
-    if id_ind[2][1] > 1 && environment_assumptions.id[id_ind[1][1]+1, id_ind[2][1]-1] != -1
-      choices = vcat(choices, [environment_assumptions.id[id_ind[1][1]+1, id_ind[2][1]-1], weights[3,1]])
-    end
-    if environment_assumptions.id[id_ind[1][1]+1, id_ind[2][1]] != -1
-      choices = vcat(choices, [environment_assumptions.id[id_ind[1][1]+1, id_ind[2][1]], weights[3,2]])
-    end
-    if id_ind[2][1] < size(environment_assumptions.id, 2) && environment_assumptions.id[id_ind[1][1]+1, id_ind[2][1]+1] != -1
-      choices = vcat(choices, [environment_assumptions.id[id_ind[1][1]+1, id_ind[2][1]+1], weights[3,3]])
-    end
-  end
-  choices[,2]/sum(choices[,2])
-  return choices[1, find(rand(Multinomial(1, choices[2,:])))]
 end
