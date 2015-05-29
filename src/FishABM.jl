@@ -26,6 +26,7 @@ export
 
   # Utilities
   MovementMatrix,
+  PadEnvironmentAssumptions!,
 
   # Simulate
   Simulate
