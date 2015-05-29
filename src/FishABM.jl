@@ -13,7 +13,6 @@ export
   AgentDB,
   Kill!,
   LocalMove,
-  LocalMove2,
   Move!,
   InjectAgents!,
 

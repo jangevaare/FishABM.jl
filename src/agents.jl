@@ -60,12 +60,11 @@ function LocalMove(location::Int, weights::Array, EnvironmentAssumptions::Enviro
   # location id to coordinates
   id=ind2sub(size(EnvironmentAssumptions.habitat), location)
   # Select surrounding block of IDs, match up with weights
-  choices = [sub2ind(size(EnvironmentAssumptions.habitat), [id[1]-1,id[1],id[1]+1,id[1]-1,id[1],id[1]+1,id[1]-1,id[1],id[1]+1], [id[2]-1, id[2]-1, id[2]-1, id[2], id[2], id[2], id[2]+1, id[2]+1, id[2]+1]) [weights[:]]
+  choices = [sub2ind(size(EnvironmentAssumptions.habitat), [id[1]-1,id[1],id[1]+1,id[1]-1,id[1],id[1]+1,id[1]-1,id[1],id[1]+1], [id[2]-1, id[2]-1, id[2]-1, id[2], id[2], id[2], id[2]+1, id[2]+1, id[2]+1]) [weights[:]]]
   # If habitat type is 0, set weight to zero
   choices[EnvironmentAssumptions.habitat[choices[:,1]] .== 0, 2] = 0.
   # Normalize weights into probabilities
-  choices[:,2] = choices[:,2]/sum(choices[:,2])
-  return int(choices[findfirst(rand(Multinomial(1, choices[:,2]))), 1])
+  return int(choices[findfirst(rand(Multinomial(1, choices[:,2]/sum(choices[:,2])))), 1])
 end
 
 function Move!(agent_db::DataFrame, AgentAssumptions::AgentAssumptions, EnvironmentAssumptions::EnvironmentAssumptions, cohort::Int, week::Int)
