@@ -1,4 +1,4 @@
-module Fish_ABM
+module FishABM
 
 using DataFrames, Distributions, Gadfly
 
