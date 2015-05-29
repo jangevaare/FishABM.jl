@@ -97,9 +97,10 @@ function LocalMove2(location::Int, weights::Array, EnvironmentAssumptions::Envir
   A function which generates movement to a neighbouring location based on movement weights
   """
   # Match location id to map index
-  id_ind=findn(EnvironmentAssumptions.id .== location)
+  id_ind=ind2sub(size(EnvironmentAssumptions.id), findfirst(EnvironmentAssumptions.id .== location))
+  #id_ind=findn(EnvironmentAssumptions.id .== location)
   # Select surrounding block of IDs, match up with weights
-  choices = [[EnvironmentAssumptions.id[id_ind[1][1]-1:id_ind[1][1]+1, id_ind[2][1]-1:id_ind[2][1]+1][:]] [weights[:]]]
+  choices = [[EnvironmentAssumptions.id[id_ind[1]-1:id_ind[1]+1, id_ind[2]-1:id_ind[2]+1][:]] [weights[:]]]
   # If ID invalid, set weight to zero
   choices[choices[:,1] .== -1, 2] = 0.
   # Normalize weights into probabilities
