@@ -35,10 +35,6 @@ e_a = EnvironmentAssumptions(readdlm(Pkg.dir("FishABM")"/examples/LakeHuron_1km_
                              readdlm(Pkg.dir("FishABM")"/examples/LakeHuron_1km_habitat.csv", ',', Int)[150:end, 200:400],
                              readdlm(Pkg.dir("FishABM")"/examples/LakeHuron_1km_risk.csv", ',', Bool)[150:end, 200:400])
 
-# e_a = EnvironmentAssumptions(readdlm(Pkg.dir("FishABM")"/examples/LakeHuron_2km_spawning.csv", ',', Bool),
-#                              readdlm(Pkg.dir("FishABM")"/examples/LakeHuron_2km_habitat.csv", ',', Int),
-#                              readdlm(Pkg.dir("FishABM")"/examples/LakeHuron_2km_risk.csv", ',', Bool))
-
 PadEnvironmentAssumptions!(e_a)
 
 # OPTIONAL VISUALIZATIONS
