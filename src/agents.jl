@@ -31,7 +31,7 @@ function AgentDB(cohorts, AgentAssumptions::AgentAssumptions, reduced::Bool)
 #   return int_agent_db
 end
 
-function kill!(agent_db::DataFrame, EnvironmentAssumptions::EnvironmentAssumptions, AgentAssumptions::AgentAssumptions, cohort::Int, week::Int)
+function Kill!(agent_db::DataFrame, EnvironmentAssumptions::EnvironmentAssumptions, AgentAssumptions::AgentAssumptions, cohort::Int, week::Int)
   """
   This function will kill agents based on all stage and location specific risk factors described in a `EnvironmentAssumptions`
   """
