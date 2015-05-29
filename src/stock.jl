@@ -15,7 +15,7 @@ function Harvest!(effort::Float64, StockDB::StockDB, StockAssumptions::StockAssu
       StockDB.population[end, i] -= harvest_size[i]
     end
   end
-  push!(StockDB.fishing_mortality, DataArray(harvest_size))
+  push!(StockDB.harvest, DataArray(harvest_size))
 end
 
 function AgeAdults!(StockDB::StockDB, StockAssumptions::StockAssumptions)
