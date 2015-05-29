@@ -97,7 +97,9 @@ function Move!(agent_db::DataFrame, AgentAssumptions::AgentAssumptions, Environm
   This function will move agents based on stage and location
   """
   for i = 1:length(agent_db[cohort, week][:alive])
-    agent_db[cohort, week][:location][i] = LocalMovement(agent_db[cohort, week][:location][i], AgentAssumptions.movement[agent_db[cohort, week][:stage][i]], EnvironmentAssumptions)
+    if agent_db[cohort, week][:alive][i] > 0
+      agent_db[cohort, week][:location][i] = LocalMovement(agent_db[cohort, week][:location][i], AgentAssumptions.movement[agent_db[cohort, week][:stage][i]], EnvironmentAssumptions)
+    end
   end
 end
 
