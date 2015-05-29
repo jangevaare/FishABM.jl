@@ -97,5 +97,3 @@ s_db = stock_db(DataFrame(age_2=500000,
 # OUTPUT
 # Adult age distribution through time
 s_db.population
-
-a_a.movement[1]

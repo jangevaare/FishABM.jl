@@ -62,30 +62,30 @@ function LocalMovement(location, weights::Array, environment_assumptions::enviro
   choices=[location, weights[2,2]]
   if id_ind[1][1] > 1
     if id_ind[2][1] > 1 && environment_assumptions.id[id_ind[1][1]-1, id_ind[2][1]-1] != -1
-      choices = vcat(choices, [environment_assumptions.id[id_ind[1][1]-1, id_ind[2][1]-1], weights[1,1]])
+      choices = hcat(choices, [environment_assumptions.id[id_ind[1][1]-1, id_ind[2][1]-1], weights[1,1]])
     end
     if environment_assumptions.id[id_ind[1][1]-1, id_ind[2][1]] != -1
-      choices = vcat(choices, [environment_assumptions.id[id_ind[1][1]-1, id_ind[2][1]], weights[1,2]])
+      choices = hcat(choices, [environment_assumptions.id[id_ind[1][1]-1, id_ind[2][1]], weights[1,2]])
     end
     if id_ind[2][1] < size(environment_assumptions.id, 2) && environment_assumptions.id[id_ind[1][1]-1, id_ind[2][1]+1] != -1
-      choices = vcat(choices, [environment_assumptions.id[id_ind[1][1]-1, id_ind[2][1]+1], weights[1,3]])
+      choices = hcat(choices, [environment_assumptions.id[id_ind[1][1]-1, id_ind[2][1]+1], weights[1,3]])
     end
   end
   if id_ind[2][1] > 1 && environment_assumptions.id[id_ind[1][1], id_ind[2][1]-1] != -1
-    choices = vcat(choices, [environment_assumptions.id[id_ind[1][1], id_ind[2][1]-1], weights[2,1]])
+    choices = hcat(choices, [environment_assumptions.id[id_ind[1][1], id_ind[2][1]-1], weights[2,1]])
   end
   if id_ind[2][1] < size(environment_assumptions.id, 2) && environment_assumptions.id[id_ind[1][1], id_ind[2][1]+1] != -1
-    choices = vcat(choices, [environment_assumptions.id[id_ind[1][1], id_ind[2][1]+1], weights[2,3]])
+    choices = hcat(choices, [environment_assumptions.id[id_ind[1][1], id_ind[2][1]+1], weights[2,3]])
   end
   if id_ind[1][1] < size(environment_assumptions.id, 1)
     if id_ind[2][1] > 1 && environment_assumptions.id[id_ind[1][1]+1, id_ind[2][1]-1] != -1
-      choices = vcat(choices, [environment_assumptions.id[id_ind[1][1]+1, id_ind[2][1]-1], weights[3,1]])
+      choices = hcat(choices, [environment_assumptions.id[id_ind[1][1]+1, id_ind[2][1]-1], weights[3,1]])
     end
     if environment_assumptions.id[id_ind[1][1]+1, id_ind[2][1]] != -1
-      choices = vcat(choices, [environment_assumptions.id[id_ind[1][1]+1, id_ind[2][1]], weights[3,2]])
+      choices = hcat(choices, [environment_assumptions.id[id_ind[1][1]+1, id_ind[2][1]], weights[3,2]])
     end
     if id_ind[2][1] < size(environment_assumptions.id, 2) && environment_assumptions.id[id_ind[1][1]+1, id_ind[2][1]+1] != -1
-      choices = vcat(choices, [environment_assumptions.id[id_ind[1][1]+1, id_ind[2][1]+1], weights[3,3]])
+      choices = hcat(choices, [environment_assumptions.id[id_ind[1][1]+1, id_ind[2][1]+1], weights[3,3]])
     end
   end
   choices[2,:]/sum(choices[2,:])
