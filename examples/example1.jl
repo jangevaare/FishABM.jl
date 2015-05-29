@@ -31,9 +31,9 @@ s_a = StockAssumptions([0.50, 0.50, 0.50, 0.50, 0.50, 0.50, 0.50],
 # Habitat types
 # Risk areas
 
-e_a = EnvironmentAssumptions(readdlm(Pkg.dir("FishABM")"/examples/LakeHuron_1km_spawning.csv", ',', Bool)[150:end, 200:400],
-                             readdlm(Pkg.dir("FishABM")"/examples/LakeHuron_1km_habitat.csv", ',', Int)[150:end, 200:400],
-                             readdlm(Pkg.dir("FishABM")"/examples/LakeHuron_1km_risk.csv", ',', Bool)[150:end, 200:400])
+e_a = EnvironmentAssumptions(readdlm(Pkg.dir("FishABM")"/examples/LakeHuron_1km_spawning.csv", ',', Bool)[150:end, 200:370],
+                             readdlm(Pkg.dir("FishABM")"/examples/LakeHuron_1km_habitat.csv", ',', Int)[150:end, 200:370],
+                             readdlm(Pkg.dir("FishABM")"/examples/LakeHuron_1km_risk.csv", ',', Bool)[150:end, 200:370])
 
 PadEnvironmentAssumptions!(e_a)
 
