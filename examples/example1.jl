@@ -69,13 +69,13 @@ a_a = AgentAssumptions([[0.90 0.05 0.05]
 # STOCK DATABASE
 # Must set initial age distribution of adults
 # Must create an empty dataframe for fishing mortality
-s_db = StockDB(DataFrame(age_2=500000,
-                         age_3=50000,
-                         age_4=20000,
-                         age_5=6000,
-                         age_6=4000,
-                         age_7=3000,
-                         age_8=2000),
+s_db = StockDB(DataFrame(age_2=50000,
+                         age_3=5000,
+                         age_4=2000,
+                         age_5=600,
+                         age_6=400,
+                         age_7=300,
+                         age_8=200),
                DataFrame(age_2=Int[],
                          age_3=Int[],
                          age_4=Int[],
