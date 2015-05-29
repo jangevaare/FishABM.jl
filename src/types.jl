@@ -8,8 +8,8 @@ type AgentAssumptions
   """
   Assumptions regarding mortality, movement, and growth
   """
-  mortality_natural::Array
-  mortality_risk::Vector
+  naturalmortality::Array
+  extramortality::Vector
   growth::Vector
   movement::Array
 end
@@ -18,7 +18,6 @@ type EnvironmentAssumptions
   """
   A specialized type which contains layers of information to indicate spawning area, habitat type, and additional risks. location id should be specified as NaN when a valid location does not exist.
   """
-  id::Array
   spawning::Array
   habitat::Array
   risk::Array
@@ -29,7 +28,7 @@ type StockDB
   A database which contains population size data for each time step and adult class
   """
   population::DataFrame
-  fishing_mortality::DataFrame
+  harvest::DataFrame
 end
 
 type StockAssumptions
@@ -43,12 +42,12 @@ type StockAssumptions
   Compensatory mortality - compensatory strength for changes in age of sexual maturity. Compensatory strength is a divisor of K which will result in a 68% change in natural mortality - smaller values indicate lower compensation strength. Compensation function based on Normal CDF. Use NaN if compensation is assumed to not occur.
 Age specific catachability
   """
-  natural_mortality::Vector
-  age_at_half_mature::Float64
-  mean_brood_size::Vector
-  carrying_capacity::Float64
-  fecundity_compensation::Float64
-  maturity_compensation::Float64
-  mortality_compensation::Float64
+  naturalmortality::Vector
+  halfmature::Float64
+  broodsize::Vector
+  carryingcapacity::Float64
+  fecunditycompensation::Float64
+  maturitycompensation::Float64
+  mortalitycompensation::Float64
   catchability::Vector
 end
