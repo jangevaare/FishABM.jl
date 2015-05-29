@@ -19,6 +19,7 @@ function Simulate(years::Int, harvest_effort::Vector, s_db::StockDB, s_a::StockA
   end
   for y = 1:1
     Spawn!(a_db, s_db, s_a, e_a, y)
+    progressbar = Progress(52, 5, "Year $y simulation progress", 50)
     for w = 1:52
       if w > 1 && c[w] - c[w-1] == 1
         a_db[y,c[w]] = deepcopy(a_db[y,c[w-1]])
@@ -30,11 +31,13 @@ function Simulate(years::Int, harvest_effort::Vector, s_db::StockDB, s_a::StockA
         AgeAdults!(s_db, s_a)
       end
       Graduate!(a_db, s_db, a_a, y, w, c[w])
+      next!(progressbar)
     end
   end
   for y = 2:years
     Spawn!(a_db, s_db, s_a, e_a, y)
     @assert(size(a_db[y,1])[1] < 200000, "> 200000 agents in current simulation, stopping here.")
+    progressbar = Progress(52, 5, "Year $y simulation progress", 50)
     for w = 1:52
       if w > 1 && c[w] - c[w-1] == 1
         a_db[y,c[w]] = deepcopy(a_db[y,c[w-1]])
@@ -52,6 +55,7 @@ function Simulate(years::Int, harvest_effort::Vector, s_db::StockDB, s_a::StockA
       end
       Graduate!(a_db, s_db, a_a, y, w, c[w])
       Graduate!(a_db, s_db, a_a, y-1, w+52, c[w+52])
+      next!(progressbar)
     end
   end
   return a_db
