@@ -92,7 +92,7 @@ function LocalMove(location, weights::Array, EnvironmentAssumptions::Environment
   return choices[1, findfirst(rand(Multinomial(1, choices[2,:][:])))]
 end
 
-function LocalMove2(location, weights::Array, EnvironmentAssumptions::EnvironmentAssumptions)
+function LocalMove2(location::Int, weights::Array, EnvironmentAssumptions::EnvironmentAssumptions)
   """
   A function which generates movement to a neighbouring location based on movement weights
   """
@@ -104,7 +104,7 @@ function LocalMove2(location, weights::Array, EnvironmentAssumptions::Environmen
   choices[choices[:,1] .== -1, 2] = 0.
   # Normalize weights into probabilities
   choices[:,2] = choices[:,2]/sum(choices[:,2])
-  return int[choices[findfirst(rand(Multinomial(1, choices[:,2]))), 1]]
+  return int(choices[findfirst(rand(Multinomial(1, choices[:,2]))), 1])
 end
 
 function Move!(agent_db::DataFrame, AgentAssumptions::AgentAssumptions, EnvironmentAssumptions::EnvironmentAssumptions, cohort::Int, week::Int)
