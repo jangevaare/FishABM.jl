@@ -5,7 +5,7 @@ May 2015
 """
 
 # LOAD REQUIRED PACKAGES
-using DataFrames, Distributions, Gadfly, FishABM
+using DataFrames, Gadfly, FishABM
 
 # STOCK ASSUMPTIONS
 # Age specific mortality
@@ -30,10 +30,10 @@ s_a = StockAssumptions([0.50, 0.50, 0.50, 0.50, 0.50, 0.50, 0.50],
 # Spawning areas
 # Habitat types
 # Risk areas
-e_a = EnvironmentAssumptions(readdlm(Pkg.dir("FishABM")"/examples/LakeHuron_1km_id.csv", ',', Int),
-                             readdlm(Pkg.dir("FishABM")"/examples/LakeHuron_1km_spawning.csv", ',', Bool),
-                             readdlm(Pkg.dir("FishABM")"/examples/LakeHuron_1km_habitat.csv", ',', Int),
-                             readdlm(Pkg.dir("FishABM")"/examples/LakeHuron_1km_risk.csv", ',', Bool))
+e_a = EnvironmentAssumptions(readdlm(Pkg.dir("FishABM")"/examples/LakeHuron_1km_id.csv", ',', Int)[150:end, 200:400],
+                             readdlm(Pkg.dir("FishABM")"/examples/LakeHuron_1km_spawning.csv", ',', Bool)[150:end, 200:400],
+                             readdlm(Pkg.dir("FishABM")"/examples/LakeHuron_1km_habitat.csv", ',', Int)[150:end, 200:400],
+                             readdlm(Pkg.dir("FishABM")"/examples/LakeHuron_1km_risk.csv", ',', Bool)[150:end, 200:400])
 
 # OPTIONAL VISUALIZATIONS
 # warning: computationally intensive to render
