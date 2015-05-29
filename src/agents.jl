@@ -37,12 +37,13 @@ function Kill!(agent_db::DataFrame, EnvironmentAssumptions::EnvironmentAssumptio
   """
   for i = 1:length(agent_db[cohort, week][:alive])
     if agent_db[cohort, week][:alive][i] > 0
+      location_index = findfirst(agent_db[cohort, week][:location][i].==EnvironmentAssumptions.id)
       #killed = minimum([rand(Poisson(agent_db[cohort, week][:alive][i]*AgentAssumptions.mortality_natural[EnvironmentAssumptions.habitat[agent_db[cohort, week][:location][i].==EnvironmentAssumptions.id],agent_db[cohort, week][:stage][i]][1])), agent_db[cohort, week][:alive][i]])
-      killed = rand(Binomial(agent_db[cohort, week][:alive][i], AgentAssumptions.mortality_natural[EnvironmentAssumptions.habitat[agent_db[cohort, week][:location][i].==EnvironmentAssumptions.id],agent_db[cohort, week][:stage][i]][1]))
+      killed = rand(Binomial(agent_db[cohort, week][:alive][i], AgentAssumptions.mortality_natural[EnvironmentAssumptions.habitat[location_index],agent_db[cohort, week][:stage][i]][1]))
       agent_db[cohort, week][:dead_natural][i] += killed
       agent_db[cohort, week][:alive][i] -= killed
       if agent_db[cohort, week][:alive][i] > 0
-        if EnvironmentAssumptions.risk[agent_db[cohort, week][:location][i].==EnvironmentAssumptions.id][1]
+        if EnvironmentAssumptions.risk[location_index]
           #killed = minimum([rand(Poisson(agent_db[cohort, week][:alive][i]*AgentAssumptions.mortality_risk[agent_db[cohort, week][:stage][i]][1])), agent_db[cohort, week][:alive][i]])
           killed = rand(Binomial(agent_db[cohort, week][:alive][i], AgentAssumptions.mortality_risk[agent_db[cohort, week][:stage][i]][1]))
           agent_db[cohort, week][:dead_risk][i] += killed
