@@ -39,7 +39,6 @@ PadEnvironmentAssumptions!(e_a)
 
 # OPTIONAL VISUALIZATIONS
 # warning: computationally intensive to render
-#spy(e_a.habitat)
 #spy(e_a.spawning)
 #spy(e_a.habitat)
 #spy(e_a.risk)
