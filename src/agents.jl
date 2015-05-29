@@ -89,7 +89,7 @@ function LocalMovement(location, weights::Array, EnvironmentAssumptions::Environ
     end
   end
   choices[2,:] = choices[2,:]/sum(choices[2,:])
-  return choices[1, find(rand(Multinomial(1, choices[2,:][:])))[1]]
+  return choices[1, findfirst(rand(Multinomial(1, choices[2,:][:])))]
 end
 
 function Move!(agent_db::DataFrame, AgentAssumptions::AgentAssumptions, EnvironmentAssumptions::EnvironmentAssumptions, cohort::Int, week::Int)
