@@ -12,6 +12,7 @@ export
   # Agent functions
   create_agent_db,
   kill!,
+  LocalMovement,
   move!,
   inject_agents!,
 

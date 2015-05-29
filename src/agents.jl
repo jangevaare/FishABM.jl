@@ -88,8 +88,8 @@ function LocalMovement(location, weights::Array, environment_assumptions::enviro
       choices = hcat(choices, [environment_assumptions.id[id_ind[1][1]+1, id_ind[2][1]+1], weights[3,3]])
     end
   end
-  choices[2,:]/sum(choices[2,:])
-  return choices[1, find(rand(Multinomial(1, choices[2,:])))]
+  choices[2,:] = choices[2,:]/sum(choices[2,:])
+  return choices[1, find(rand(Multinomial(1, choices[2,:][:])))[1]]
 end
 
 function move!(agent_db::DataFrame, agent_assumptions::agent_assumptions, environment_assumptions::environment_assumptions, cohort::Int, week::Int)
