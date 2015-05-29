@@ -98,14 +98,13 @@ function LocalMove2(location, weights::Array, EnvironmentAssumptions::Environmen
   """
   # Match location id to map index
   id_ind=findn(EnvironmentAssumptions.id .== location)
-
   # Select surrounding block of IDs, match up with weights
-  choices = hcat([EnvironmentAssumptions.id[id_ind[1][1]-1:id_ind[1][1]+1, id_ind[2][1]-1:id_ind[2][1]+1][:], weights[:]])
+  choices = [[EnvironmentAssumptions.id[id_ind[1][1]-1:id_ind[1][1]+1, id_ind[2][1]-1:id_ind[2][1]+1][:]] [weights[:]]]
   # If ID invalid, set weight to zero
-  choices[choices[:,1] .== -1, 2] = 0
+  choices[choices[:,1] .== -1, 2] = 0.
   # Normalize weights into probabilities
   choices[:,2] = choices[:,2]/sum(choices[:,2])
-  return choices[findfirst(rand(Multinomial(1, choices[:,2]))), 1]
+  return int[choices[findfirst(rand(Multinomial(1, choices[:,2]))), 1]]
 end
 
 function Move!(agent_db::DataFrame, AgentAssumptions::AgentAssumptions, EnvironmentAssumptions::EnvironmentAssumptions, cohort::Int, week::Int)
