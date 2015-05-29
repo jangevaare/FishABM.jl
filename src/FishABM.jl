@@ -12,7 +12,8 @@ export
   # Agent functions
   AgentDB,
   Kill!,
-  LocalMovement,
+  LocalMove,
+  LocalMove2,
   Move!,
   InjectAgents!,
 

@@ -53,9 +53,9 @@ function Kill!(agent_db::DataFrame, EnvironmentAssumptions::EnvironmentAssumptio
   end
 end
 
-function LocalMovement(location, weights::Array, EnvironmentAssumptions::EnvironmentAssumptions)
+function LocalMove(location, weights::Array, EnvironmentAssumptions::EnvironmentAssumptions)
   """
-  A function which creates a reduced movement matrix (3,3) for any current location
+  A function which generates movement to a neighbouring location based on movement weights
   """
   # Match location id to map index
   id_ind=findn(EnvironmentAssumptions.id .== location)
@@ -92,13 +92,29 @@ function LocalMovement(location, weights::Array, EnvironmentAssumptions::Environ
   return choices[1, findfirst(rand(Multinomial(1, choices[2,:][:])))]
 end
 
+function LocalMove2(location, weights::Array, EnvironmentAssumptions::EnvironmentAssumptions)
+  """
+  A function which generates movement to a neighbouring location based on movement weights
+  """
+  # Match location id to map index
+  id_ind=findn(EnvironmentAssumptions.id .== location)
+
+  # Select surrounding block of IDs, match up with weights
+  choices = hcat([EnvironmentAssumptions.id[id_ind[1][1]-1:id_ind[1][1]+1, id_ind[2][1]-1:id_ind[2][1]+1][:], weights[:]])
+  # If ID invalid, set weight to zero
+  choices[choices[:,1] .== -1, 2] = 0
+  # Normalize weights into probabilities
+  choices[:,2] = choices[:,2]/sum(choices[:,2])
+  return choices[findfirst(rand(Multinomial(1, choices[:,2]))), 1]
+end
+
 function Move!(agent_db::DataFrame, AgentAssumptions::AgentAssumptions, EnvironmentAssumptions::EnvironmentAssumptions, cohort::Int, week::Int)
   """
   This function will move agents based on stage and location
   """
   for i = 1:length(agent_db[cohort, week][:alive])
     if agent_db[cohort, week][:alive][i] > 0
-      agent_db[cohort, week][:location][i] = LocalMovement(agent_db[cohort, week][:location][i], AgentAssumptions.movement[agent_db[cohort, week][:stage][i]], EnvironmentAssumptions)
+      agent_db[cohort, week][:location][i] = LocalMove2(agent_db[cohort, week][:location][i], AgentAssumptions.movement[agent_db[cohort, week][:stage][i]], EnvironmentAssumptions)
     end
   end
 end
