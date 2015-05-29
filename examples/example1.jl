@@ -5,7 +5,7 @@ May 2015
 """
 
 # LOAD REQUIRED PACKAGES
-using DataFrames, Distributions, Gadfly, Fish_ABM
+using DataFrames, Distributions, Gadfly, FishABM
 
 # STOCK ASSUMPTIONS
 # Age specific mortality
