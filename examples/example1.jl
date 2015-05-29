@@ -30,10 +30,10 @@ s_a = StockAssumptions([0.50, 0.50, 0.50, 0.50, 0.50, 0.50, 0.50],
 # Spawning areas
 # Habitat types
 # Risk areas
-e_a = EnvironmentAssumptions(readdlm(Pkg.dir("Fish_ABM")"/examples/LakeHuron_1km_id.csv", ',', Int),
-                             readdlm(Pkg.dir("Fish_ABM")"/examples/LakeHuron_1km_spawning.csv", ',', Bool),
-                             readdlm(Pkg.dir("Fish_ABM")"/examples/LakeHuron_1km_habitat.csv", ',', Int),
-                             readdlm(Pkg.dir("Fish_ABM")"/examples/LakeHuron_1km_risk.csv", ',', Bool))
+e_a = EnvironmentAssumptions(readdlm(Pkg.dir("FishABM")"/examples/LakeHuron_1km_id.csv", ',', Int),
+                             readdlm(Pkg.dir("FishABM")"/examples/LakeHuron_1km_spawning.csv", ',', Bool),
+                             readdlm(Pkg.dir("FishABM")"/examples/LakeHuron_1km_habitat.csv", ',', Int),
+                             readdlm(Pkg.dir("FishABM")"/examples/LakeHuron_1km_risk.csv", ',', Bool))
 
 # OPTIONAL VISUALIZATIONS
 # warning: computationally intensive to render
