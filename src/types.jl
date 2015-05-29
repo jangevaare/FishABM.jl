@@ -4,7 +4,7 @@ Justin Angevaare
 May 2015
 """
 
-type agent_assumptions
+type AgentAssumptions
   """
   Assumptions regarding mortality, movement, and growth
   """
@@ -14,7 +14,7 @@ type agent_assumptions
   movement::Array
 end
 
-type environment_assumptions
+type EnvironmentAssumptions
   """
   A specialized type which contains layers of information to indicate spawning area, habitat type, and additional risks. location id should be specified as NaN when a valid location does not exist.
   """
@@ -24,7 +24,7 @@ type environment_assumptions
   risk::Array
 end
 
-type stock_db
+type StockDB
   """
   A database which contains population size data for each time step and adult class
   """
@@ -32,7 +32,7 @@ type stock_db
   fishing_mortality::DataFrame
 end
 
-type stock_assumptions
+type StockAssumptions
   """
   Age specific survivorship (survivorship at carrying capacity if density depedence occurs)
   Age at 50% mature (Binomial cdf assumed)

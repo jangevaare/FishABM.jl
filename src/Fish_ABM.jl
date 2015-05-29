@@ -4,31 +4,31 @@ using DataFrames, Distributions, Gadfly
 
 export
   # Types
-  agent_assumptions,
-  environment_assumptions,
-  stock_assumptions,
-  stock_db,
+  AgentAssumptions,
+  EnvironmentAssumptions,
+  StockAssumptions,
+  StockDB,
 
   # Agent functions
-  create_agent_db,
-  kill!,
+  AgentDB,
+  Kill!,
   LocalMovement,
-  move!,
-  inject_agents!,
+  Move!,
+  InjectAgents!,
 
   # Stock functions
-  harvest!,
-  age_adults!,
+  Harvest!,
+  AgeAdults!,
 
   # Agent-Stock function
-  spawn!,
-  graduate!,
+  Spawn!,
+  Graduate!,
 
   # Utilities
-  movement_matrix,
+  MovementMatrix,
 
   # Simulate
-  simulate
+  Simulate
 
 include("types.jl")
 include("utilities.jl")
