@@ -25,20 +25,21 @@ function agent_visualize(e_a::EnvironmentAssumptions, a_db::DataFrame, cohort::I
   Create an interactive visualization of an agent database with IJulia
   """
   @assert(1 <= cohort <= size(a_db,1), "Invalid cohort specified")
+  @assert(size(a_db,2) == 104, "Require full agent database output")
   # Generate a simple map of the lake
   is, js, values = findnz(e_a.habitat .> 0)
-  lake_map = DataFrame(i=is, j=js, value=values)
+  id = find(e_a.habitat .> 0)
 
   # Generate cohort specific dataset
   # Initialize with week 1...
-  df = DataFrame(id = a_db[cohort,1][:location], i = ind2sub(size(e_a.habitat),a_db[cohort,1][:location])[1], j=i = ind2sub(size(e_a.habitat),a_db[cohort,1][:location])[2], value=0)
+  df = DataFrame(id=id, i=is, j=js, value=0)
   for i = 1:size(a_db[cohort,1],1)
     df[df[:id] .== a_db[cohort,1][:location][i], 4] += a_db[cohort,1][:alive][i]
   end
   week_summaries =Array[df]
   # Calculate for the remaining weeks
   for w = 2:104
-    df=DataFrame(id = a_db[cohort,w][:location], i = ind2sub(size(e_a.habitat),a_db[cohort,w][:location])[1], j=i = ind2sub(size(e_a.habitat),a_db[cohort,w][:location])[2], value=0)
+    df = DataFrame(id=id, i=is, j=js, value=0)
     for i = 1:size(a_db[cohort,w],1)
       df[df[:id] .== a_db[cohort,w][:location][i], 4] += a_db[cohort,w][:alive][i]
     end
@@ -47,16 +48,17 @@ function agent_visualize(e_a::EnvironmentAssumptions, a_db::DataFrame, cohort::I
 
   # Interactive in terms of plotting
   @manipulate for week = 1:104
-    plot(lake_map, x="j", y="i", color="value",
+    plot(DataFrame(i=week_summaries[week][:,2],
+                   j=week_summaries[week][:,3],
+                   value=week_summaries[week][:,4]),
+         x="j",
+         y="i",
+         color="value",
          Coord.cartesian(yflip=true),
          Scale.color_continuous,
          Scale.x_continuous,
          Scale.y_continuous,
          Geom.rectbin,
-         Stat.identity,
-         layer(DataFrame(i=week_summaries[week][:,2],
-                         j=week_summaries[week][:,3],
-                         value=week_summaries[week][:,4]),
-         Geom.rectbin))
+         Stat.identity)
   end
 end
