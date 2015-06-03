@@ -47,7 +47,7 @@ function agent_visualize(e_a::EnvironmentAssumptions, a_db::DataFrame, cohort::I
                          Geom.rectbin,
                          Stat.identity)]
   # Calculate for the remaining weeks
-  for w = 2:10#104
+  for w = 2:10#4
     df = DataFrame(id=id, i=is, j=js, value=0)
     for i = 1:size(a_db[cohort,w],1)
       df[df[:id] .== a_db[cohort,w][:location][i], 4] += a_db[cohort,w][:alive][i]
@@ -63,6 +63,7 @@ function agent_visualize(e_a::EnvironmentAssumptions, a_db::DataFrame, cohort::I
                            Geom.rectbin,
                            Stat.identity))
   end
+  return week_plots
 #   # Interactive in terms of plotting
 #   @manipulate for week = 1:104
 #     plot(DataFrame(i=week_summaries[week][:,2],
