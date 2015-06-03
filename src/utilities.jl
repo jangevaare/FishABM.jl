@@ -37,17 +37,17 @@ function agent_visualize(e_a::EnvironmentAssumptions, a_db::DataFrame, cohort::I
     df[df[:id] .== a_db[cohort,1][:location][i], 4] += a_db[cohort,1][:alive][i]
   end
   week_plots =Array[plot(df,
-         x="j",
-         y="i",
-         color="value",
-         Coord.cartesian(yflip=true),
-         Scale.color_continuous,
-         Scale.x_continuous,
-         Scale.y_continuous,
-         Geom.rectbin,
-         Stat.identity)]
+                         x="j",
+                         y="i",
+                         color="value",
+                         Coord.cartesian(yflip=true),
+                         Scale.color_continuous,
+                         Scale.x_continuous,
+                         Scale.y_continuous,
+                         Geom.rectbin,
+                         Stat.identity)]
   # Calculate for the remaining weeks
-  for w = 2:104
+  for w = 2:10#104
     df = DataFrame(id=id, i=is, j=js, value=0)
     for i = 1:size(a_db[cohort,w],1)
       df[df[:id] .== a_db[cohort,w][:location][i], 4] += a_db[cohort,w][:alive][i]
