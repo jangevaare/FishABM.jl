@@ -38,9 +38,9 @@ function agent_visualize(e_a::EnvironmentAssumptions, a_db::DataFrame, cohort::I
   week_summaries =Array[df]
   # Calculate for the remaining weeks
   for w = 2:104
-    df=DataFrame(id = a_db[y,w][:location], i = ind2sub(size(e_a.habitat),a_db[y,w][:location])[1], j=i = ind2sub(size(e_a.habitat),a_db[y,w][:location])[2], value=0)
-    for i = 1:size(a_db[y,w],1)
-      df[df[:id] .== a_db[y,w][:location][i], 4] += a_db[y,w][:alive][i]
+    df=DataFrame(id = a_db[cohort,w][:location], i = ind2sub(size(e_a.habitat),a_db[cohort,w][:location])[1], j=i = ind2sub(size(e_a.habitat),a_db[cohort,w][:location])[2], value=0)
+    for i = 1:size(a_db[cohort,w],1)
+      df[df[:id] .== a_db[cohort,w][:location][i], 4] += a_db[cohort,w][:alive][i]
     end
     push!(week_summaries, df)
   end
