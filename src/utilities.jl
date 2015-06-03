@@ -54,9 +54,9 @@ function agent_visualize(e_a::EnvironmentAssumptions, a_db::DataFrame, cohort::I
          Scale.y_continuous,
          Geom.rectbin,
          Stat.identity,
-         layer(DataFrame(i=week_summaries[w][:,2],
-                         j=week_summaries[w][:,3],
-                         value=week_summaries[w][:,4]),
+         layer(DataFrame(i=week_summaries[week][:,2],
+                         j=week_summaries[week][:,3],
+                         value=week_summaries[week][:,4]),
          Geom.rectbin))
   end
 end
