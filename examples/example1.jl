@@ -5,7 +5,7 @@ May 2015
 """
 
 # LOAD REQUIRED PACKAGES
-using DataFrames, Gadfly, FishABM
+using DataFrames, FishABM
 
 # STOCK ASSUMPTIONS
 # Age specific mortality
@@ -26,7 +26,6 @@ s_a = StockAssumptions([0.50, 0.50, 0.50, 0.50, 0.50, 0.50, 0.50],
                        [0.00001, 0.00002, 0.000025, 0.000025, 0.000025, 0.000025, 0.000025])
 
 # LOAD CSV FILES
-# Location ID
 # Spawning areas
 # Habitat types
 # Risk areas
@@ -93,7 +92,7 @@ s_db = StockDB(DataFrame(age_2=50000,
 # Agent assumptions
 # Environment assumptions
 # Reduced output mode (true = reduced output mode, false = full output mode)
-@time a_db = Simulate(5, fill(0., 5), s_db, s_a, a_a, e_a, false)
+a_db = Simulate(5, fill(0., 5), s_db, s_a, a_a, e_a)
 
 # OUTPUT
 # Adult age distribution through time

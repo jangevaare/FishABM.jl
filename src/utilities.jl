@@ -19,3 +19,44 @@ function PadEnvironmentAssumptions!(EnvironmentAssumptions::EnvironmentAssumptio
   EnvironmentAssumptions.risk = a
   return EnvironmentAssumptions
 end
+
+function agent_visualize(e_a::EnvironmentAssumptions, a_db::DataFrame, cohort::Int)
+  """
+  Create an interactive visualization of an agent database with IJulia
+  """
+  @assert(1 <= cohort <= size(a_db,1), "Invalid cohort specified")
+  # Generate a simple map of the lake
+  is, js, values = findnz(e_a.habitat .> 0)
+  lake_map = DataFrame(i=is, j=js, value=values)
+
+  # Generate cohort specific dataset
+  # Initialize with week 1...
+  df = DataFrame(id = a_db[cohort,1][:location], i = ind2sub(size(e_a.habitat),a_db[cohort,1][:location])[1], j=i = ind2sub(size(e_a.habitat),a_db[cohort,1][:location])[2], value=0)
+  for i = 1:size(a_db[cohort,1],1)
+    df[df[:id] .== a_db[cohort,1][:location][i], 4] += a_db[cohort,1][:alive][i]
+  end
+  week_summaries =Array[df]
+  # Calculate for the remaining weeks
+  for w = 2:104
+    df=DataFrame(id = a_db[y,w][:location], i = ind2sub(size(e_a.habitat),a_db[y,w][:location])[1], j=i = ind2sub(size(e_a.habitat),a_db[y,w][:location])[2], value=0)
+    for i = 1:size(a_db[y,w],1)
+      df[df[:id] .== a_db[y,w][:location][i], 4] += a_db[y,w][:alive][i]
+    end
+    push!(week_summaries, df)
+  end
+
+  # Interactive in terms of plotting
+  @manipulate for week = 1:104
+    plot(lake_map, x="j", y="i", color="value",
+         Coord.cartesian(yflip=true),
+         Scale.color_continuous,
+         Scale.x_continuous,
+         Scale.y_continuous,
+         Geom.rectbin,
+         Stat.identity,
+         layer(DataFrame(i=week_summaries[w][:,2],
+                         j=week_summaries[w][:,3],
+                         value=week_summaries[w][:,4]),
+         Geom.rectbin))
+  end
+end

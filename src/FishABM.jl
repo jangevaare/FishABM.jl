@@ -1,6 +1,6 @@
 module FishABM
 
-using DataFrames, Distributions, Gadfly, ProgressMeter
+using DataFrames, Distributions, Gadfly, ProgressMeter, Interact
 
 export
   # Types
@@ -25,8 +25,8 @@ export
   Graduate!,
 
   # Utilities
-  MovementMatrix,
   PadEnvironmentAssumptions!,
+  agent_visualize,
 
   # Simulate
   Simulate
