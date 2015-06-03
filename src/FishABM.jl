@@ -25,8 +25,8 @@ export
   Graduate!,
 
   # Utilities
-  MovementMatrix,
   PadEnvironmentAssumptions!,
+  agent_visualize,
 
   # Simulate
   Simulate
