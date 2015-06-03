@@ -25,6 +25,7 @@ function agent_visualize(e_a::EnvironmentAssumptions, a_db::DataFrame, cohort::I
   Create an interactive visualization of an agent database with IJulia
   """
   @assert(1 <= cohort <= size(a_db,1), "Invalid cohort specified")
+  using Interact
   # Generate a simple map of the lake
   is, js, values = findnz(e_a.habitat .> 0)
   lake_map = DataFrame(i=is, j=js, value=values)
