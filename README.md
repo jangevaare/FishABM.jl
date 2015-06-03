@@ -8,3 +8,5 @@ To download and use package in Julia:
 `Pkg.clone("https://github.com/jangevaa/FishABM.jl.git")`
 
 `using FishABM`
+
+[Example](http://nbviewer.ipython.org/github/jangevaa/FishABM.jl/blob/master/examples/Example1.jl.ipynb)
