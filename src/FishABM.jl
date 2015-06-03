@@ -1,6 +1,6 @@
 module FishABM
 
-using DataFrames, Distributions, Gadfly, ProgressMeter
+using DataFrames, Distributions, Gadfly, ProgressMeter, Interact
 
 export
   # Types
