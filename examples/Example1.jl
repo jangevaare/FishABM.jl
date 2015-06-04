@@ -107,6 +107,3 @@ allplots = agent_plots(e_a, a_db, 1)
 for i = 1:length(allplots)
     draw(PNG(Pkg.dir("FishABM")"/examples/plots/agent_$i.png", 17.3cm, 40cm), allplots[i])
 end
-
-
-
