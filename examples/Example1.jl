@@ -53,13 +53,13 @@ a_a = AgentAssumptions([[0.90 0.10 0.10]
                         Array[[[0. 0. 0.]
                                [0. 1. 0.]
                                [0. 0. 0.]]
-                              [[2. 6. 2.]
+                              [[2. 8. 2.]
                                [1. 4. 2.]
                                [1. 1. 2.]]
-                              [[2. 4. 2.]
+                              [[2. 6. 2.]
                                [1. 2. 2.]
                                [1. 1. 2.]]],
-                        [0., 0.2, 0.8])
+                        [0., 0.2, 0.5])
 
 
 # Initialize stock database:
@@ -100,7 +100,7 @@ a_db = simulate(2, fill(0., 2), rand(Normal(500000, 100000),2), s_db, s_a, a_a, 
 # * Cohort
 
 # Export images of all plots (for later compilation into an animation, perhaps)
-agentplots = plot_agents(e_a, a_db, 1)
+agentplots = plot_agents(e_a, a_db, 1, false)
 for i = 1:length(agentplots)
     draw(PNG(Pkg.dir("FishABM")"/examples/plots/agent_$i.png", 17.3cm, 40cm), agentplots[i])
 end
