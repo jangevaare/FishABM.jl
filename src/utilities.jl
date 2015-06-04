@@ -63,7 +63,6 @@ function agent_plots(e_a::EnvironmentAssumptions, a_db::DataFrame, cohort::Int)
                  color="value",
                  Coord.cartesian(yflip=true),
                  Scale.color_continuous(minvalue=0, maxvalue=plotymax),
-                 Scale.color_continuous,
                  Scale.x_continuous,
                  Scale.y_continuous,
                  Geom.rectbin,
