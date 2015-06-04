@@ -20,7 +20,7 @@ function pad_environment!(EnvironmentAssumptions::EnvironmentAssumptions)
   return EnvironmentAssumptions
 end
 
-function plot_agents(e_a::EnvironmentAssumptions, a_db::DataFrame, cohort::Int)
+function plot_agents(e_a::EnvironmentAssumptions, a_db::DataFrame, cohort::Int, progress=true::bool)
   """
   Create an interactive visualization of an agent database with IJulia
   """
@@ -30,7 +30,9 @@ function plot_agents(e_a::EnvironmentAssumptions, a_db::DataFrame, cohort::Int)
   y, x = ind2sub(size(e_a.habitat), 1:prod(size(e_a.habitat)))
   water = find(e_a.habitat .> 0)
   df = DataFrame(x=x, y=y, value=0.)
-
+  if progress
+    progressbar = ProgressMeter(104, 2, "Generating plots...", 30)
+  end
   # Generate cohort specific dataset
   # Initialize with week 1...
   for i = 1:size(a_db[cohort,1],1)
@@ -52,6 +54,9 @@ function plot_agents(e_a::EnvironmentAssumptions, a_db::DataFrame, cohort::Int)
                  Guide.ylabel(nothing),
                  Guide.colorkey("Abundance"))
   week_plots = [newplot]
+  if progress
+    next!(progressbar)
+  end
   # Calculate for the remaining weeks
   for w = 2:104
     df = DataFrame(x=x, y=y, value=0.)
@@ -72,6 +77,9 @@ function plot_agents(e_a::EnvironmentAssumptions, a_db::DataFrame, cohort::Int)
                  Guide.ylabel(nothing),
                  Guide.colorkey("Abundance"))
     push!(week_plots, newplot)
+    if progress
+      next!(progressbar)
+    end
   end
   return week_plots
 end
