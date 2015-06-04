@@ -109,4 +109,4 @@ end
 
 p=plot_stock(s_db)
 
-draw(PNG(Pkg.dir("FishABM")"/examples/plots/population.png", 40cm, 30cm), p)
+draw(PNG(Pkg.dir("FishABM")"/examples/plots/population.png", 20cm, 15cm), p)
