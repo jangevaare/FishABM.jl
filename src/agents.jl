@@ -70,7 +70,7 @@ function LocalMove(location::Int, stage::Int, AgentAssumptions::AgentAssumptions
   choices[:,2]=choices[:,2]/sum(choices[:,2])
   choices[:,3]=choices[:,3]/sum(choices[:,3])
   # Weight options by autonomy
-  return int(choices[findfirst(rand(Multinomial(1, choices[:,2]*(1-AgentAssumptions.autonomy[stage]) + choices[:,3]*(1-AgentAssumptions.autonomy[stage])))), 1])
+  return int(choices[findfirst(rand(Multinomial(1, choices[:,2]*(1-AgentAssumptions.autonomy[stage]) + choices[:,3]*(AgentAssumptions.autonomy[stage])))), 1])
 end
 
 function Move!(agent_db::DataFrame, AgentAssumptions::AgentAssumptions, EnvironmentAssumptions::EnvironmentAssumptions, cohort::Int, week::Int)
