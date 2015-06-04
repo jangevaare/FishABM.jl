@@ -26,7 +26,8 @@ export
 
   # Utilities
   PadEnvironmentAssumptions!,
-  agent_plots,
+  plot_agents,
+  plot_stock,
 
   # Simulate
   Simulate
