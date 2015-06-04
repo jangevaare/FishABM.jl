@@ -54,8 +54,8 @@ function agent_plots(e_a::EnvironmentAssumptions, a_db::DataFrame, cohort::Int)
   week_plots = [newplot]
   # Calculate for the remaining weeks
   for w = 2:104
-    df = DataFrame(x=x, y=y, value=NaN)
-    for i = 1:size(a_db[cohort,1],1)
+    df = DataFrame(x=x, y=y, value=0.)
+    for i = 1:size(a_db[cohort,w],1)
       df[a_db[cohort,w][:location][i], 3] += a_db[cohort,w][:alive][i]
     end
     newplot = plot(df[water,:],
