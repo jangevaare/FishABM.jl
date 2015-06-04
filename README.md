@@ -9,4 +9,4 @@ To download and use package in Julia:
 
 `using FishABM`
 
-[Example notebook](http://nbviewer.ipython.org/github/jangevaa/FishABM.jl/blob/master/examples/Example1.jl.ipynb)
+[Example notebook](https://github.com/jangevaa/FishABM.jl/blob/master/examples/Example1.jl.ipynb)
