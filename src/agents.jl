@@ -61,7 +61,7 @@ function LocalMove(location::Int, stage::Int, AgentAssumptions::AgentAssumptions
   # location id to coordinates
   id=ind2sub(size(EnvironmentAssumptions.habitat), location)
   # Select surrounding block of IDs, match up with weights
-  choices = [sub2ind(size(EnvironmentAssumptions.habitat), [id[1]-1,id[1],id[1]+1,id[1]-1,id[1],id[1]+1,id[1]-1,id[1],id[1]+1], [id[2]-1, id[2]-1, id[2]-1, id[2], id[2], id[2], id[2]+1, id[2]+1, id[2]+1]) [AgentAssumptions.movement[stage,:,:][:]]]
+  choices = [sub2ind(size(EnvironmentAssumptions.habitat), [id[1]-1,id[1],id[1]+1,id[1]-1,id[1],id[1]+1,id[1]-1,id[1],id[1]+1], [id[2]-1, id[2]-1, id[2]-1, id[2], id[2], id[2], id[2]+1, id[2]+1, id[2]+1]) [AgentAssumptions.movement[stage][:]]]
   # If habitat type is 0, remove row
   choices = choices[EnvironmentAssumptions.habitat[choices[:,1]] .> 0, :]
   # Match locations with natural mortality rates
