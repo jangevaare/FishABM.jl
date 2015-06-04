@@ -20,8 +20,9 @@ function simulate(years::Int, harvest_effort::Vector, carrying_capacity::Vector,
   end
   for y = 1:1
     spawn!(a_db, s_db, s_a, e_a, y, carrying_capacity[y])
+    totalagents=size(a_db[y,1],1)
     if progress
-      progressbar = Progress(52, 5, "Year $y simulation progress", 50)
+      progressbar = Progress(52, 5, "Year $y simulation progress ($totalagents agents)", 30)
     end
     for w = 1:52
       if w > 1 && c[w] - c[w-1] == 1
@@ -41,9 +42,10 @@ function simulate(years::Int, harvest_effort::Vector, carrying_capacity::Vector,
   end
   for y = 2:years
     spawn!(a_db, s_db, s_a, e_a, y, carrying_capacity[y])
-    @assert(size(a_db[y,1])[1] < 200000, "> 200000 agents in current simulation, stopping here.")
+    totalagents=size(a_db[y,1],1)
+    @assert(totalagents < 200000, "> 200000 agents in current simulation, stopping here.")
     if progress
-      progressbar = Progress(52, 5, "Year $y simulation progress", 50)
+      progressbar = Progress(52, 5, "Year $y simulation progress ($totalagents agents)", 30)
     end
     for w = 1:52
       if w > 1 && c[w] - c[w-1] == 1
