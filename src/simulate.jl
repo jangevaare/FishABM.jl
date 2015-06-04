@@ -8,7 +8,7 @@ function simulate(years::Int, harvest_effort::Vector, carrying_capacity::Vector,
   """
   Brings together all of the functions necessary for a life cycle simulation
   """
-  @assert(any(carrying_capacity > 0.), "There is at least one negative carrying capacity")
+  @assert(all(carrying_capacity .> 0.), "There is at least one negative carrying capacity")
   a_db = AgentDB(years, a_a, reduced)
   if reduced
     c=fill(0, 104)

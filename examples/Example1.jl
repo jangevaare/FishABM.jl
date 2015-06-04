@@ -17,7 +17,6 @@ using DataFrames, Gadfly, FishABM
 s_a = StockAssumptions([0.50, 0.50, 0.50, 0.50, 0.50, 0.50, 0.50],
                        5,
                        [2500, 7500, 15000, 20000, 22500, 27500, 32500],
-                       500000,
                        2,
                        0.25,
                        1,
@@ -93,7 +92,7 @@ s_db = StockDB(DataFrame(age_2=100000,
 # * Agent assumptions
 # * Environment assumptions
 
-a_db = Simulate(100, fill(0., 100), rand(Normal(500000, 100000),100), s_db, s_a, a_a, e_a, false, true)
+a_db = simulate(1, fill(0., 1), rand(Normal(500000, 100000),1), s_db, s_a, a_a, e_a, false, true)
 
 # Visualize agent movement, specify:
 # * Environment assumption object

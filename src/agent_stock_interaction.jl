@@ -4,7 +4,7 @@ Justin Angevaare
 May 2015
 """
 
-function spawn!(agent_db::DataFrame, StockDB::StockDB, StockAssumptions::StockAssumptions, EnvironmentAssumptions::EnvironmentAssumptions, cohort::Int, carryingcapacity::Float)
+function spawn!(agent_db::DataFrame, StockDB::StockDB, StockAssumptions::StockAssumptions, EnvironmentAssumptions::EnvironmentAssumptions, cohort::Int, carryingcapacity::Float64)
   """
   This function creates a new cohort of agents based on an structured adult population, spawning area information contained in a `EnvironmentAssumptions`, and `StockAssumptions`.
   """

@@ -77,7 +77,7 @@ function move!(agent_db::DataFrame, AgentAssumptions::AgentAssumptions, Environm
   """
   for i = 1:length(agent_db[cohort, week][:alive])
     if agent_db[cohort, week][:alive][i] > 0
-      agent_db[cohort, week][:location][i] = LocalMove(agent_db[cohort, week][:location][i], agent_db[cohort, week][:stage][i], AgentAssumptions, EnvironmentAssumptions)
+      agent_db[cohort, week][:location][i] = localmove(agent_db[cohort, week][:location][i], agent_db[cohort, week][:stage][i], AgentAssumptions, EnvironmentAssumptions)
     end
   end
 end

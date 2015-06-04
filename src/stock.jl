@@ -18,7 +18,7 @@ function harvest!(effort::Float64, StockDB::StockDB, StockAssumptions::StockAssu
   push!(StockDB.harvest, DataArray(harvest_size))
 end
 
-function ageadults!(StockDB::StockDB, StockAssumptions::StockAssumptions,carryingcapacity::Float)
+function ageadults!(StockDB::StockDB, StockAssumptions::StockAssumptions,carryingcapacity::Float64)
   """
   This function will apply transition probabilities to the current adult population. In the future this function may also apply annual removals due to fishing or other causes of mortality.
   """
