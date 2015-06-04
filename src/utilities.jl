@@ -36,16 +36,20 @@ function agent_visualize(e_a::EnvironmentAssumptions, a_db::DataFrame, cohort::I
   for i = 1:size(a_db[cohort,1],1)
     df[df[:id] .== a_db[cohort,1][:location][i], 4] += a_db[cohort,1][:alive][i]
   end
+  plotymax = max(df[:value])
   newplot = plot(df,
                  x="j",
                  y="i",
                  color="value",
                  Coord.cartesian(yflip=true),
-                 Scale.color_continuous,
+                 Scale.color_continuous(minvalue=0, maxvalue=plotymax),
                  Scale.x_continuous,
                  Scale.y_continuous,
                  Geom.rectbin,
-                 Stat.identity)
+                 Stat.identity,
+                 Guide.xlabel(nothing),
+                 Guide.ylabel(nothing),
+                 Guide.colorkey("Abundance"))
   week_plots = [newplot]
   # Calculate for the remaining weeks
   for w = 2:104
@@ -54,31 +58,20 @@ function agent_visualize(e_a::EnvironmentAssumptions, a_db::DataFrame, cohort::I
       df[df[:id] .== a_db[cohort,w][:location][i], 4] += a_db[cohort,w][:alive][i]
     end
     newplot = plot(df,
-                   x="j",
-                   y="i",
-                   color="value",
-                   Coord.cartesian(yflip=true),
-                   Scale.color_continuous,
-                   Scale.x_continuous,
-                   Scale.y_continuous,
-                   Geom.rectbin,
-                   Stat.identity)
+                 x="j",
+                 y="i",
+                 color="value",
+                 Coord.cartesian(yflip=true),
+                 Scale.color_continuous(minvalue=0, maxvalue=plotymax),
+                 Scale.color_continuous,
+                 Scale.x_continuous,
+                 Scale.y_continuous,
+                 Geom.rectbin,
+                 Stat.identity,
+                 Guide.xlabel(nothing),
+                 Guide.ylabel(nothing),
+                 Guide.colorkey("Abundance"))
     push!(week_plots, newplot)
   end
   return week_plots
-#   # Interactive in terms of plotting
-#   @manipulate for week = 1:104
-#     plot(DataFrame(i=week_summaries[week][:,2],
-#                    j=week_summaries[week][:,3],
-#                    value=week_summaries[week][:,4]),
-#          x="j",
-#          y="i",
-#          color="value",
-#          Coord.cartesian(yflip=true),
-#          Scale.color_continuous,
-#          Scale.x_continuous,
-#          Scale.y_continuous,
-#          Geom.rectbin,
-#          Stat.identity)
-#   end
 end
