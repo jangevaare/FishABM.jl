@@ -51,7 +51,7 @@ function kill!(agent_db::DataFrame, EnvironmentAssumptions::EnvironmentAssumptio
   end
 end
 
-function LocalMove(location::Int, stage::Int, AgentAssumptions::AgentAssumptions, EnvironmentAssumptions::EnvironmentAssumptions)
+function localmove(location::Int, stage::Int, AgentAssumptions::AgentAssumptions, EnvironmentAssumptions::EnvironmentAssumptions)
   """
   A function which generates movement to a neighbouring location based on movement weights
   """
@@ -71,7 +71,7 @@ function LocalMove(location::Int, stage::Int, AgentAssumptions::AgentAssumptions
   return int(choices[findfirst(rand(Multinomial(1, choices[:,2]*(1-AgentAssumptions.autonomy[stage]) + choices[:,3]*(AgentAssumptions.autonomy[stage])))), 1])
 end
 
-function Move!(agent_db::DataFrame, AgentAssumptions::AgentAssumptions, EnvironmentAssumptions::EnvironmentAssumptions, cohort::Int, week::Int)
+function move!(agent_db::DataFrame, AgentAssumptions::AgentAssumptions, EnvironmentAssumptions::EnvironmentAssumptions, cohort::Int, week::Int)
   """
   This function will move agents based on stage and location
   """
@@ -82,7 +82,7 @@ function Move!(agent_db::DataFrame, AgentAssumptions::AgentAssumptions, Environm
   end
 end
 
-function InjectAgents!(agent_db::DataFrame, location::Int, size::Int, cohort::Int, week::Int)
+function injectagents!(agent_db::DataFrame, location::Int, size::Int, cohort::Int, week::Int)
   """
   This function will inject agents into an `agent_db` to simulate stocking efforts. These stocked agents will take their stage information from the `agent_db`
   """
