@@ -35,7 +35,7 @@ function agent_plots(e_a::EnvironmentAssumptions, a_db::DataFrame, cohort::Int)
   # Generate cohort specific dataset
   # Initialize with week 1...
   for i = 1:size(a_db[cohort,1],1)
-    df[a_db[cohort,1][:location][i], 4] += a_db[cohort,1][:alive][i]
+    df[a_db[cohort,1][:location][i], 3] += a_db[cohort,1][:alive][i]
   end
   plotymax = maximum(df[:value])
   newplot = plot(df,
@@ -57,7 +57,7 @@ function agent_plots(e_a::EnvironmentAssumptions, a_db::DataFrame, cohort::Int)
     df = DataFrame(i=i, j=j, value=NaN)
     df[:value][water] = 0.
     for i = 1:size(a_db[cohort,1],1)
-      df[a_db[cohort,1][:location][i], 4] += a_db[cohort,1][:alive][i]
+      df[a_db[cohort,w][:location][i], 3] += a_db[cohort,w][:alive][i]
     end
     newplot = plot(df,
                  x="j",
