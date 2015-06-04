@@ -94,7 +94,7 @@ s_db = StockDB(DataFrame(age_2=100000,
 # * Environment assumptions
 #
 
-a_db = Simulate(1, fill(0., 1), s_db, s_a, a_a, e_a, false, true)
+a_db = Simulate(100, fill(0., 100), s_db, s_a, a_a, e_a, false, true)
 
 # Visualize agent movement, specify:
 # * Environment assumption object
