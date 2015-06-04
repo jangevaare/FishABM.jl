@@ -20,7 +20,7 @@ function PadEnvironmentAssumptions!(EnvironmentAssumptions::EnvironmentAssumptio
   return EnvironmentAssumptions
 end
 
-function agent_plots2(e_a::EnvironmentAssumptions, a_db::DataFrame, cohort::Int)
+function agent_plots(e_a::EnvironmentAssumptions, a_db::DataFrame, cohort::Int)
   """
   Create an interactive visualization of an agent database with IJulia
   """
