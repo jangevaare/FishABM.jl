@@ -18,7 +18,7 @@ function Simulate(years::Int, harvest_effort::Vector, carrying_capacity::Vector,
     c = 1:104
   end
   for y = 1:1
-    Spawn!(a_db, s_db, s_a, e_a, y, carrying_capacity[y])
+    spawn!(a_db, s_db, s_a, e_a, y, carrying_capacity[y])
     if progress
       progressbar = Progress(52, 5, "Year $y simulation progress", 50)
     end
@@ -26,20 +26,20 @@ function Simulate(years::Int, harvest_effort::Vector, carrying_capacity::Vector,
       if w > 1 && c[w] - c[w-1] == 1
         a_db[y,c[w]] = deepcopy(a_db[y,c[w-1]])
       end
-      Kill!(a_db, e_a, a_a, y, c[w])
-      Move!(a_db, a_a, e_a, y, c[w])
+      kill!(a_db, e_a, a_a, y, c[w])
+      move!(a_db, a_a, e_a, y, c[w])
       if w==52
-        Harvest!(harvest_effort[y], s_db, s_a)
-        AgeAdults!(s_db, s_a)
+        harvest!(harvest_effort[y], s_db, s_a)
+        ageadults!(s_db, s_a)
       end
-      Graduate!(a_db, s_db, a_a, y, w, c[w])
+      graduate!(a_db, s_db, a_a, y, w, c[w])
       if progress
         next!(progressbar)
       end
     end
   end
   for y = 2:years
-    Spawn!(a_db, s_db, s_a, e_a, y, carrying_capacity[y])
+    spawn!(a_db, s_db, s_a, e_a, y, carrying_capacity[y])
     @assert(size(a_db[y,1])[1] < 200000, "> 200000 agents in current simulation, stopping here.")
     if progress
       progressbar = Progress(52, 5, "Year $y simulation progress", 50)
@@ -51,16 +51,16 @@ function Simulate(years::Int, harvest_effort::Vector, carrying_capacity::Vector,
       if c[w+52] - c[w+51] == 1
         a_db[y-1,c[w+52]] = deepcopy(a_db[y-1,c[w+51]])
       end
-      Kill!(a_db, e_a, a_a, y, c[w])
-      Kill!(a_db, e_a, a_a, y-1, c[w+52])
-      Move!(a_db, a_a, e_a, y, c[w])
-      Move!(a_db, a_a, e_a, y-1, c[w+52])
+      kill!(a_db, e_a, a_a, y, c[w])
+      kill!(a_db, e_a, a_a, y-1, c[w+52])
+      move!(a_db, a_a, e_a, y, c[w])
+      move!(a_db, a_a, e_a, y-1, c[w+52])
       if w==52
-        Harvest!(harvest_effort[y], s_db, s_a)
-        AgeAdults!(s_db, s_a)
+        harvest!(harvest_effort[y], s_db, s_a)
+        ageadults!(s_db, s_a)
       end
-      Graduate!(a_db, s_db, a_a, y, w, c[w])
-      Graduate!(a_db, s_db, a_a, y-1, w+52, c[w+52])
+      graduate!(a_db, s_db, a_a, y, w, c[w])
+      graduate!(a_db, s_db, a_a, y-1, w+52, c[w+52])
       if progress
         next!(progressbar)
       end
