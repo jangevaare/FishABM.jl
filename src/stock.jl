@@ -4,7 +4,7 @@ Justin Angevaare
 May 2015
 """
 
-function Harvest!(effort::Float64, StockDB::StockDB, StockAssumptions::StockAssumptions)
+function harvest!(effort::Float64, StockDB::StockDB, StockAssumptions::StockAssumptions)
   """
   This function will generate fishing mortality based on a specified integer level of effort, and assumed age specific catchabilities.
   """
@@ -18,7 +18,7 @@ function Harvest!(effort::Float64, StockDB::StockDB, StockAssumptions::StockAssu
   push!(StockDB.harvest, DataArray(harvest_size))
 end
 
-function AgeAdults!(StockDB::StockDB, StockAssumptions::StockAssumptions)
+function ageadults!(StockDB::StockDB, StockAssumptions::StockAssumptions,carryingcapacity::Float)
   """
   This function will apply transition probabilities to the current adult population. In the future this function may also apply annual removals due to fishing or other causes of mortality.
   """
@@ -26,7 +26,7 @@ function AgeAdults!(StockDB::StockDB, StockAssumptions::StockAssumptions)
   if isnan(StockAssumptions.mortalitycompensation)
     compensation_factor = 1
   else
-    compensation_factor = 2*(cdf(Normal(StockAssumptions.carryingcapacity, StockAssumptions.carryingcapacity/StockAssumptions.mortalitycompensation), sum(StockDB.population[end,:][1,])))
+    compensation_factor = 2*(cdf(Normal(carryingcapacity, carryingcapacity/StockAssumptions.mortalitycompensation), sum(StockDB.population[end,:][1,])))
   end
   @assert(0.01 < compensation_factor < 1.99, "Population regulation has failed, respecify simulation parameters")
   for i = 1:(length(StockAssumptions.naturalmortality)-1)

@@ -4,7 +4,7 @@ Justin Angevaare
 May 2015
 """
 
-function Simulate(years::Int, harvest_effort::Vector, carrying_capacity::Vector, s_db::StockDB, s_a::StockAssumptions, a_a::AgentAssumptions, e_a::EnvironmentAssumptions, reduced=false::Bool, progress=true::Bool)
+function simulate(years::Int, harvest_effort::Vector, carrying_capacity::Vector, s_db::StockDB, s_a::StockAssumptions, a_a::AgentAssumptions, e_a::EnvironmentAssumptions, reduced=false::Bool, progress=true::Bool)
   """
   Brings together all of the functions necessary for a life cycle simulation
   """
