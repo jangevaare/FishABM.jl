@@ -4,7 +4,7 @@ Justin Angevaare
 May 2015
 """
 
-function Simulate(years::Int, harvest_effort::Vector, s_db::StockDB, s_a::StockAssumptions, a_a::AgentAssumptions, e_a::EnvironmentAssumptions, reduced=false::Bool, progress=true::Bool)
+function Simulate(years::Int, harvest_effort::Vector, carrying_capacity::Vector, s_db::StockDB, s_a::StockAssumptions, a_a::AgentAssumptions, e_a::EnvironmentAssumptions, reduced=false::Bool, progress=true::Bool)
   """
   Brings together all of the functions necessary for a life cycle simulation
   """
@@ -18,7 +18,7 @@ function Simulate(years::Int, harvest_effort::Vector, s_db::StockDB, s_a::StockA
     c = 1:104
   end
   for y = 1:1
-    Spawn!(a_db, s_db, s_a, e_a, y)
+    Spawn!(a_db, s_db, s_a, e_a, y, carrying_capacity[y])
     if progress
       progressbar = Progress(52, 5, "Year $y simulation progress", 50)
     end
@@ -39,7 +39,7 @@ function Simulate(years::Int, harvest_effort::Vector, s_db::StockDB, s_a::StockA
     end
   end
   for y = 2:years
-    Spawn!(a_db, s_db, s_a, e_a, y)
+    Spawn!(a_db, s_db, s_a, e_a, y, carrying_capacity[y])
     @assert(size(a_db[y,1])[1] < 200000, "> 200000 agents in current simulation, stopping here.")
     if progress
       progressbar = Progress(52, 5, "Year $y simulation progress", 50)
