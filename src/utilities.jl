@@ -31,7 +31,7 @@ function plot_agents(e_a::EnvironmentAssumptions, a_db::DataFrame, cohort::Int, 
   water = find(e_a.habitat .> 0)
   df = DataFrame(x=x, y=y, value=0.)
   if progress
-    progressbar = ProgressMeter(104, 2, "Generating plots...", 30)
+    progressbar = Progress(104, 2, "Generating plots...", 30)
   end
   # Generate cohort specific dataset
   # Initialize with week 1...
