@@ -27,7 +27,7 @@ function agent_plots(e_a::EnvironmentAssumptions, a_db::DataFrame, cohort::Int)
   @assert(1 <= cohort <= size(a_db,1), "Invalid cohort specified")
   @assert(size(a_db,2) == 104, "Require full agent database output")
   # Generate a simple map of the lake
-  x, y = ind2sub(size(e_a.habitat), 1:prod(size(e_a.habitat)))
+  y, x = ind2sub(size(e_a.habitat), 1:prod(size(e_a.habitat)))
   water = find(e_a.habitat .> 0)
   df = DataFrame(x=x, y=y, value=0.)
 
@@ -43,7 +43,7 @@ function agent_plots(e_a::EnvironmentAssumptions, a_db::DataFrame, cohort::Int)
                  y="y",
                  color="value",
                  Coord.cartesian(yflip=true),
-                 Scale.color_continuous(minvalue=0, maxvalue=plotymax),
+                 Scale.color_continuous,#(minvalue=0, maxvalue=plotymax),
                  Scale.x_continuous,
                  Scale.y_continuous,
                  Geom.rectbin,
@@ -63,7 +63,7 @@ function agent_plots(e_a::EnvironmentAssumptions, a_db::DataFrame, cohort::Int)
                  y="y",
                  color="value",
                  Coord.cartesian(yflip=true),
-                 Scale.color_continuous(minvalue=0, maxvalue=plotymax),
+                 Scale.color_continuous,#(minvalue=0, maxvalue=plotymax),
                  Scale.x_continuous,
                  Scale.y_continuous,
                  Geom.rectbin,
