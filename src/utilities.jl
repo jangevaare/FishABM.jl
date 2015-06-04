@@ -20,27 +20,27 @@ function PadEnvironmentAssumptions!(EnvironmentAssumptions::EnvironmentAssumptio
   return EnvironmentAssumptions
 end
 
-function agent_plots(e_a::EnvironmentAssumptions, a_db::DataFrame, cohort::Int)
+function agent_plots2(e_a::EnvironmentAssumptions, a_db::DataFrame, cohort::Int)
   """
   Create an interactive visualization of an agent database with IJulia
   """
   @assert(1 <= cohort <= size(a_db,1), "Invalid cohort specified")
   @assert(size(a_db,2) == 104, "Require full agent database output")
   # Generate a simple map of the lake
-  i, j = ind2sub(size(e_a.habitat), 1:prod(size(e_a.habitat)))
+  x, y = ind2sub(size(e_a.habitat), 1:prod(size(e_a.habitat)))
   water = find(e_a.habitat .> 0)
-  df = DataFrame(i=i, j=j, value=NaN)
-  df[:value][water] = 0.
+  df = DataFrame(x=x, y=y, value=0.)
 
   # Generate cohort specific dataset
   # Initialize with week 1...
   for i = 1:size(a_db[cohort,1],1)
     df[a_db[cohort,1][:location][i], 3] += a_db[cohort,1][:alive][i]
   end
+
   plotymax = maximum(df[:value])
-  newplot = plot(df,
-                 x="j",
-                 y="i",
+  newplot = plot(df[water,:],
+                 x="x",
+                 y="y",
                  color="value",
                  Coord.cartesian(yflip=true),
                  Scale.color_continuous(minvalue=0, maxvalue=plotymax),
@@ -54,14 +54,13 @@ function agent_plots(e_a::EnvironmentAssumptions, a_db::DataFrame, cohort::Int)
   week_plots = [newplot]
   # Calculate for the remaining weeks
   for w = 2:104
-    df = DataFrame(i=i, j=j, value=NaN)
-    df[:value][water] = 0.
+    df = DataFrame(x=x, y=y, value=NaN)
     for i = 1:size(a_db[cohort,1],1)
       df[a_db[cohort,w][:location][i], 3] += a_db[cohort,w][:alive][i]
     end
-    newplot = plot(df,
-                 x="j",
-                 y="i",
+    newplot = plot(df[water,:],
+                 x="x",
+                 y="y",
                  color="value",
                  Coord.cartesian(yflip=true),
                  Scale.color_continuous(minvalue=0, maxvalue=plotymax),

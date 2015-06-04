@@ -92,7 +92,7 @@ s_db = StockDB(DataFrame(age_2=200000,
 # * Environment assumptions
 #
 
-a_db = Simulate(5, fill(0., 5), s_db, s_a, a_a, e_a, false, true)
+a_db = Simulate(2, fill(0., 2), s_db, s_a, a_a, e_a, false, true)
 
 
 # Visualize agent movement, specify:
@@ -101,6 +101,7 @@ a_db = Simulate(5, fill(0., 5), s_db, s_a, a_a, e_a, false, true)
 # * Cohort
 
 allplots = agent_plots(e_a, a_db, 1)
+
 
 # Export images of all plots (for later compilation into an animation, perhaps)
 
