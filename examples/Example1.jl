@@ -41,6 +41,7 @@ PadEnvironmentAssumptions!(e_a)
 # * Weekly risk mortality (by stage)
 # * Stage length (in weeks)
 # * Movement weight matrices
+# * Movement autonomy
 
 a_a = AgentAssumptions([[0.90 0.10 0.10]
                         [0.10 0.10 0.10]
@@ -58,7 +59,8 @@ a_a = AgentAssumptions([[0.90 0.10 0.10]
                                [1. 1. 2.]]
                               [[2. 4. 2.]
                                [1. 4. 2.]
-                               [1. 1. 2.]]])
+                               [1. 1. 2.]]],
+                        [0., 0.2, 0.8])
 
 
 # Initialize stock database:
