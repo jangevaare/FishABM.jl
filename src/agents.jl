@@ -65,7 +65,7 @@ function LocalMove(location::Int, stage::Int, AgentAssumptions::AgentAssumptions
   # If habitat type is 0, remove row
   choices = choices[EnvironmentAssumptions.habitat[choices[:,1]] .> 0, :]
   # Match locations with natural mortality rates
-  choices = hcat(choices, AgentAssumptions.naturalmortality[EnvironmentAssumptions.habitat[choices[:,1]], stage])
+  choices = hcat(choices, 1-AgentAssumptions.naturalmortality[EnvironmentAssumptions.habitat[choices[:,1]], stage])
   # Normalize into probabilities
   choices[:,2]=choices[:,2]/sum(choices[:,2])
   choices[:,3]=choices[:,3]/sum(choices[:,3])
