@@ -57,7 +57,7 @@ function LocalMove(location::Int, stage::Int, AgentAssumptions::AgentAssumptions
   """
   A function which generates movement to a neighbouring location based on movement weights
   """
-  @asset(0.<= AgentAssumptions.autonomy[stage] <=1., "Autonomy level must be between 0 and 1")
+  @assert(0.<= AgentAssumptions.autonomy[stage] <=1., "Autonomy level must be between 0 and 1")
   # location id to coordinates
   id=ind2sub(size(EnvironmentAssumptions.habitat), location)
   # Select surrounding block of IDs, match up with weights
