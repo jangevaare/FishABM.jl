@@ -4,7 +4,7 @@ Justin Angevaare
 May 2015
 """
 
-function PadEnvironmentAssumptions!(EnvironmentAssumptions::EnvironmentAssumptions)
+function pad_environment!(EnvironmentAssumptions::EnvironmentAssumptions)
   """
   A basic utility function which will pad the EnvironmentAssumptions such that bounds errors do not occur when performing movement
   """

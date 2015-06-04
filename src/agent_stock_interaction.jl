@@ -4,20 +4,20 @@ Justin Angevaare
 May 2015
 """
 
-function Spawn!(agent_db::DataFrame, StockDB::StockDB, StockAssumptions::StockAssumptions, EnvironmentAssumptions::EnvironmentAssumptions, cohort::Int)
+function spawn!(agent_db::DataFrame, StockDB::StockDB, StockAssumptions::StockAssumptions, EnvironmentAssumptions::EnvironmentAssumptions, cohort::Int, carryingcapacity::Float64)
   """
   This function creates a new cohort of agents based on an structured adult population, spawning area information contained in a `EnvironmentAssumptions`, and `StockAssumptions`.
   """
   if isnan(StockAssumptions.fecunditycompensation)
     compensation_factor_a = 1
   else
-    compensation_factor_a = 2*(1-cdf(Normal(StockAssumptions.carryingcapacity, StockAssumptions.carryingcapacity/StockAssumptions.fecunditycompensation), sum(StockDB.population[end,:][1,])))
+    compensation_factor_a = 2*(1-cdf(Normal(carryingcapacity, carryingcapacity/StockAssumptions.fecunditycompensation), sum(StockDB.population[end,:][1,])))
   end
   @assert(0.01 < compensation_factor_a < 1.99, "Population regulation has failed, respecify simulation parameters")
   if isnan(StockAssumptions.maturitycompensation)
     compensation_factor_b = 1
   else
-    compensation_factor_b = 2*(cdf(Normal(StockAssumptions.carryingcapacity, StockAssumptions.carryingcapacity/StockAssumptions.maturitycompensation), sum(StockDB.population[end,:][1,])))
+    compensation_factor_b = 2*(cdf(Normal(carryingcapacity, carryingcapacity/StockAssumptions.maturitycompensation), sum(StockDB.population[end,:][1,])))
   end
   @assert(0.01 < compensation_factor_b < 1.99, "Population regulation has failed, respecify simulation parameters")
   brood_size = rand(Poisson(compensation_factor_a*StockAssumptions.broodsize[1]), rand(Binomial(StockDB.population[end,1], cdf(Binomial(length(StockAssumptions.broodsize)+2, min(1, compensation_factor_b*StockAssumptions.halfmature/(length(StockAssumptions.broodsize)+2))), 2)*0.5)))
@@ -29,7 +29,7 @@ function Spawn!(agent_db::DataFrame, StockDB::StockDB, StockAssumptions::StockAs
   return agent_db
 end
 
-function Graduate!(agent_db::DataFrame, StockDB::StockDB, AgentAssumptions::AgentAssumptions, cohort::Int, week::Int, column::Int)
+function graduate!(agent_db::DataFrame, StockDB::StockDB, AgentAssumptions::AgentAssumptions, cohort::Int, week::Int, column::Int)
   """
   This function will advance an agent currently in a specified stage to its next life stage. If this function is applied to juveniles, it will also add their information to the StockDB
   """

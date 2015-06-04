@@ -31,19 +31,17 @@ function AgentDB(cohorts, AgentAssumptions::AgentAssumptions, reduced::Bool)
 #   return int_agent_db
 end
 
-function Kill!(agent_db::DataFrame, EnvironmentAssumptions::EnvironmentAssumptions, AgentAssumptions::AgentAssumptions, cohort::Int, week::Int)
+function kill!(agent_db::DataFrame, EnvironmentAssumptions::EnvironmentAssumptions, AgentAssumptions::AgentAssumptions, cohort::Int, week::Int)
   """
   This function will kill agents based on all stage and location specific risk factors described in a `EnvironmentAssumptions`
   """
   for i = 1:length(agent_db[cohort, week][:alive])
     if agent_db[cohort, week][:alive][i] > 0
-      #killed = minimum([rand(Poisson(agent_db[cohort, week][:alive][i]*AgentAssumptions.naturalmortality[EnvironmentAssumptions.habitat[agent_db[cohort, week][:location][i].==EnvironmentAssumptions.id],agent_db[cohort, week][:stage][i]][1])), agent_db[cohort, week][:alive][i]])
       killed = rand(Binomial(agent_db[cohort, week][:alive][i], AgentAssumptions.naturalmortality[EnvironmentAssumptions.habitat[agent_db[cohort, week][:location][i]],agent_db[cohort, week][:stage][i]][1]))
       agent_db[cohort, week][:dead_natural][i] += killed
       agent_db[cohort, week][:alive][i] -= killed
       if agent_db[cohort, week][:alive][i] > 0
         if EnvironmentAssumptions.risk[agent_db[cohort, week][:location][i]]
-          #killed = minimum([rand(Poisson(agent_db[cohort, week][:alive][i]*AgentAssumptions.extramortality[agent_db[cohort, week][:stage][i]][1])), agent_db[cohort, week][:alive][i]])
           killed = rand(Binomial(agent_db[cohort, week][:alive][i], AgentAssumptions.extramortality[agent_db[cohort, week][:stage][i]][1]))
           agent_db[cohort, week][:dead_risk][i] += killed
           agent_db[cohort, week][:alive][i] -= killed
@@ -53,7 +51,7 @@ function Kill!(agent_db::DataFrame, EnvironmentAssumptions::EnvironmentAssumptio
   end
 end
 
-function LocalMove(location::Int, stage::Int, AgentAssumptions::AgentAssumptions, EnvironmentAssumptions::EnvironmentAssumptions)
+function localmove(location::Int, stage::Int, AgentAssumptions::AgentAssumptions, EnvironmentAssumptions::EnvironmentAssumptions)
   """
   A function which generates movement to a neighbouring location based on movement weights
   """
@@ -73,18 +71,18 @@ function LocalMove(location::Int, stage::Int, AgentAssumptions::AgentAssumptions
   return int(choices[findfirst(rand(Multinomial(1, choices[:,2]*(1-AgentAssumptions.autonomy[stage]) + choices[:,3]*(AgentAssumptions.autonomy[stage])))), 1])
 end
 
-function Move!(agent_db::DataFrame, AgentAssumptions::AgentAssumptions, EnvironmentAssumptions::EnvironmentAssumptions, cohort::Int, week::Int)
+function move!(agent_db::DataFrame, AgentAssumptions::AgentAssumptions, EnvironmentAssumptions::EnvironmentAssumptions, cohort::Int, week::Int)
   """
   This function will move agents based on stage and location
   """
   for i = 1:length(agent_db[cohort, week][:alive])
     if agent_db[cohort, week][:alive][i] > 0
-      agent_db[cohort, week][:location][i] = LocalMove(agent_db[cohort, week][:location][i], agent_db[cohort, week][:stage][i], AgentAssumptions, EnvironmentAssumptions)
+      agent_db[cohort, week][:location][i] = localmove(agent_db[cohort, week][:location][i], agent_db[cohort, week][:stage][i], AgentAssumptions, EnvironmentAssumptions)
     end
   end
 end
 
-function InjectAgents!(agent_db::DataFrame, location::Int, size::Int, cohort::Int, week::Int)
+function injectagents!(agent_db::DataFrame, location::Int, size::Int, cohort::Int, week::Int)
   """
   This function will inject agents into an `agent_db` to simulate stocking efforts. These stocked agents will take their stage information from the `agent_db`
   """
