@@ -8,6 +8,7 @@ function simulate(years::Int, harvest_effort::Vector, carrying_capacity::Vector,
   """
   Brings together all of the functions necessary for a life cycle simulation
   """
+  @assert(any(carrying_capacity > 0.), "There is at least one negative carrying capacity")
   a_db = AgentDB(years, a_a, reduced)
   if reduced
     c=fill(0, 104)
@@ -30,7 +31,7 @@ function simulate(years::Int, harvest_effort::Vector, carrying_capacity::Vector,
       move!(a_db, a_a, e_a, y, c[w])
       if w==52
         harvest!(harvest_effort[y], s_db, s_a)
-        ageadults!(s_db, s_a)
+        ageadults!(s_db, s_a, carrying_capacity[y])
       end
       graduate!(a_db, s_db, a_a, y, w, c[w])
       if progress
@@ -57,7 +58,7 @@ function simulate(years::Int, harvest_effort::Vector, carrying_capacity::Vector,
       move!(a_db, a_a, e_a, y-1, c[w+52])
       if w==52
         harvest!(harvest_effort[y], s_db, s_a)
-        ageadults!(s_db, s_a)
+        ageadults!(s_db, s_a, carrying_capacity[y])
       end
       graduate!(a_db, s_db, a_a, y, w, c[w])
       graduate!(a_db, s_db, a_a, y-1, w+52, c[w+52])
