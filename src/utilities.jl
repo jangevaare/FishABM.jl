@@ -27,14 +27,15 @@ function agent_plots(e_a::EnvironmentAssumptions, a_db::DataFrame, cohort::Int)
   @assert(1 <= cohort <= size(a_db,1), "Invalid cohort specified")
   @assert(size(a_db,2) == 104, "Require full agent database output")
   # Generate a simple map of the lake
-  is, js, values = findnz(e_a.habitat .> 0)
-  id = find(e_a.habitat .> 0)
+  i, j = ind2sub(size(e_a.habitat), 1:prod(size(e_a.habitat)))
+  water = find(e_a.habitat .> 0)
+  df = DataFrame(i=i, j=j, value=NaN)
+  df[:value][water] = 0.
 
   # Generate cohort specific dataset
   # Initialize with week 1...
-  df = DataFrame(id=id, i=is, j=js, value=0)
   for i = 1:size(a_db[cohort,1],1)
-    df[df[:id] .== a_db[cohort,1][:location][i], 4] += a_db[cohort,1][:alive][i]
+    df[a_db[cohort,1][:location][i], 4] += a_db[cohort,1][:alive][i]
   end
   plotymax = maximum(df[:value])
   newplot = plot(df,
@@ -53,9 +54,10 @@ function agent_plots(e_a::EnvironmentAssumptions, a_db::DataFrame, cohort::Int)
   week_plots = [newplot]
   # Calculate for the remaining weeks
   for w = 2:104
-    df = DataFrame(id=id, i=is, j=js, value=0)
-    for i = 1:size(a_db[cohort,w],1)
-      df[df[:id] .== a_db[cohort,w][:location][i], 4] += a_db[cohort,w][:alive][i]
+    df = DataFrame(i=i, j=j, value=NaN)
+    df[:value][water] = 0.
+    for i = 1:size(a_db[cohort,1],1)
+      df[a_db[cohort,1][:location][i], 4] += a_db[cohort,1][:alive][i]
     end
     newplot = plot(df,
                  x="j",

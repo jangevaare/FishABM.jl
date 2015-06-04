@@ -92,7 +92,7 @@ s_db = StockDB(DataFrame(age_2=200000,
 # * Environment assumptions
 #
 
-a_db = Simulate(5, fill(0., 5), s_db, s_a, a_a, e_a, false, false)
+a_db = Simulate(5, fill(0., 5), s_db, s_a, a_a, e_a, false, true)
 
 
 # Visualize agent movement, specify:
@@ -102,17 +102,7 @@ a_db = Simulate(5, fill(0., 5), s_db, s_a, a_a, e_a, false, false)
 
 allplots = agent_plots(e_a, a_db, 1)
 
-
-# You can create an interactive figure for exploring agent movement and survival...
-
-# Quite slow, not recommended
-# using Interact
-# @manipulate for week = 1:104
-#     allplots[week]
-# end
-
-
-# Or export images of all plots (for later compilation into an animation, perhaps)
+# Export images of all plots (for later compilation into an animation, perhaps)
 
 for i = 1:length(allplots)
     draw(PNG(Pkg.dir("FishABM")"/examples/plots/agent_$i.png", 17.3cm, 40cm), allplots[i])
