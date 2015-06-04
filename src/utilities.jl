@@ -20,7 +20,7 @@ function PadEnvironmentAssumptions!(EnvironmentAssumptions::EnvironmentAssumptio
   return EnvironmentAssumptions
 end
 
-function agent_visualize(e_a::EnvironmentAssumptions, a_db::DataFrame, cohort::Int)
+function agent_plots(e_a::EnvironmentAssumptions, a_db::DataFrame, cohort::Int)
   """
   Create an interactive visualization of an agent database with IJulia
   """
@@ -36,7 +36,7 @@ function agent_visualize(e_a::EnvironmentAssumptions, a_db::DataFrame, cohort::I
   for i = 1:size(a_db[cohort,1],1)
     df[df[:id] .== a_db[cohort,1][:location][i], 4] += a_db[cohort,1][:alive][i]
   end
-  plotymax = max(df[:value])
+  plotymax = maximum(df[:value])
   newplot = plot(df,
                  x="j",
                  y="i",

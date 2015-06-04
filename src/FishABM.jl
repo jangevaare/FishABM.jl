@@ -26,7 +26,7 @@ export
 
   # Utilities
   PadEnvironmentAssumptions!,
-  agent_visualize,
+  agent_plots,
 
   # Simulate
   Simulate
