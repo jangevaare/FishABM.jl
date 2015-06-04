@@ -1,6 +1,6 @@
 # Load required packages
 
-using DataFrames, Gadfly, FishABM
+using DataFrames, Distributions, Gadfly, FishABM
 
 
 # Specify stock assumptions:
@@ -32,7 +32,7 @@ e_a = EnvironmentAssumptions(readdlm(Pkg.dir("FishABM")"/examples/LakeHuron_1km_
                              readdlm(Pkg.dir("FishABM")"/examples/LakeHuron_1km_habitat.csv", ',', Int)[150:end, 200:370],
                              readdlm(Pkg.dir("FishABM")"/examples/LakeHuron_1km_risk.csv", ',', Bool)[150:end, 200:370])
 
-PadEnvironmentAssumptions!(e_a)
+pad_environment!(e_a)
 
 
 # Specify agent assumptions:
@@ -92,7 +92,7 @@ s_db = StockDB(DataFrame(age_2=100000,
 # * Agent assumptions
 # * Environment assumptions
 
-a_db = simulate(1, fill(0., 1), rand(Normal(500000, 100000),1), s_db, s_a, a_a, e_a, false, true)
+a_db = simulate(2, fill(0., 2), rand(Normal(500000, 100000),2), s_db, s_a, a_a, e_a, false, true)
 
 # Visualize agent movement, specify:
 # * Environment assumption object
