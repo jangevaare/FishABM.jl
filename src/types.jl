@@ -12,6 +12,7 @@ type AgentAssumptions
   extramortality::Vector
   growth::Vector
   movement::Array
+  autonomy::Vector
 end
 
 type EnvironmentAssumptions

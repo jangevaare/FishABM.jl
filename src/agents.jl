@@ -53,18 +53,24 @@ function Kill!(agent_db::DataFrame, EnvironmentAssumptions::EnvironmentAssumptio
   end
 end
 
-function LocalMove(location::Int, weights::Array, EnvironmentAssumptions::EnvironmentAssumptions)
+function LocalMove(location::Int, stage::Int, AgentAssumptions::AgentAssumptions, EnvironmentAssumptions::EnvironmentAssumptions)
   """
   A function which generates movement to a neighbouring location based on movement weights
   """
+  @assert(0.<= AgentAssumptions.autonomy[stage] <=1., "Autonomy level must be between 0 and 1")
   # location id to coordinates
   id=ind2sub(size(EnvironmentAssumptions.habitat), location)
   # Select surrounding block of IDs, match up with weights
-  choices = [sub2ind(size(EnvironmentAssumptions.habitat), [id[1]-1,id[1],id[1]+1,id[1]-1,id[1],id[1]+1,id[1]-1,id[1],id[1]+1], [id[2]-1, id[2]-1, id[2]-1, id[2], id[2], id[2], id[2]+1, id[2]+1, id[2]+1]) [weights[:]]]
-  # If habitat type is 0, set weight to zero
-  choices[EnvironmentAssumptions.habitat[choices[:,1]] .== 0, 2] = 0.
-  # Normalize weights into probabilities
-  return int(choices[findfirst(rand(Multinomial(1, choices[:,2]/sum(choices[:,2])))), 1])
+  choices = [sub2ind(size(EnvironmentAssumptions.habitat), [id[1]-1,id[1],id[1]+1,id[1]-1,id[1],id[1]+1,id[1]-1,id[1],id[1]+1], [id[2]-1, id[2]-1, id[2]-1, id[2], id[2], id[2], id[2]+1, id[2]+1, id[2]+1]) [AgentAssumptions.movement[stage][:]]]
+  # If habitat type is 0, remove row
+  choices = choices[EnvironmentAssumptions.habitat[choices[:,1]] .> 0, :]
+  # Match locations with natural mortality rates
+  choices = hcat(choices, AgentAssumptions.naturalmortality[EnvironmentAssumptions.habitat[choices[:,1]], stage])
+  # Normalize into probabilities
+  choices[:,2]=choices[:,2]/sum(choices[:,2])
+  choices[:,3]=choices[:,3]/sum(choices[:,3])
+  # Weight options by autonomy
+  return int(choices[findfirst(rand(Multinomial(1, choices[:,2]*(1-AgentAssumptions.autonomy[stage]) + choices[:,3]*(AgentAssumptions.autonomy[stage])))), 1])
 end
 
 function Move!(agent_db::DataFrame, AgentAssumptions::AgentAssumptions, EnvironmentAssumptions::EnvironmentAssumptions, cohort::Int, week::Int)
@@ -73,7 +79,7 @@ function Move!(agent_db::DataFrame, AgentAssumptions::AgentAssumptions, Environm
   """
   for i = 1:length(agent_db[cohort, week][:alive])
     if agent_db[cohort, week][:alive][i] > 0
-      agent_db[cohort, week][:location][i] = LocalMove(agent_db[cohort, week][:location][i], AgentAssumptions.movement[agent_db[cohort, week][:stage][i]], EnvironmentAssumptions)
+      agent_db[cohort, week][:location][i] = LocalMove(agent_db[cohort, week][:location][i], agent_db[cohort, week][:stage][i], AgentAssumptions, EnvironmentAssumptions)
     end
   end
 end
