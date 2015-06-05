@@ -42,12 +42,12 @@ pad_environment!(e_a)
 # * Movement weight matrices
 # * Movement autonomy
 
-a_a = AgentAssumptions([[0.90 0.10 0.10]
-                        [0.10 0.10 0.10]
-                        [0.90 0.10 0.10]
-                        [0.90 0.90 0.10]
-                        [0.90 0.90 0.90]
-                        [0.90 0.90 0.90]],
+a_a = AgentAssumptions([[0.80 0.09 0.08]
+                        [0.10 0.09 0.08]
+                        [0.80 0.09 0.08]
+                        [0.80 0.80 0.08]
+                        [0.80 0.80 0.80]
+                        [0.80 0.80 0.80]],
                         [0.0, 0.0, 0.0],
                         [19, 52, 104],
                         Array[[[0. 0. 0.]
@@ -84,17 +84,24 @@ s_db = StockDB(DataFrame(age_2=100000,
 
 # Begin life cycle simulation, specifying:
 # * Simulation length (years)
-# * Annual fishing effort (vector with length matching the simulation length)
 # * Year specific carrying capacity
-#
+# * Annual fishing effort (vector with length matching the simulation length)
+# * Population bump
+
 # And indicating the previously specified objects:
 # * Stock database
 # * Stock assumptions
 # * Agent assumptions
 # * Environment assumptions
 
-k = rand(Normal(500000, 50000),100)
-a_db = simulate(100, fill(0., 100), k, s_db, s_a, a_a, e_a, false, true)
+# Lastly, setting flags for:
+# * Reduced output mode
+# * Showing of the progress bar
+
+k = rand(Normal(500000, 50000),2)
+a_db = simulate(2, k, [0], [60000], k, s_db, s_a, a_a, e_a, false, true)
+
+s_db.population
 
 # Visualize agent movement, specify:
 # * Environment assumption object

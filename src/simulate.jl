@@ -4,14 +4,16 @@ Justin Angevaare
 May 2015
 """
 
-function simulate(years::Int, harvest_effort::Vector, carrying_capacity::Vector, bumpstart::Vector, s_db::StockDB, s_a::StockAssumptions, a_a::AgentAssumptions, e_a::EnvironmentAssumptions, reduced=false::Bool, progress=true::Bool)
+function simulate(years::Int, carrying_capacity::Vector, effort::Vector, bump::Vector, s_db::StockDB, s_a::StockAssumptions, a_a::AgentAssumptions, e_a::EnvironmentAssumptions, reduced=false::Bool, progress=true::Bool)
   """
   Brings together all of the functions necessary for a life cycle simulation
   """
   @assert(all(carrying_capacity .> 0.), "There is at least one negative carrying capacity")
   a_db = AgentDB(years, a_a, reduced)
-  bump = fill(0, years)
-  bump[1:length(bumpstart)] = bumpstart
+  bumpvec = fill(0, years)
+  bumpvec[1:length(bump)] = bump
+  harvest_effort = fill(0., years)
+  harvest_effort[1:length(effort)] = effort
   if reduced
     c=fill(0, 104)
     for i = 1:104
@@ -34,7 +36,7 @@ function simulate(years::Int, harvest_effort::Vector, carrying_capacity::Vector,
       move!(a_db, a_a, e_a, y, c[w])
       if w==52
         harvest!(harvest_effort[y], s_db, s_a)
-        ageadults!(s_db, s_a, carrying_capacity[y], bump[y])
+        ageadults!(s_db, s_a, carrying_capacity[y], bumpvec[y])
       end
       graduate!(a_db, s_db, a_a, y, w, c[w])
       if progress
@@ -45,7 +47,7 @@ function simulate(years::Int, harvest_effort::Vector, carrying_capacity::Vector,
   for y = 2:years
     spawn!(a_db, s_db, s_a, e_a, y, carrying_capacity[y])
     totalagents=size(a_db[y,1],1)
-    @assert(totalagents < 200000, "> 200000 agents in current simulation, stopping here.")
+    @assert(totalagents < 250000, "> 250000 agents in current simulation, stopping here.")
     if progress
       progressbar = Progress(52, 5, "Year $y simulation progress ($totalagents agents)", 30)
     end
@@ -62,7 +64,7 @@ function simulate(years::Int, harvest_effort::Vector, carrying_capacity::Vector,
       move!(a_db, a_a, e_a, y-1, c[w+52])
       if w==52
         harvest!(harvest_effort[y], s_db, s_a)
-        ageadults!(s_db, s_a, carrying_capacity[y], bump[y])
+        ageadults!(s_db, s_a, carrying_capacity[y], bumpvec[y])
       end
       graduate!(a_db, s_db, a_a, y, w, c[w])
       graduate!(a_db, s_db, a_a, y-1, w+52, c[w+52])
