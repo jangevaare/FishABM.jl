@@ -93,7 +93,7 @@ s_db = StockDB(DataFrame(age_2=100000,
 # * Agent assumptions
 # * Environment assumptions
 
-k = rand(Normal(500000, 50000),2)
+k = rand(Normal(500000, 50000),5)
 a_db = simulate(k, [0], [100000], s_db, s_a, a_a, e_a)
 
 s_db.population
