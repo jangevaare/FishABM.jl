@@ -4,11 +4,12 @@ Justin Angevaare
 May 2015
 """
 
-function simulate(years::Int, carrying_capacity::Vector, effort::Vector, bump::Vector, s_db::StockDB, s_a::StockAssumptions, a_a::AgentAssumptions, e_a::EnvironmentAssumptions, reduced=false::Bool, progress=true::Bool)
+function simulate(carrying_capacity::Vector, effort::Vector, bump::Vector, s_db::StockDB, s_a::StockAssumptions, a_a::AgentAssumptions, e_a::EnvironmentAssumptions, reduced=false::Bool, progress=true::Bool)
   """
   Brings together all of the functions necessary for a life cycle simulation
   """
   @assert(all(carrying_capacity .> 0.), "There is at least one negative carrying capacity")
+  years = length(carrying_capacity)
   a_db = AgentDB(years, a_a, reduced)
   bumpvec = fill(0, years)
   bumpvec[1:length(bump)] = bump
