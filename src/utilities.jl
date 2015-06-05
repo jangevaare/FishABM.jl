@@ -105,9 +105,59 @@ function plot_stock(stockdb::StockDB)
               y=y,
               group=z,
               color=z,
-              Guide.colorkey(nothing),
+              Guide.colorkey(" "),
               Guide.xlabel("Year"),
               Guide.ylabel("Abundance"),
               Geom.polygon(preserve_order=true, fill=true),
               Scale.x_continuous(minvalue=1, maxvalue=size(stockarray,1)))
+end
+
+function plot_stock_k(stockdb::StockDB, k::Vector, layered=true::Bool)
+  """
+  Create an area plot of the adult population and the carrying capacity
+  """
+  groupnames = names(stockdb.population)
+  stockarray = array(stockdb.population)
+  stockarray = hcat(fill(0,size(stockarray,1)), cumsum(stockarray,2))
+  x=Float64[]
+  y=Float64[]
+  z=ASCIIString[]
+  for i = 2:size(stockarray, 2)
+    append!(x, [1:size(stockarray, 1), reverse(1:size(stockarray, 1))])
+    append!(y, [stockarray[:,i],reverse(stockarray[:,i-1])])
+    j=i-1
+    append!(z, fill(string(groupnames[i-1]), size(stockarray, 1)*2))
+  end
+  x=x-1
+  if layered
+    return plot(layer(x=x,
+                      y=y,
+                      group=z,
+                      color=z,
+                      Geom.polygon(preserve_order=true, fill=true),
+                      order=2),
+                layer(x=x,
+                      y=k,
+                      Geom.line,
+                      order=1),
+                Guide.colorkey(" "),
+                Guide.xlabel("Year"),
+                Guide.ylabel("Abundance/Carrying Capacity"))
+  else
+    p1 = plot(x=x,
+              y=y,
+              group=z,
+              color=z,
+              Guide.colorkey(" "),
+              Guide.xlabel("Year"),
+              Guide.ylabel("Abundance"),
+              Geom.polygon(preserve_order=true, fill=true),
+              Scale.y_continuous(minvalue=0, maxvalue=maximum(k)))
+    p2 = plot(x=x,
+              y=k,
+              Geom.line,
+              Guide.xlabel("Year"),
+              Guide.ylabel("Carrying capacity"))
+    return hstack(p2,p1)
+  end
 end

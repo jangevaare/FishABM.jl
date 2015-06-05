@@ -85,6 +85,7 @@ s_db = StockDB(DataFrame(age_2=100000,
 # Begin life cycle simulation, specifying:
 # * Simulation length (years)
 # * Annual fishing effort (vector with length matching the simulation length)
+# * Year specific carrying capacity
 #
 # And indicating the previously specified objects:
 # * Stock database
@@ -92,7 +93,8 @@ s_db = StockDB(DataFrame(age_2=100000,
 # * Agent assumptions
 # * Environment assumptions
 
-a_db = simulate(2, fill(0., 2), rand(Normal(500000, 100000),2), s_db, s_a, a_a, e_a, false, true)
+k = rand(Normal(500000, 50000),100)
+a_db = simulate(100, fill(0., 100), k, s_db, s_a, a_a, e_a, false, true)
 
 # Visualize agent movement, specify:
 # * Environment assumption object
