@@ -100,7 +100,7 @@ function plot_stock(stockdb::StockDB)
     j=i-1
     append!(z, fill(string(groupnames[i-1]), size(stockarray, 1)*2))
   end
-
+  x=x-1
   return plot(x=x,
               y=y,
               group=z,
