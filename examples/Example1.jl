@@ -42,10 +42,10 @@ pad_environment!(e_a)
 # * Movement weight matrices
 # * Movement autonomy
 
-a_a = AgentAssumptions([[0.80 0.09 0.08]
-                        [0.10 0.09 0.08]
-                        [0.80 0.09 0.08]
-                        [0.80 0.80 0.08]
+a_a = AgentAssumptions([[0.80 0.095 0.09]
+                        [0.10 0.095 0.09]
+                        [0.80 0.095 0.09]
+                        [0.80 0.80 0.09]
                         [0.80 0.80 0.80]
                         [0.80 0.80 0.80]],
                         [0.0, 0.0, 0.0],
