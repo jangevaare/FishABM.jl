@@ -9,6 +9,8 @@ function simulate(carrying_capacity::Vector, effort::Vector, bump::Vector, s_db:
   Brings together all of the functions necessary for a life cycle simulation
   """
   @assert(all(carrying_capacity .> 0.), "There is at least one negative carrying capacity")
+  @assert(length(effort)<=length(carrying_capacity), "The effort vector must be equal or less than the length of the simulation")
+  @assert(length(bump)<=length(carrying_capacity), "The bump vector must be equal or less than the length of the simulation")
   years = length(carrying_capacity)
   a_db = AgentDB(years, a_a, reduced)
   bumpvec = fill(0, years)

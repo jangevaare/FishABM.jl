@@ -83,9 +83,8 @@ s_db = StockDB(DataFrame(age_2=100000,
 
 
 # Begin life cycle simulation, specifying:
-# * Simulation length (years)
-# * Year specific carrying capacity
-# * Annual fishing effort (vector with length matching the simulation length)
+# * Year specific carrying capacity (vector length determines simulation length)
+# * Annual fishing effort
 # * Population bump
 
 # And indicating the previously specified objects:
@@ -94,12 +93,8 @@ s_db = StockDB(DataFrame(age_2=100000,
 # * Agent assumptions
 # * Environment assumptions
 
-# Lastly, setting flags for:
-# * Reduced output mode
-# * Showing of the progress bar
-
 k = rand(Normal(500000, 50000),2)
-a_db = simulate(2, k, [0], [60000], k, s_db, s_a, a_a, e_a, false, true)
+a_db = simulate(k, [0], [100000], s_db, s_a, a_a, e_a)
 
 s_db.population
 

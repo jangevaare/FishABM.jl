@@ -28,6 +28,7 @@ export
   pad_environment!,
   plot_agents,
   plot_stock,
+  plot_stock_k,
 
   # Simulate
   simulate
