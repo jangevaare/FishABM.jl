@@ -39,20 +39,25 @@ function plot_agents(e_a::EnvironmentAssumptions, a_db::DataFrame, cohort::Int, 
     df[a_db[cohort,1][:location][i], 3] += a_db[cohort,1][:alive][i]
   end
 
-  plotymax = maximum(df[:value])
+  # Find relative abundance (1 is max)
+  df[:value] /= maximum(df[:value])
+
   newplot = plot(df[water,:],
                  x="x",
                  y="y",
                  color="value",
                  Coord.cartesian(yflip=true),
-                 Scale.color_continuous,#(minvalue=0, maxvalue=plotymax),
+                 Scale.color_continuous(minvalue=0, maxvalue=1),
                  Scale.x_continuous,
                  Scale.y_continuous,
                  Geom.rectbin,
                  Stat.identity,
                  Guide.xlabel(nothing),
                  Guide.ylabel(nothing),
-                 Guide.colorkey("Abundance"))
+                 Guide.colorkey("Relative Abundance"),
+                 Theme(panel_opacity=1.,
+                       panel_fill=color("white"),
+                       background_color=color("white")))
   week_plots = [newplot]
   if progress
     next!(progressbar)
@@ -63,19 +68,26 @@ function plot_agents(e_a::EnvironmentAssumptions, a_db::DataFrame, cohort::Int, 
     for i = 1:size(a_db[cohort,w],1)
       df[a_db[cohort,w][:location][i], 3] += a_db[cohort,w][:alive][i]
     end
+
+    # Find relative abundance (1 is max)
+    df[:value] /= maximum(df[:value])
+
     newplot = plot(df[water,:],
                  x="x",
                  y="y",
                  color="value",
                  Coord.cartesian(yflip=true),
-                 Scale.color_continuous,#(minvalue=0, maxvalue=plotymax),
+                 Scale.color_continuous(minvalue=0, maxvalue=1),
                  Scale.x_continuous,
                  Scale.y_continuous,
                  Geom.rectbin,
                  Stat.identity,
                  Guide.xlabel(nothing),
                  Guide.ylabel(nothing),
-                 Guide.colorkey("Abundance"))
+                 Guide.colorkey("Relative Abundance"),
+                 Theme(panel_opacity=1.,
+                       panel_fill=color("white"),
+                       background_color=color("white")))
     push!(week_plots, newplot)
     if progress
       next!(progressbar)
