@@ -121,7 +121,10 @@ function plot_stock(stockdb::StockDB)
               Guide.xlabel("Year"),
               Guide.ylabel("Abundance"),
               Geom.polygon(preserve_order=true, fill=true),
-              Scale.x_continuous(minvalue=1, maxvalue=size(stockarray,1)))
+              Scale.x_continuous(minvalue=1, maxvalue=size(stockarray,1)),
+              Theme(panel_opacity=1.,
+                    panel_fill=color("white"),
+                    background_color=color("white")))
 end
 
 function plot_stock_k(stockdb::StockDB, k::Vector, layered=true::Bool)
@@ -154,7 +157,10 @@ function plot_stock_k(stockdb::StockDB, k::Vector, layered=true::Bool)
                       order=1),
                 Guide.colorkey(" "),
                 Guide.xlabel("Year"),
-                Guide.ylabel("Abundance/Carrying Capacity"))
+                Guide.ylabel("Abundance/Carrying Capacity"),
+                Theme(panel_opacity=1.,
+                      panel_fill=color("white"),
+                      background_color=color("white")))
   else
     p1 = plot(x=x,
               y=y,
@@ -164,12 +170,18 @@ function plot_stock_k(stockdb::StockDB, k::Vector, layered=true::Bool)
               Guide.xlabel("Year"),
               Guide.ylabel("Abundance"),
               Geom.polygon(preserve_order=true, fill=true),
-              Scale.y_continuous(minvalue=0, maxvalue=maximum(k)))
+              Scale.y_continuous(minvalue=0, maxvalue=maximum(k)),
+              Theme(panel_opacity=1.,
+                    panel_fill=color("white"),
+                    background_color=color("white")))
     p2 = plot(x=x,
               y=k,
               Geom.line,
               Guide.xlabel("Year"),
-              Guide.ylabel("Carrying capacity"))
+              Guide.ylabel("Carrying capacity"),
+              Theme(panel_opacity=1.,
+                    panel_fill=color("white"),
+                    background_color=color("white")))
     return hstack(p2,p1)
   end
 end
