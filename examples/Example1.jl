@@ -93,7 +93,7 @@ s_db = StockDB(DataFrame(age_2=100000,
 # * Agent assumptions
 # * Environment assumptions
 
-k = rand(Normal(500000, 50000),5)
+k = rand(Normal(500000, 50000),3)
 a_db = simulate(k, [0], [100000], s_db, s_a, a_a, e_a)
 
 s_db.population
@@ -106,7 +106,10 @@ s_db.population
 # Export images of all plots (for later compilation into an animation, perhaps)
 agentplots = plot_agents(e_a, a_db, 1, false)
 for i = 1:length(agentplots)
-    draw(PNG(Pkg.dir("FishABM")"/examples/plots/agent_$i.png", 17.3cm, 40cm), agentplots[i])
+  filenumber = i/1000
+  filenumber = prod(split("$filenumber", ".", 2))
+  filenumber *= prod(fill("0", 5-length(filenumber)))
+  draw(PNG(Pkg.dir("FishABM")"/examples/plots/agent_$filenumber.png", 8.65cm, 20cm), agentplots[i])
 end
 
 # Visualize stock age distribution through time

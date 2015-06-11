@@ -57,7 +57,8 @@ function plot_agents(e_a::EnvironmentAssumptions, a_db::DataFrame, cohort::Int, 
                  Guide.colorkey("Relative Abundance"),
                  Theme(panel_opacity=1.,
                        panel_fill=color("white"),
-                       background_color=color("white")))
+                       background_color=color("white"),
+                       key_position = :none))
   week_plots = [newplot]
   if progress
     next!(progressbar)
@@ -87,7 +88,8 @@ function plot_agents(e_a::EnvironmentAssumptions, a_db::DataFrame, cohort::Int, 
                  Guide.colorkey("Relative Abundance"),
                  Theme(panel_opacity=1.,
                        panel_fill=color("white"),
-                       background_color=color("white")))
+                       background_color=color("white"),
+                       key_position = :none))
     push!(week_plots, newplot)
     if progress
       next!(progressbar)
