@@ -4,7 +4,7 @@ Justin Angevaare
 May 2015
 """
 
-function simulate(carrying_capacity::Vector, effort::Vector, bump::Vector, s_db::StockDB, s_a::StockAssumptions, a_a::AgentAssumptions, e_a::EnvironmentAssumptions, reduced=false::Bool, progress=true::Bool, limit=250000::Int64)
+function simulate(carrying_capacity::Vector, effort::Vector, bump::Vector, s_db::StockDB, s_a::StockAssumptions, a_a::AgentAssumptions, e_a::EnvironmentAssumptions, reduced=true::Bool, progress=true::Bool, limit=250000::Int64)
   """
   Brings together all of the functions necessary for a life cycle simulation
   """
