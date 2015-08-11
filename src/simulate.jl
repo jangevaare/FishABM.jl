@@ -4,7 +4,7 @@ Justin Angevaare
 May 2015
 """
 
-function simulate(carrying_capacity::Vector, effort::Vector, bump::Vector, s_db::StockDB, s_a::StockAssumptions, a_a::AgentAssumptions, e_a::EnvironmentAssumptions, reduced=false::Bool, progress=true::Bool)
+function simulate(carrying_capacity::Vector, effort::Vector, bump::Vector, s_db::StockDB, s_a::StockAssumptions, a_a::AgentAssumptions, e_a::EnvironmentAssumptions, reduced=true::Bool, progress=true::Bool, limit=250000::Int64)
   """
   Brings together all of the functions necessary for a life cycle simulation
   """
@@ -50,7 +50,7 @@ function simulate(carrying_capacity::Vector, effort::Vector, bump::Vector, s_db:
   for y = 2:years
     spawn!(a_db, s_db, s_a, e_a, y, carrying_capacity[y])
     totalagents=size(a_db[y,1],1)
-    @assert(totalagents < 250000, "> 250000 agents in current simulation, stopping here.")
+    @assert(totalagents < limit, "> $limit agents in current simulation, stopping here.")
     if progress
       progressbar = Progress(52, 5, "Year $y simulation progress ($totalagents agents)", 30)
     end
@@ -76,5 +76,8 @@ function simulate(carrying_capacity::Vector, effort::Vector, bump::Vector, s_db:
       end
     end
   end
+
+  #Add results summary here so that the simulation writes out the files automatically upon completion
+
   return a_db
 end

@@ -29,6 +29,8 @@ export
   plot_agents,
   plot_stock,
   plot_stock_k,
+  simpleWriteOut,
+  writeOutAgentPlots,
 
   # Simulate
   simulate
