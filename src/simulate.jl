@@ -76,8 +76,5 @@ function simulate(carrying_capacity::Vector, effort::Vector, bump::Vector, s_db:
       end
     end
   end
-
-  #Add results summary here so that the simulation writes out the files automatically upon completion
-
   return a_db
 end
