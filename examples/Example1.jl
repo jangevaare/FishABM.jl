@@ -96,6 +96,14 @@ s_db = StockDB(DataFrame(age_2=100000,
 k = rand(Normal(500000, 50000),3)
 a_db = simulate(k, [0], [100000], s_db, s_a, a_a, e_a)
 
+#Summary of the simulation results
+resultSummary = simulationSummary(a_db, a_db_withA, k, true)
+resultsToWrite = convertToStringArray(resultSummary)
+
+writedlm(Pkg.dir("FishABM")"/totalResults/exampleFour_stage1.csv", resultsToWrite[:, :, 1], ',')
+writedlm(Pkg.dir("FishABM")"/totalResults/exampleFour_stage2.csv", resultsToWrite[:, :, 2], ',')
+writedlm(Pkg.dir("FishABM")"/totalResults/exampleFour_stage3.csv", resultsToWrite[:, :, 3], ',')
+
 s_db.population
 
 # Visualize agent movement, specify:
