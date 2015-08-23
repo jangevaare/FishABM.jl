@@ -4,6 +4,41 @@ Functions used to summarize the results of a simulation
 August 2015
 """
 
+#converts all entries in an array to strings
+function convertToStringArray(arrayToConvert::Array)
+  """
+  Converts the results summary to ASCIIString so there are titles in the file that is saved
+  """
+  arrayWithTitles = Array(ASCIIString, size(arrayToConvert)[1], size(arrayToConvert)[2], size(arrayToConvert)[3])
+
+  titleRow = 1
+  for stage = 1:size(arrayWithTitles)[3]
+    arrayWithTitles[titleRow, 1, stage] = "Year"
+    arrayWithTitles[titleRow, 2, stage] = "Carrying Capacity"
+    arrayWithTitles[titleRow, 3, stage] = "Alive"
+    arrayWithTitles[titleRow, 4, stage] = "Natural Mortalities"
+    arrayWithTitles[titleRow, 5, stage] = "Risk mortalities"
+    arrayWithTitles[titleRow, 6, stage] = "Total deaths"
+    arrayWithTitles[titleRow, 7, stage] = "Alive (with)"
+    arrayWithTitles[titleRow, 8, stage] = "Natural Mortalities (with)"
+    arrayWithTitles[titleRow, 9, stage] = "Risk Mortalities (with)"
+    arrayWithTitles[titleRow, 10, stage] = "Total Deaths (with)"
+    arrayWithTitles[titleRow, 11, stage] = "Alive differential (without - with)"
+    arrayWithTitles[titleRow, 12, stage] = "Total deaths differential (without-with)"
+  end
+
+  #converts each int to a string
+  for year = 2:size(arrayWithTitles)[1] #stage
+    for column = 1:size(arrayWithTitles)[2] #year
+      for stage = 1:size(arrayWithTitles)[3] #column
+        arrayWithTitles[year, column, stage] = "$(arrayToConvert[year, column, stage])"
+      end
+    end
+  end
+
+  return arrayWithTitles
+end
+
 function simulationSummary(agent_db::DataFrame, agent_db_withA::DataFrame, carryingCapacity::Vector, reduced::Bool)
   """
   Summarizes results and returns an integer array for any further requirements
