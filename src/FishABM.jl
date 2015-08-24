@@ -9,29 +9,34 @@ export
   StockAssumptions,
   StockDB,
 
-  # Agent functions
-  agentdb,
+  # agent_stock_interaction.jl functions
+  spawn!,
+  graduate!,
+
+  # agents.jl functions
+  AgentDB,
   kill!,
   localmove,
   move!,
   injectagents!,
 
-  # Stock functions
+  # simulate.jl functions
+  simulate
+
+  # simulationResults.jl functions
+  convertToStringArray,
+  simulationSummary,
+
+  # stock.jl functions
   harvest!,
   ageadults!,
 
-  # Agent-Stock function
-  spawn!,
-  graduate!,
-
-  # Utilities
+  # utilities.jl functions
   pad_environment!,
   plot_agents,
   plot_stock,
   plot_stock_k,
-
-  # Simulate
-  simulate
+  writeOutAgentPlots,
 
 include("types.jl")
 include("utilities.jl")
