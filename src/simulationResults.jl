@@ -90,7 +90,7 @@ function simulationSummary(agent_db::DataFrame, agent_db_withA::DataFrame, carry
     end
     return anthroAgentEffects
   else #for full output
-    #do nothing yet
+    #do nothing yet, have to see what to do with the agent database when reduced is not used
     return anthroAgentEffects
   end
 end

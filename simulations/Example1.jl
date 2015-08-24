@@ -60,13 +60,13 @@ a_a = AgentAssumptions([[0.80 0.095 0.09]
                         Array[[[0. 0. 0.]
                                [0. 1. 0.]
                                [0. 0. 0.]]
-                              [[2. 8. 2.]
-                               [1. 4. 2.]
-                               [1. 1. 2.]]
-                              [[2. 6. 2.]
-                               [1. 2. 2.]
-                               [1. 1. 2.]]],
-                        [0., 0.2, 0.5])
+                              [[1. 2. 1.]
+                               [1. 2. 1.]
+                               [1. 1. 1.]]
+                              [[1. 2. 1.]
+                               [1. 1. 1.]
+                               [1. 1. 1.]]],
+                        [0., 0.5, 0.75])
 
 a_a_withA = AgentAssumptions([[0.80 0.095 0.09]
                         [0.10 0.095 0.09]
@@ -74,16 +74,16 @@ a_a_withA = AgentAssumptions([[0.80 0.095 0.09]
                         [0.80 0.80 0.09]
                         [0.80 0.80 0.80]
                         [0.80 0.80 0.80]],
-                        [1, 1, 1],
+                        [1.0, 1.0, 1.0],
                         [19, 52, 104],
                         Array[[[0. 0. 0.]
                                [0. 1. 0.]
                                [0. 0. 0.]]
-                              [[1. 1. 1.]
-                               [1. 8. 1.]
+                              [[1. 2. 1.]
+                               [1. 2. 1.]
                                [1. 1. 1.]]
-                              [[1. 1. 1.]
-                               [1. 4. 1.]
+                              [[1. 2. 1.]
+                               [1. 1. 1.]
                                [1. 1. 1.]]],
                         [0., 0.5, 0.75])
 
@@ -133,11 +133,20 @@ s_db_withA = StockDB(DataFrame(age_2=1000,
 # * Environment assumptions
 
 k = rand(Normal(500000, 50000),3)
-a_db = simulate(k, [0], [100000], s_db, s_a, a_a, e_a)
+reducedOutput = false
+
+a_db_withA = simulate(k,[0], [100000], s_db_withA, s_a, a_a_withA, e_a, reducedOutput)
+a_db = simulate(k, [0], [100000], s_db, s_a, a_a, e_a, reducedOutput)
 
 #Summary of the simulation results
-resultSummary = simulationSummary(a_db, a_db_withA, k, true)
+resultSummary = simulationSummary(a_db, a_db_withA, k, reducedOutput)
 resultsToWrite = convertToStringArray(resultSummary)
+
+cd()
+cd(split(Base.source_path(), "example")[1])
+if (isdir("plots") == false)
+  mkdir("plots")
+end
 
 writedlm(split(Base.source_path(), "Example")[1]"results/exampleFour_stage1.csv", resultsToWrite[:, :, 1], ',')
 writedlm(split(Base.source_path(), "Example")[1]"results/exampleFour_stage2.csv", resultsToWrite[:, :, 2], ',')
