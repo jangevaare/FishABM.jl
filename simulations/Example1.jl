@@ -79,10 +79,10 @@ a_a_withA = AgentAssumptions([[0.80 0.095 0.09]
                         Array[[[0. 0. 0.]
                                [0. 1. 0.]
                                [0. 0. 0.]]
-                              [[1. 2. 1.]
+                              [[1. 2. 2.]
                                [1. 2. 1.]
                                [1. 1. 1.]]
-                              [[1. 2. 1.]
+                              [[1. 2. 2.]
                                [1. 1. 1.]
                                [1. 1. 1.]]],
                         [0., 0.5, 0.75])
@@ -165,6 +165,7 @@ writeOutAgentPlots(a_db, a_db_withA, year, e_a)
 # Visualize stock age distribution through time
 stockplot = plot_stock(s_db)
 stockplot_withA = plot_stock(s_db_withA)
-draw(PNG(split(Base.source_path(), "Example")[1]"plots/population.png", 20cm, 15cm), stockplot)
-draw(PNG(split(Base.source_path(), "Example")[1]"plots/population_withA.png", 20cm, 15cm), stockplot_withA)
+
+draw(PNG(split(Base.source_path(), "simulations")[1]"plots/population.png", 20cm, 15cm), stockplot)
+draw(PNG(split(Base.source_path(), "simulations")[1]"plots/population_withA.png", 20cm, 15cm), stockplot_withA)
 
