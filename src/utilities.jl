@@ -189,6 +189,7 @@ function plot_stock_k(stockdb::StockDB, k::Vector, layered=true::Bool)
 end
 
 #function for writing out agent plots, write the code here instead of writing it in the example file
+#Update file locations to be more dynamic
 function writeOutAgentPlots(agent_db::DataFrame, agent_db_withA::DataFrame, year::Int, e_a::EnvironmentAssumptions)
   """
   Visualize agent movement, specify:
@@ -199,36 +200,42 @@ function writeOutAgentPlots(agent_db::DataFrame, agent_db_withA::DataFrame, year
   without anthro effects
   """
 
-  agentplots = plot_agents(e_a, agent_db, year, false)
-  agentplots_withA = plot_agents(e_a, agent_db_withA, year, false)
+  agentplots = plot_agents(e_a, agent_db, year, true)
+  agentplots_withA = plot_agents(e_a, agent_db_withA, year, true)
 
   cd()
-  cd(split(Base.source_path(), "src")[1])
+  cd(split(Base.source_path(), "FishABM.jl")[1])
+  cd("FishABM.jl")
+
+  #=for i = 1:length(split(Base.source_path(), "/"))-1
+    cd = (split(Base.source_path(), "/")[i])
+  end=#
 
   if(isdir("agentPlots") == false)
-    print("agentPlots not found, now creating a directory for plots \n")
+    print("agentPlots not found, now creating a directory for plots in location '"pwd()"' \n")
     mkdir("agentPlots")
+    cd("agentPlots")
   end
 
   totalNumber = length(agentplots)/1000
   #without anthro effects
-  for i = 1:length(agentPlots)
+  print("Without anthro effects \n")
+  for i = 1:length(agentplots)
     filenumber = i/1000
-    print("writing file number $filenumber of $totalNumber (", integer((filenumber/totalnumber)*100))
-    print("%) \n")
+    print("writing file number $filenumber of $totalNumber (", integer((filenumber/totalNumber)*100)"%) \n")
     filenumber = prod(split("$filenumber", ".", 2))
     filenumber *= prod(fill("0", 5-length(filenumber)))
-    draw(PNG(split(Base.source_path(), "src")[1]"agentPlots/agent_$filenumber.png", 8.65cm, 20cm), agentplots[i])
+    draw(PNG(pwd()"agentPlots/agent_$filenumber.png", 8.65cm, 20cm), agentplots[i])
   end
 
   totalNumber = length(agentplots_withA)/1000
   #with anthro effects
+  print("With anthro effects \n")
   for i = 1:length(agentplots_withA)
     filenumber = i/1000
-    print("writing file number $filenumber of $totalNumber (", integer((filenumber/totalnumber)*100))
-    print("%) \n")
+    print("writing file number $filenumber of $totalNumber (", integer((filenumber/totalnumber)*100)"%) \n")
     filenumber = prod(split("$filenumber", ".", 2))
     filenumber *= prod(fill("0", 5-length(filenumber)))
-    draw(PNG(split(Base.source_path(), "src")[1]"agentPlots/agent_withA_$filenumber.png", 8.65cm, 20cm), agentplots_withA[i])
+    draw(PNG(pwd()"agentPlots/agent_withA_$filenumber.png", 8.65cm, 20cm), agentplots_withA[i])
   end
 end

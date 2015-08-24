@@ -20,9 +20,6 @@ export
   move!,
   injectagents!,
 
-  # simulate.jl functions
-  simulate
-
   # simulationResults.jl functions
   convertToStringArray,
   simulationSummary,
@@ -38,11 +35,15 @@ export
   plot_stock_k,
   writeOutAgentPlots,
 
+  # simulate.jl functions
+  simulate
+
 include("types.jl")
 include("utilities.jl")
 include("agents.jl")
 include("stock.jl")
 include("agent_stock_interaction.jl")
 include("simulate.jl")
+include("simulationResults.jl")
 
 end # module
