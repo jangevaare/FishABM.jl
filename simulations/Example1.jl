@@ -2,7 +2,6 @@
 
 using Cairo, DataFrames, Distributions, Gadfly, FishABM
 
-
 # Specify stock assumptions:
 #
 # * Age specific mortality
@@ -144,9 +143,9 @@ resultsToWrite = convertToStringArray(resultSummary)
 
 cd()
 cd(split(Base.source_path(), "Example")[1])
-if (isdir("plots") == false)
-  print("Created a directory for plots. \n")
-  mkdir("plots")
+if (isdir("results") == false)
+  print("Created a directory for a summary of the results. \n")
+  mkdir("results")
 end
 
 writedlm(split(Base.source_path(), "Example")[1]"results/exampleOne_stage1.csv", resultsToWrite[:, :, 1], ',')
