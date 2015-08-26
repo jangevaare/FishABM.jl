@@ -104,7 +104,7 @@ s_db.population
 # * Cohort
 
 # Export images of all plots (for later compilation into an animation, perhaps)
-agentplots = plot_agents(e_a, a_db, 1, false)
+agentplots = plot(e_a, a_db, 1, false)
 for i = 1:length(agentplots)
   filenumber = i/1000
   filenumber = prod(split("$filenumber", ".", 2))
@@ -113,5 +113,5 @@ for i = 1:length(agentplots)
 end
 
 # Visualize stock age distribution through time
-stockplot=plot_stock(s_db)
+stockplot=plot(s_db)
 draw(PNG(Pkg.dir("FishABM")"/examples/plots/population.png", 20cm, 15cm), stockplot)
