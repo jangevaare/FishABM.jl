@@ -1,7 +1,6 @@
 """
+types.jl
 Type definitions for the structured stock-level and agent-level model components
-Justin Angevaare
-May 2015
 """
 
 type AgentAssumptions

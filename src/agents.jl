@@ -1,7 +1,6 @@
 """
+agents.jl
 Functions for agent-level model components
-Justin Angevaare
-May 2015
 """
 
 function AgentDB(cohorts, AgentAssumptions::AgentAssumptions, reduced::Bool)

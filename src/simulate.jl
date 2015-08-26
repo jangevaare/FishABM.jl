@@ -1,7 +1,6 @@
 """
+simulate.jl
 Combine agent and stock level functions into a simulation framework
-Justin Angevaare
-May 2015
 """
 
 function simulate(carrying_capacity::Vector, effort::Vector, bump::Vector, s_db::StockDB, s_a::StockAssumptions, a_a::AgentAssumptions, e_a::EnvironmentAssumptions, reduced=true::Bool, progress=true::Bool, limit=250000::Int64)

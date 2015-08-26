@@ -1,7 +1,6 @@
 """
+stock.jl
 Functions for structured stock-level model components
-Justin Angevaare
-May 2015
 """
 
 function harvest!(effort::Float64, stockdb::StockDB, stockassumptions::StockAssumptions)

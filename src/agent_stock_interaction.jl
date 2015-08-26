@@ -1,7 +1,6 @@
 """
+agent_stock_interaction.jl
 Functions for interaction between the structured stock-level and agent-level model components
-Justin Angevaare
-May 2015
 """
 
 function spawn!(agent_db::DataFrame, StockDB::StockDB, StockAssumptions::StockAssumptions, EnvironmentAssumptions::EnvironmentAssumptions, cohort::Int, carryingcapacity::Float64)
