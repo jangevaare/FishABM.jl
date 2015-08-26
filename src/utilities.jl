@@ -3,6 +3,7 @@ Tools/utilities to improve ease of use of Fish_ABM.jl
 Justin Angevaare
 May 2015
 """
+import Gadfly.plot
 
 function pad_environment!(EnvironmentAssumptions::EnvironmentAssumptions)
   """
@@ -20,7 +21,7 @@ function pad_environment!(EnvironmentAssumptions::EnvironmentAssumptions)
   return EnvironmentAssumptions
 end
 
-function plot_agents(e_a::EnvironmentAssumptions, a_db::DataFrame, cohort::Int, progress=true::bool)
+function plot(e_a::EnvironmentAssumptions, a_db::DataFrame, cohort::Int, progress=true::bool)
   """
   Create an interactive visualization of an agent database with IJulia
   """
@@ -98,7 +99,7 @@ function plot_agents(e_a::EnvironmentAssumptions, a_db::DataFrame, cohort::Int, 
   return week_plots
 end
 
-function plot_stock(stockdb::StockDB)
+function plot(stockdb::StockDB)
   """
   Create an area plot of the adult population
   """
@@ -129,7 +130,7 @@ function plot_stock(stockdb::StockDB)
                     background_color=color("white")))
 end
 
-function plot_stock_k(stockdb::StockDB, k::Vector, layered=true::Bool)
+function plot(stockdb::StockDB, k::Vector, layered=true::Bool)
   """
   Create an area plot of the adult population and the carrying capacity
   """

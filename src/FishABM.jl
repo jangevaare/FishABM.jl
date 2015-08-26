@@ -26,9 +26,7 @@ export
 
   # Utilities
   pad_environment!,
-  plot_agents,
-  plot_stock,
-  plot_stock_k,
+  plot,
 
   # Simulate
   simulate
