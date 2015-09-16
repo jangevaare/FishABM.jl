@@ -148,9 +148,14 @@ if (isdir("results") == false)
   mkdir("results")
 end
 
-writedlm(split(Base.source_path(), "Example")[1]"results/exampleOne_stage1.csv", resultsToWrite[:, :, 1], ',')
-writedlm(split(Base.source_path(), "Example")[1]"results/exampleOne_stage2.csv", resultsToWrite[:, :, 2], ',')
-writedlm(split(Base.source_path(), "Example")[1]"results/exampleOne_stage3.csv", resultsToWrite[:, :, 3], ',')
+if (reducedOutput == true)
+  writedlm(split(Base.source_path(), "Example")[1]"results/exampleOne_stage1.csv", resultsToWrite[:, :, 1], ',')
+  writedlm(split(Base.source_path(), "Example")[1]"results/exampleOne_stage2.csv", resultsToWrite[:, :, 2], ',')
+  writedlm(split(Base.source_path(), "Example")[1]"results/exampleOne_stage3.csv", resultsToWrite[:, :, 3], ',')
+  writedlm(split(Base.source_path(), "Example")[1]"results/reducedResults_exampleOne.csv", resultsToWrite[:, :, 4], ',')
+else
+  writedlm(split(Base.source_path(), "Example")[1]"results/fullResults_exampleOne.csv", resultsToWrite[:, :], ',')
+end
 
 s_db.population
 s_db_withA.population
