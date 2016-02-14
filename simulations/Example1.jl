@@ -2,22 +2,30 @@
 
 using Cairo, DataFrames, Distributions, Gadfly, FishABM
 
+# To define all parameters at the same time highlight before running
+
 # Specify stock assumptions:
-s_a = StockAssumptions()
+# * s_a.naturalmortality = Age specific mortality
+# * s_a.halfmature = Age at 50% maturity
+# * s_a.broodsize = Age specific fecundity
+# * s_a.fecunditycompensation = Compensatory strength - fecundity
+# * s_a.maturitycompensation = Compensatory strength - age at 50% maturity
+# * s_a.mortalitycompensation = Compensatory strength - adult natural mortality
+# * s_a.catchability = Age specific catchability
 
-s_a.naturalmortality = [0.50, 0.50, 0.50, 0.50, 0.50, 0.50, 0.50] # * Age specific mortality
-s_a.halfmature = 5 # * Age at 50% maturity
-s_a.broodsize = [2500, 7500, 15000, 20000, 22500, 27500, 32500] # * Age specific fecundity
-s_a.fecunditycompensation = 2 # * Compensatory strength - fecundity
-s_a.maturitycompensation = 0.25 # * Compensatory strength - age at 50% maturity
-s_a.mortalitycompensation = 1 # * Compensatory strength - adult natural mortality
-s_a.catchability = [0.00001, 0.00002, 0.000025, 0.000025, 0.000025, 0.000025, 0.000025] # * Age specific catchability
-
+s_a = StockAssumptions([0.50, 0.50, 0.50, 0.50, 0.50, 0.50, 0.50],
+                       5,
+                       [2500, 7500, 15000, 20000, 22500, 27500, 32500],
+                       2,
+                       0.25,
+                       1,
+                       [0.00001, 0.00002, 0.000025, 0.000025, 0.000025, 0.000025, 0.000025])
 
 # Specify environment assumptions:
-# * Spawning areas
-# * Habitat types
-# * Risk areas
+# * e_a.spawning = Spawning areas
+# * e_a.habitat = Habitat types
+# * e_a.risk = Risk areas
+
 
 cd()
 cd(split(Base.source_path(), "simulations")[1])
@@ -26,19 +34,18 @@ if(isdir("maps") == false)
   print("directory not found. \n")
 end
 
-e_a = EnvironmentAssumptions()
 e_a = EnvironmentAssumptions(readdlm(split(Base.source_path(), "simulations")[1]"maps/LakeHuron_1km_spawning.csv", ',', Bool)[150:end, 200:370],
-                            readdlm(split(Base.source_path(), "simulations")[1]"maps/LakeHuron_1km_habitat.csv", ',', Int)[150:end, 200:370],
-                            readdlm(split(Base.source_path(), "simulations")[1]"maps/LakeHuron_1km_risk.csv", ',', Bool)[150:end, 200:370])
+                             readdlm(split(Base.source_path(), "simulations")[1]"maps/LakeHuron_1km_habitat.csv", ',', Int)[150:end, 200:370],
+                             readdlm(split(Base.source_path(), "simulations")[1]"maps/LakeHuron_1km_risk.csv", ',', Bool)[150:end, 200:370])
 
 pad_environment!(e_a)
 
 # Specify agent assumptions:
-# * Weekly natural mortality rate (by habitat type in the rows, and stage in the columns)
-# * Weekly risk mortality (by stage)
-# * Stage length (in weeks)
-# * Movement weight matrices
-# * Movement autonomy
+# * a_a.naturalmortality =  Weekly natural mortality rate (by habitat type in the rows, and stage in the columns)
+# * a_a.extramortality = Weekly risk mortality (by stage)
+# * a_a.growth = Stage length (in weeks)
+# * a_a.movement = Movement weight matrices
+# * a_a.autonomy =  Movement autonomy
 
 a_a = AgentAssumptions([[0.80 0.095 0.09]
                         [0.10 0.095 0.09]
@@ -46,24 +53,18 @@ a_a = AgentAssumptions([[0.80 0.095 0.09]
                         [0.80 0.80 0.09]
                         [0.80 0.80 0.80]
                         [0.80 0.80 0.80]],
-                        [0.0, 0.0, 0.0],
-                        [19, 52, 104],
-                        Array[[[0. 0. 0.]
-                               [0. 1. 0.]
-                               [0. 0. 0.]],
-                              [[1. 2. 1.]
-                               [1. 2. 1.]
-                               [1. 1. 1.]],
-                              [[1. 2. 1.]
-                               [1. 1. 1.]
-                               [1. 1. 1.]]],
-                        [0., 0.5, 0.75])
-a_a.naturalmortality
-a_a.extramortality
-a_a.growth
-a_a.movement[2][:,2]
-a_a.autonomy
+                       [0.0, 0.0, 0.0],
+                       [19, 52, 104]
+                       Array[[[0. 0. 0.]
+                              [0. 1. 0.]
+                              [0. 0. 0.]], [[1. 2. 1.]
+                                            [1. 2. 1.]
+                                            [1. 1. 1.]], [[1. 2. 1.]
+                                                          [1. 1. 1.]
+                                                          [1. 1. 1.]]],
+                       [0., 0.5, 0.75])
 
+a_a_withA = AgentAssumptions(
 a_a_withA = AgentAssumptions([[0.80 0.095 0.09]
                         [0.10 0.095 0.09]
                         [0.80 0.095 0.09]
@@ -74,18 +75,16 @@ a_a_withA = AgentAssumptions([[0.80 0.095 0.09]
                         [19, 52, 104],
                         Array[[[0. 0. 0.]
                                [0. 1. 0.]
-                               [0. 0. 0.]],
-                              [[1. 2. 2.]
-                               [1. 2. 1.]
-                               [1. 1. 1.]],
-                              [[1. 2. 2.]
-                               [1. 1. 1.]
-                               [1. 1. 1.]]],
-                        [0., 0.5, 0.75])
+                               [0. 0. 0.]], [[1. 2. 2.]
+                                             [1. 2. 1.]
+                                             [1. 1. 1.]], [[1. 2. 2.]
+                                                           [1. 1. 1.]
+                                                           [1. 1. 1.]]],
+                             [0., 0.5, 0.75]))
 
 # Initialize stock database:
-# * Initial population distribution
-# * Empty harvest dataset
+# * s_db.population = Initial population distribution
+# * s_db.harvest = Empty harvest dataset
 
 s_db = StockDB(DataFrame(age_2=1000,
                          age_3=500,
