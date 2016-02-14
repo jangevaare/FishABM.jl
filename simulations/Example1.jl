@@ -3,26 +3,15 @@
 using Cairo, DataFrames, Distributions, Gadfly, FishABM
 
 # Specify stock assumptions:
-#
-# * s_a.naturalmortality = Age specific mortality
-# * s_a.halfmature = Age at 50% maturity
-# * s_a.broodsize = Age specific fecundity
-# * Carrying capacity (total adults)
-# * s_a.fecunditycompensation = Compensatory strength - fecundity
-# * s_a.maturitycompensation = Compensatory strength - age at 50% maturity
-# * s_a.mortalitycompensation = Compensatory strength - adult natural mortality
-# * s_a.catchability = Age specific catchability
-
 s_a = StockAssumptions()
-#s_a::StockAssumptions
 
-s_a.naturalmortality = [0.50, 0.50, 0.50, 0.50, 0.50, 0.50, 0.50]
-s_a.halfmature = 5
-s_a.broodsize = [2500, 7500, 15000, 20000, 22500, 27500, 32500]
-s_a.fecunditycompensation = 2
-s_a.maturitycompensation = 0.25
-s_a.mortalitycompensation = 1
-s_a.catchability = [0.00001, 0.00002, 0.000025, 0.000025, 0.000025, 0.000025, 0.000025]
+s_a.naturalmortality = [0.50, 0.50, 0.50, 0.50, 0.50, 0.50, 0.50] # * Age specific mortality
+s_a.halfmature = 5 # * Age at 50% maturity
+s_a.broodsize = [2500, 7500, 15000, 20000, 22500, 27500, 32500] # * Age specific fecundity
+s_a.fecunditycompensation = 2 # * Compensatory strength - fecundity
+s_a.maturitycompensation = 0.25 # * Compensatory strength - age at 50% maturity
+s_a.mortalitycompensation = 1 # * Compensatory strength - adult natural mortality
+s_a.catchability = [0.00001, 0.00002, 0.000025, 0.000025, 0.000025, 0.000025, 0.000025] # * Age specific catchability
 
 
 # Specify environment assumptions:
@@ -37,6 +26,7 @@ if(isdir("maps") == false)
   print("directory not found. \n")
 end
 
+e_a = EnvironmentAssumptions()
 e_a = EnvironmentAssumptions(readdlm(split(Base.source_path(), "simulations")[1]"maps/LakeHuron_1km_spawning.csv", ',', Bool)[150:end, 200:370],
                             readdlm(split(Base.source_path(), "simulations")[1]"maps/LakeHuron_1km_habitat.csv", ',', Int)[150:end, 200:370],
                             readdlm(split(Base.source_path(), "simulations")[1]"maps/LakeHuron_1km_risk.csv", ',', Bool)[150:end, 200:370])
@@ -49,16 +39,6 @@ pad_environment!(e_a)
 # * Stage length (in weeks)
 # * Movement weight matrices
 # * Movement autonomy
-
-movementArray = Array[[[0. 0. 0.]
-                               [0. 1. 0.]
-                               [0. 0. 0.]],
-                              [[1. 2. 1.]
-                               [1. 2. 1.]
-                               [1. 1. 1.]],
-                              [[1. 2. 1.]
-                               [1. 1. 1.]
-                               [1. 1. 1.]]]
 
 a_a = AgentAssumptions([[0.80 0.095 0.09]
                         [0.10 0.095 0.09]

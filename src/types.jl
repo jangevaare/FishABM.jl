@@ -15,6 +15,7 @@ type AgentAssumptions
   autonomy::Vector
 
   AgentAssumptions() = new()
+  AgentAssumptions(naturalmortality, extramortality, growth, movement, autonomy) = new(naturalmortality, extramortality, growth, movement, autonomy)
 end
 
 type EnvironmentAssumptions
@@ -26,6 +27,7 @@ type EnvironmentAssumptions
   risk::Array
 
   EnvironmentAssumptions() = new()
+  EnvironmentAssumptions(spawning, habitat, risk) = new(spawning, habitat, risk)
 end
 
 type StockDB
@@ -36,6 +38,7 @@ type StockDB
   harvest::DataFrame
 
   StockDB() = new()
+  StockDB(population, harvest) = new(population, harvest)
 end
 
 type StockAssumptions
@@ -57,4 +60,5 @@ type StockAssumptions
   catchability::Vector
 
   StockAssumptions() = new()
+  StockAssumptions(naturalmortality, halfmature, broodsize, fecunditycompensation, maturitycompensation, mortalitycompensation, catchability) = new(naturalmortality, halfmature, broodsize, fecunditycompensation, maturitycompensation, mortalitycompensation, catchability)
 end
