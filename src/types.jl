@@ -13,6 +13,8 @@ type AgentAssumptions
   growth::Vector
   movement::Array
   autonomy::Vector
+
+  AgentAssumptions() = new()
 end
 
 type EnvironmentAssumptions
@@ -22,6 +24,8 @@ type EnvironmentAssumptions
   spawning::Array
   habitat::Array
   risk::Array
+
+  EnvironmentAssumptions() = new()
 end
 
 type StockDB
@@ -30,6 +34,8 @@ type StockDB
   """
   population::DataFrame
   harvest::DataFrame
+
+  StockDB() = new()
 end
 
 type StockAssumptions
@@ -40,7 +46,7 @@ type StockAssumptions
   Compensatory fecundity - compensatory strength for changes in fecundity. Compensatory strength is a divisor of K which will result in a 68% change in fecundity - smaller values indicate lower compensation strength. Compensation function based on Normal CDF. Use NaN if compensation is assumed to not occur.
   Compensatory sexual maturity - compensatory strength for changes in age of sexual maturity. Compensatory strength is a divisor of K which will result in a 68% change in age of sexual maturity - smaller values indicate lower compensation strength. Compensation function based on Normal CDF. Use NaN if compensation is assumed to not occur.
   Compensatory mortality - compensatory strength for changes in age of sexual maturity. Compensatory strength is a divisor of K which will result in a 68% change in natural mortality - smaller values indicate lower compensation strength. Compensation function based on Normal CDF. Use NaN if compensation is assumed to not occur.
-Age specific catachability
+  Age specific catachability
   """
   naturalmortality::Vector
   halfmature::Float64
@@ -49,4 +55,6 @@ Age specific catachability
   maturitycompensation::Float64
   mortalitycompensation::Float64
   catchability::Vector
+
+  StockAssumptions() = new()
 end

@@ -47,5 +47,4 @@ module FishABM
     include("agent_stock_interaction.jl")
     include("simulate.jl")
     include("simulationResults.jl")
-
 end
