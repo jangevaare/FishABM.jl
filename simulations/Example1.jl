@@ -54,7 +54,7 @@ a_a = AgentAssumptions([[0.80 0.095 0.09]
                         [0.80 0.80 0.80]
                         [0.80 0.80 0.80]],
                        [0.0, 0.0, 0.0],
-                       [19, 52, 104]
+                       [19, 52, 104],
                        Array[[[0. 0. 0.]
                               [0. 1. 0.]
                               [0. 0. 0.]], [[1. 2. 1.]
@@ -80,7 +80,7 @@ a_a_withA = AgentAssumptions([[0.80 0.095 0.09]
                                              [1. 1. 1.]], [[1. 2. 2.]
                                                            [1. 1. 1.]
                                                            [1. 1. 1.]]],
-                             [0., 0.5, 0.75]))
+                              [0., 0.5, 0.75])
 
 # Initialize stock database:
 # * s_db.population = Initial population distribution
@@ -127,7 +127,7 @@ s_db_withA = StockDB(DataFrame(age_2=1000,
 # * Agent assumptions
 # * Environment assumptions
 
-k = rand(Normal(500000, 50000),3)
+k = rand(Normal(500000, 50000),10)
 reducedOutput = false
 
 a_db_withA = simulate(k,[0], [100000], s_db_withA, s_a, a_a_withA, e_a, reducedOutput)

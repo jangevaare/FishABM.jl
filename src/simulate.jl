@@ -17,6 +17,7 @@ function simulate(carrying_capacity::Vector, effort::Vector, bump::Vector, s_db:
   bumpvec[1:length(bump)] = bump
   harvest_effort = fill(0., years)
   harvest_effort[1:length(effort)] = effort
+
   if reduced
     c=fill(0, 104)
     for i = 1:104
@@ -28,8 +29,9 @@ function simulate(carrying_capacity::Vector, effort::Vector, bump::Vector, s_db:
   for y = 1:1
     spawn!(a_db, s_db, s_a, e_a, y, carrying_capacity[y])
     totalagents=size(a_db[y,1],1)
+
     if progress
-      progressbar = Progress(52, 5, "Year $y simulation progress ($totalagents agents)", 30)
+      progressbar = Progress(52, 5, "Year 1, week 1 of simulation ($totalagents agents)", 30)
     end
     for w = 1:52
       if w > 1 && c[w] - c[w-1] == 1
@@ -47,6 +49,7 @@ function simulate(carrying_capacity::Vector, effort::Vector, bump::Vector, s_db:
       end
     end
   end
+
   for y = 2:years
     spawn!(a_db, s_db, s_a, e_a, y, carrying_capacity[y])
     totalagents=size(a_db[y,1],1)
