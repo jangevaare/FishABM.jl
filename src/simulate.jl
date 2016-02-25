@@ -26,38 +26,41 @@ function simulate(carrying_capacity::Vector, effort::Vector, bump::Vector, s_db:
   else
     c = 1:104
   end
-  for y = 1:1
-    spawn!(a_db, s_db, s_a, e_a, y, carrying_capacity[y])
-    totalagents=size(a_db[y,1],1)
 
-    if progress
-      progressbar = Progress(52, 5, "Year 1, week 1 of simulation ($totalagents agents)", 30)
+  #For loop start, merge with for 2:years
+  y=1
+  spawn!(a_db, s_db, s_a, e_a, y, carrying_capacity[y])
+  totalagents=size(a_db[y,1],1)
+  if progress
+    print("DISCLAIMER: Due to the nature of the ProgressMeter and current parameters, ETA will always be unrealistically short before population growth\n")
+    progressbar = Progress(years*52, 30, " Year 1, week 1 of simulation ($totalagents agents) ", 30)
+  end
+  for w = 1:52
+    if w > 1 && c[w] - c[w-1] == 1
+      a_db[y,c[w]] = deepcopy(a_db[y,c[w-1]])
     end
-    for w = 1:52
-      if w > 1 && c[w] - c[w-1] == 1
-        a_db[y,c[w]] = deepcopy(a_db[y,c[w-1]])
-      end
-      kill!(a_db, e_a, a_a, y, c[w])
-      move!(a_db, a_a, e_a, y, c[w])
-      if w==52
-        harvest!(harvest_effort[y], s_db, s_a)
-        ageadults!(s_db, s_a, carrying_capacity[y], bumpvec[y])
-      end
-      graduate!(a_db, s_db, a_a, y, w, c[w])
-      if progress
-        next!(progressbar)
-      end
+    kill!(a_db, e_a, a_a, y, c[w])
+    move!(a_db, a_a, e_a, y, c[w])
+    if w==52
+      harvest!(harvest_effort[y], s_db, s_a)
+      ageadults!(s_db, s_a, carrying_capacity[y], bumpvec[y])
+    end
+    graduate!(a_db, s_db, a_a, y, w, c[w])
+    if progress
+      progressbar.desc = " Year $y, week $w of simulation ($totalagents agents) "
+      next!(progressbar)
     end
   end
+  #end of old for loop
 
   for y = 2:years
     spawn!(a_db, s_db, s_a, e_a, y, carrying_capacity[y])
     totalagents=size(a_db[y,1],1)
     @assert(totalagents < limit, "> $limit agents in current simulation, stopping here.")
-    if progress
-      progressbar = Progress(52, 5, "Year $y simulation progress ($totalagents agents)", 30)
-    end
     for w = 1:52
+      if progress
+        progressbar.desc = " Year $y, week $w of simulation ($totalagents agents) "
+      end
       if w > 1 && c[w] - c[w-1] == 1
         a_db[y,c[w]] = deepcopy(a_db[y,c[w-1]])
       end
@@ -75,6 +78,7 @@ function simulate(carrying_capacity::Vector, effort::Vector, bump::Vector, s_db:
       graduate!(a_db, s_db, a_a, y, w, c[w])
       graduate!(a_db, s_db, a_a, y-1, w+52, c[w+52])
       if progress
+        progressbar.desc = " Year $y, week $w of simulation ($totalagents agents) "
         next!(progressbar)
       end
     end

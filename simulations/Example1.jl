@@ -64,7 +64,6 @@ a_a = AgentAssumptions([[0.80 0.095 0.09]
                                                           [1. 1. 1.]]],
                        [0., 0.5, 0.75])
 
-a_a_withA = AgentAssumptions(
 a_a_withA = AgentAssumptions([[0.80 0.095 0.09]
                         [0.10 0.095 0.09]
                         [0.80 0.095 0.09]
@@ -127,7 +126,7 @@ s_db_withA = StockDB(DataFrame(age_2=1000,
 # * Agent assumptions
 # * Environment assumptions
 
-k = rand(Normal(500000, 50000),10)
+k = rand(Normal(500000, 50000), 10)
 reducedOutput = false
 
 a_db_withA = simulate(k,[0], [100000], s_db_withA, s_a, a_a_withA, e_a, reducedOutput)
