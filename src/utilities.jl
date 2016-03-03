@@ -220,7 +220,7 @@ function writeOutAgentPlots(agent_db::DataFrame, year::Int, e_a::EnvironmentAssu
     print("%) \n")
     filenumber = prod(split("$filenumber", ".", 2))
     filenumber *= prod(fill("0", 5-length(filenumber)))
-    draw(PNG("agent_$filenumber.svg", 8.65cm, 20cm), agentplots[i])
+    draw(PNG("agent_$filenumber.png", 8.65cm, 20cm), agentplots[i])
   end
 
   print("Done writing plots \n")

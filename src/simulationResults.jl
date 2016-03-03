@@ -9,25 +9,25 @@ function convertToStringArray(arrayToConvert::Array, reduced::Bool)
   """
   Converts the results summary to ASCIIString so there are titles in the file that is saved
   """
-
-  titleRow = 1
+  titleRowNum = 1
+  titleRow = ["Year",
+              "Carrying Capacity",
+              "Alive",
+              "Natural Mortalities",
+              "Risk mortalities",
+              "Total deaths",
+              "Alive (with)",
+              "Natural Mortalities (with)",
+              "Risk Mortalities (with)",
+              "Total Deaths (with)",
+              "Alive differential (without - with)",
+              "Total deaths differential (without-with)"]
 
   if (reduced == true)
     arrayWithTitles = Array(ASCIIString, size(arrayToConvert)[1], size(arrayToConvert)[2], size(arrayToConvert)[3])
 
     for stage = 1:size(arrayWithTitles)[3]
-      arrayWithTitles[titleRow, 1, stage] = "Year"
-      arrayWithTitles[titleRow, 2, stage] = "Carrying Capacity"
-      arrayWithTitles[titleRow, 3, stage] = "Alive"
-      arrayWithTitles[titleRow, 4, stage] = "Natural Mortalities"
-      arrayWithTitles[titleRow, 5, stage] = "Risk mortalities"
-      arrayWithTitles[titleRow, 6, stage] = "Total deaths"
-      arrayWithTitles[titleRow, 7, stage] = "Alive (with)"
-      arrayWithTitles[titleRow, 8, stage] = "Natural Mortalities (with)"
-      arrayWithTitles[titleRow, 9, stage] = "Risk Mortalities (with)"
-      arrayWithTitles[titleRow, 10, stage] = "Total Deaths (with)"
-      arrayWithTitles[titleRow, 11, stage] = "Alive differential (without - with)"
-      arrayWithTitles[titleRow, 12, stage] = "Total deaths differential (without-with)"
+      arrayWithTitles[titleRowNum, :, stage] = titleRow
     end
 
     #converts each int to a string
@@ -41,18 +41,7 @@ function convertToStringArray(arrayToConvert::Array, reduced::Bool)
   else
     arrayWithTitles = Array(ASCIIString, size(arrayToConvert)[1], size(arrayToConvert)[2])
 
-    arrayWithTitles[titleRow, 1] = "Year"
-    arrayWithTitles[titleRow, 2] = "Carrying Capacity"
-    arrayWithTitles[titleRow, 3] = "Alive"
-    arrayWithTitles[titleRow, 4] = "Natural Mortalities"
-    arrayWithTitles[titleRow, 5] = "Risk mortalities"
-    arrayWithTitles[titleRow, 6] = "Total deaths"
-    arrayWithTitles[titleRow, 7] = "Alive (with)"
-    arrayWithTitles[titleRow, 8] = "Natural Mortalities (with)"
-    arrayWithTitles[titleRow, 9] = "Risk Mortalities (with)"
-    arrayWithTitles[titleRow, 10] = "Total Deaths (with)"
-    arrayWithTitles[titleRow, 11] = "Alive differential (without - with)"
-    arrayWithTitles[titleRow, 12] = "Total deaths differential (without-with)"
+    arrayWithTitles[titleRowNum, :] = titleRow
 
       #converts each int to a string
     for year = 2:size(arrayWithTitles)[1] #stage

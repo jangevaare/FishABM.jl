@@ -31,16 +31,12 @@ function simulate(carrying_capacity::Vector, effort::Vector, bump::Vector, s_db:
   y=1
   spawn!(a_db, s_db, s_a, e_a, y, carrying_capacity[y])
   if progress
-    totalagents=size(a_db[y,1],1)
-    totalStock=s_db.population[1]
     print("DISCLAIMER: Due to the nature of the ProgressMeter and current parameters, ETA will always be unrealistically short preceeding population growth\n")
-    progressbar = Progress(years*52, 30, " Year 1, week 1 of simulation ($totalagents agents, $totalStock age_2 adults) ", 30)
+    progressbar = Progress(years*52, 30, " Year 1, week 1 of simulation ($(size(a_db[y,1],1)) agents, $(s_db.population[1]) age_2 adults) ", 30)
   end
   for w = 1:52
     if progress
-        totalagents=size(a_db[y,1],1)
-        totalStock=s_db.population[1]
-        progressbar.desc = " Year $y, week $w of simulation ($totalagents agents, $totalStock age_2 adults) "
+        progressbar.desc = " Year $y, week $w of simulation ($(size(a_db[y,1],1)) agents, $(s_db.population[1]) age_2 adults) "
         next!(progressbar)
       end
     if w > 1 && c[w] - c[w-1] == 1
@@ -60,10 +56,9 @@ function simulate(carrying_capacity::Vector, effort::Vector, bump::Vector, s_db:
     spawn!(a_db, s_db, s_a, e_a, y, carrying_capacity[y])
     @assert(totalagents < limit, "> $limit agents in current simulation, stopping here.")
     for w = 1:52
+      @assert(a_db.)
       if progress
-        totalagents=size(a_db[y,1],1)
-        totalStock=s_db.population[1]
-        progressbar.desc = " Year $y, week $w of simulation ($totalagents agents, $totalStock age_2 adults) "
+        progressbar.desc = " Year $y, week $w of simulation ($(size(a_db[y,1],1)) agents, $(s_db.population[1]) age_2 adults) "
       end
       if w > 1 && c[w] - c[w-1] == 1
         a_db[y,c[w]] = deepcopy(a_db[y,c[w-1]])

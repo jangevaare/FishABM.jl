@@ -139,8 +139,8 @@ a_db = simulate(k, [0], [10], s_db, s_a, a_a, e_a, reducedOutput)
 
 #Summary of the simulation results for running with and without anthro effects
 #There is a bug in the summary or simulation resulting in a negative number of agents alive
-resultSummary = simulationSummary(a_db, a_db_withA, k, reducedOutput)
-resultsToWrite = convertToStringArray(resultSummary, reducedOutput)
+resultSummary = simulationSummary_test(a_db, a_db_withA, k, reducedOutput)
+resultsToWrite = convertToStringArray_test(resultSummary, reducedOutput)
 
 cd()
 cd(split(Base.source_path(), "Example")[1])
