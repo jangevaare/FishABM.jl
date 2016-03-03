@@ -13,7 +13,7 @@ using Cairo, DataFrames, Distributions, Gadfly, FishABM
 # * s_a.mortalitycompensation = Compensatory strength - adult natural mortality
 # * s_a.catchability = Age specific catchability
 
-s_a = StockAssumptions([0.50, 0.50, 0.50, 0.50, 0.50, 0.50, 0.50],
+s_a = StockAssumptions([0.35, 0.40, 0.45, 0.50, 0.55, 0.60, 0.65],
                        5,
                        [2500, 7500, 15000, 20000, 22500, 27500, 32500],
                        2,
@@ -47,39 +47,43 @@ pad_environment!(e_a)
 # * a_a.movement = Movement weight matrices
 # * a_a.autonomy =  Movement autonomy
 
-a_a = AgentAssumptions([[0.80 0.095 0.09]
-                        [0.10 0.095 0.09]
-                        [0.80 0.095 0.09]
-                        [0.80 0.80 0.09]
-                        [0.80 0.80 0.80]
-                        [0.80 0.80 0.80]],
-                       [0.0, 0.0, 0.0],
-                       [19, 52, 104],
+a_a = AgentAssumptions([[0.80 0.095 0.09 0.05]
+                        [0.10 0.095 0.09 0.10]
+                        [0.80 0.095 0.09 0.20]
+                        [0.80 0.80 0.09 0.30]
+                        [0.80 0.80 0.80 0.40]
+                        [0.80 0.80 0.80 0.50]],
+                       [0.0, 0.0, 0.0, 0.0],
+                       [19, 52, 104, 1040],
                        Array[[[0. 0. 0.]
                               [0. 1. 0.]
                               [0. 0. 0.]], [[1. 2. 1.]
                                             [1. 2. 1.]
                                             [1. 1. 1.]], [[1. 2. 1.]
                                                           [1. 1. 1.]
-                                                          [1. 1. 1.]]],
-                       [0., 0.5, 0.75])
+                                                          [1. 1. 1.]], [[1. 2. 1.]
+                                                                        [1. 1. 1.]
+                                                                        [1. 1. 1.]]],
+                       [0., 0.5, 0.75, 0.5])
 
-a_a_withA = AgentAssumptions([[0.80 0.095 0.09]
-                        [0.10 0.095 0.09]
-                        [0.80 0.095 0.09]
-                        [0.80 0.80 0.09]
-                        [0.80 0.80 0.80]
-                        [0.80 0.80 0.80]],
-                        [1.0, 1.0, 1.0],
-                        [19, 52, 104],
-                        Array[[[0. 0. 0.]
-                               [0. 1. 0.]
-                               [0. 0. 0.]], [[1. 2. 2.]
-                                             [1. 2. 1.]
-                                             [1. 1. 1.]], [[1. 2. 2.]
-                                                           [1. 1. 1.]
-                                                           [1. 1. 1.]]],
-                              [0., 0.5, 0.75])
+a_a_withA = AgentAssumptions([[0.80 0.095 0.09 0.05]
+                        [0.10 0.095 0.09 0.10]
+                        [0.80 0.095 0.09 0.20]
+                        [0.80 0.80 0.09 0.30]
+                        [0.80 0.80 0.80 0.40]
+                        [0.80 0.80 0.80 0.50]],
+                       [1.0, 1.0, 1.0, 1.0],
+                       [19, 52, 104, 1040],
+                       Array[[[0. 0. 0.]
+                              [0. 1. 0.]
+                              [0. 0. 0.]], [[1. 2. 1.]
+                                            [1. 2. 1.]
+                                            [1. 1. 1.]], [[1. 2. 1.]
+                                                          [1. 1. 1.]
+                                                          [1. 1. 1.]], [[1. 2. 1.]
+                                                                        [1. 1. 1.]
+                                                                        [1. 1. 1.]]],
+                       [0., 0.5, 0.75, 0.5])
 
 # Initialize stock database:
 # * s_db.population = Initial population distribution
@@ -126,13 +130,15 @@ s_db_withA = StockDB(DataFrame(age_2=1000,
 # * Agent assumptions
 # * Environment assumptions
 
-k = rand(Normal(500000, 50000), 3)
+k = rand(Normal(500000, 50000), 5)
 reducedOutput = false
 
-a_db_withA = simulate(k,[0], [100000], s_db_withA, s_a, a_a_withA, e_a, reducedOutput)
-a_db = simulate(k, [0], [100000], s_db, s_a, a_a, e_a, reducedOutput)
+#switched bump from [100000] to [10] for quick testing
+a_db_withA = simulate(k,[0], [10], s_db_withA, s_a, a_a_withA, e_a, reducedOutput)
+a_db = simulate(k, [0], [10], s_db, s_a, a_a, e_a, reducedOutput)
 
 #Summary of the simulation results for running with and without anthro effects
+#There is a bug in the summary or simulation resulting in a negative number of agents alive
 resultSummary = simulationSummary(a_db, a_db_withA, k, reducedOutput)
 resultsToWrite = convertToStringArray(resultSummary, reducedOutput)
 
@@ -147,7 +153,8 @@ if (reducedOutput == true)
   writedlm(split(Base.source_path(), "Example")[1]"results/exampleOne_stage1.csv", resultsToWrite[:, :, 1], ',')
   writedlm(split(Base.source_path(), "Example")[1]"results/exampleOne_stage2.csv", resultsToWrite[:, :, 2], ',')
   writedlm(split(Base.source_path(), "Example")[1]"results/exampleOne_stage3.csv", resultsToWrite[:, :, 3], ',')
-  writedlm(split(Base.source_path(), "Example")[1]"results/reducedResults_exampleOne.csv", resultsToWrite[:, :, 4], ',')
+  writedlm(split(Base.source_path(), "Example")[1]"results/exampleOne_stageAdult.csv", resultsToWrite[:, :, 4], ',')
+  writedlm(split(Base.source_path(), "Example")[1]"results/reducedResults_exampleOne.csv", resultsToWrite[:, :, 5], ',')
 else
   writedlm(split(Base.source_path(), "Example")[1]"results/fullResults_exampleOne.csv", resultsToWrite[:, :], ',')
 end
@@ -160,11 +167,11 @@ s_db_withA.population
 # * Agent database (as generated by simulation)
 # * Cohort
 showProgress = true
-year = 2
+year = 4
 
-#Remove a_db_withA dependence from this function
-writeOutAgentPlots(a_db, year, e_a, "agentPlots", showProgress)
-writeOutAgentPlots(a_db_withA, year, e_a, "agentPlots_withA", showProgress)
+#Remove a_db_withA dependence from this function, there is a bug in write out agentplots
+writeOutAgentPlots_test(a_db, year, e_a, "agentPlots", showProgress)
+writeOutAgentPlots_test(a_db_withA, year, e_a, "agentPlots_withA", showProgress)
 
 # Visualize stock age distribution through time
 stockplot = plot_stock(s_db)
