@@ -32,7 +32,7 @@ function simulate(carrying_capacity::Vector, effort::Vector, bump::Vector, s_db:
   spawn!(a_db, s_db, s_a, e_a, y, carrying_capacity[y])
   totalagents=size(a_db[y,1],1)
   if progress
-    print("DISCLAIMER: Due to the nature of the ProgressMeter and current parameters, ETA will always be unrealistically short before population growth\n")
+    print("DISCLAIMER: Due to the nature of the ProgressMeter and current parameters, ETA will always be unrealistically short preceeding population growth\n")
     progressbar = Progress(years*52, 30, " Year 1, week 1 of simulation ($totalagents agents) ", 30)
   end
   for w = 1:52

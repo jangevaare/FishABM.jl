@@ -190,7 +190,7 @@ end
 
 #function for writing out agent plots, write the code here instead of writing it in the example file
 #Update file locations to be more dynamic
-function writeOutAgentPlots(agent_db::DataFrame, agent_db_withA::DataFrame, year::Int, e_a::EnvironmentAssumptions, progress::Bool)
+function writeOutAgentPlots(agent_db::DataFrame, year::Int, e_a::EnvironmentAssumptions, plotDir::ASCIIString, progress::Bool)
   """
   Visualize agent movement, specify:
   #  * e_a = Environment assumption object
@@ -201,45 +201,27 @@ function writeOutAgentPlots(agent_db::DataFrame, agent_db_withA::DataFrame, year
   """
 
   agentplots = plot_agents(e_a, agent_db, year, progress)
-  agentplots_withA = plot_agents(e_a, agent_db_withA, year, progress)
 
   cd()
   cd(split(Base.source_path(), "FishABM.jl")[1])
-  cd("FishABM.jl")
+  cd("FishABM.jl/simulations/plots")
 
-  #=for i = 1:length(split(Base.source_path(), "/"))-1
-    cd = (split(Base.source_path(), "/")[i])
-  end=#
-
-  if(isdir("agentPlots") == false)
-    print("agentPlots not found, now creating a directory for plots in location '"pwd()"' \n")
-    mkdir("agentPlots")
-    cd("agentPlots")
+  if(isdir(plotDir) == false)
+    print("$plotDir not found, now creating a directory for plots in location '"pwd()"' \n")
+    mkdir(plotDir)
   end
 
+  cd(plotDir)
+
   totalNumber = length(agentplots)/1000
-  #without anthro effects
-  print("Without anthro effects \n")
   for i = 1:length(agentplots)
     filenumber = i/1000
     print("writing file number $filenumber of $totalNumber (", integer((filenumber/totalNumber)*100))
     print("%) \n")
     filenumber = prod(split("$filenumber", ".", 2))
     filenumber *= prod(fill("0", 5-length(filenumber)))
-    draw(SVG(pwd()"/agentPlots/agent_$filenumber.svg", 8.65cm, 20cm), agentplots[i])
+    draw(PNG("agent_$filenumber.svg", 8.65cm, 20cm), agentplots[i])
   end
 
-  totalNumber = length(agentplots_withA)/1000
-  #with anthro effects
-  print("With anthro effects \n")
-  for i = 1:length(agentplots_withA)
-    filenumber = i/1000
-    print("writing file number $filenumber of $totalNumber (", integer((filenumber/totalNumber)*100))
-    print("%) \n")
-    filenumber = prod(split("$filenumber", ".", 2))
-    filenumber *= prod(fill("0", 5-length(filenumber)))
-    draw(SVG(pwd()"/agentPlots/agent_withA_$filenumber.svg", 8.65cm, 20cm), agentplots_withA[i])
-  end
-
-  print("done \n")
+  print("Done writing plots \n")
 end

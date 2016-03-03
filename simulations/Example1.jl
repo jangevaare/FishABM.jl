@@ -126,15 +126,15 @@ s_db_withA = StockDB(DataFrame(age_2=1000,
 # * Agent assumptions
 # * Environment assumptions
 
-k = rand(Normal(500000, 50000), 10)
+k = rand(Normal(500000, 50000), 3)
 reducedOutput = false
 
 a_db_withA = simulate(k,[0], [100000], s_db_withA, s_a, a_a_withA, e_a, reducedOutput)
 a_db = simulate(k, [0], [100000], s_db, s_a, a_a, e_a, reducedOutput)
 
-#Summary of the simulation results
+#Summary of the simulation results for running with and without anthro effects
 resultSummary = simulationSummary(a_db, a_db_withA, k, reducedOutput)
-resultsToWrite = convertToStringArray(resultSummary)
+resultsToWrite = convertToStringArray(resultSummary, reducedOutput)
 
 cd()
 cd(split(Base.source_path(), "Example")[1])
@@ -162,7 +162,9 @@ s_db_withA.population
 showProgress = true
 year = 2
 
-writeOutAgentPlots(a_db, a_db_withA, year, e_a, showProgress)
+#Remove a_db_withA dependence from this function
+writeOutAgentPlots(a_db, year, e_a, "agentPlots", showProgress)
+writeOutAgentPlots(a_db_withA, year, e_a, "agentPlots_withA", showProgress)
 
 # Visualize stock age distribution through time
 stockplot = plot_stock(s_db)

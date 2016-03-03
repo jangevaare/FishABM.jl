@@ -5,7 +5,7 @@ August 2015
 """
 
 #converts all entries in an array to strings
-function convertToStringArray(arrayToConvert::Array)
+function convertToStringArray(arrayToConvert::Array, reduced::Bool)
   """
   Converts the results summary to ASCIIString so there are titles in the file that is saved
   """
