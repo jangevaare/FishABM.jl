@@ -40,6 +40,13 @@ e_a = EnvironmentAssumptions(readdlm(split(Base.source_path(), "simulations")[1]
 
 pad_environment!(e_a)
 
+e_a
+e_a.spawning
+e_a.habitat
+e_a.risk
+
+spy(e_a.habitat)
+
 # Specify agent assumptions:
 # * a_a.naturalmortality =  Weekly natural mortality rate (by habitat type in the rows, and stage in the columns)
 # * a_a.extramortality = Weekly risk mortality (by stage)
@@ -136,12 +143,15 @@ reducedOutput = false
 #switched bump from [100000] to [10] for quick testing
 a_db_withA = simulate(k,[0], [10], s_db_withA, s_a, a_a_withA, e_a, reducedOutput)
 a_db = simulate(k, [0], [10], s_db, s_a, a_a, e_a, reducedOutput)
+a_db_reduced = simulate(k, [0], [0], s_db, s_a, a_a, e_a, true)
 
 #Summary of the simulation results for running with and without anthro effects
 #There is a bug in the summary or simulation resulting in a negative number of agents alive
 resultSummary = simulationSummary_test(a_db, a_db_withA, k, reducedOutput)
 resultsToWrite = convertToStringArray_test(resultSummary, reducedOutput)
 
+id=ind2sub(size(e_a.habitat), 703)
+sizeof(e_a.habitat)
 cd()
 cd(split(Base.source_path(), "Example")[1])
 if (isdir("results") == false)

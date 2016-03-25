@@ -1,46 +1,40 @@
-# module
+
+Pkg.add("Fontconfig")
 
 module FishABM
 
-  using DataFrames, Distributions, Gadfly, ProgressMeter
+  #Gadfly is broken but will be required later
+  using Distributions, ProgressMeter
 
   export
     # Types
-    AgentAssumptions,
+    AdultAssumptions,
+    ClassPopulation,
+    EnviroAgent,
     EnvironmentAssumptions,
-    StockAssumptions,
-    StockDB,
 
     # agent_stock_interaction.jl functions
-    spawn!,
-    graduate!,
 
     # agents.jl functions
     AgentDB,
-    kill!,
-    localmove,
-    move!,
-    injectagents!,
+    injectAgents!,
+
+    # environment.jl functions
+    hashEnvironment!,
+    initEnvironment,
+    pad_environment!
 
     # simulationResults.jl functions
-    convertToStringArray,
-    simulationSummary,
 
     # stock.jl functions
-    harvest!,
-    ageadults!,
 
     # utilities.jl functions
-    pad_environment!,
-    plot_agents,
-    plot_stock,
-    plot_stock_k,
-    writeOutAgentPlots,
 
     # simulate.jl functions
-    simulate
 
+    #include types in the module first, they are used in various .jl files
     include("types.jl")
+    include("environment.jl")
     include("utilities.jl")
     include("agents.jl")
     include("stock.jl")
