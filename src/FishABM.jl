@@ -1,6 +1,4 @@
 
-Pkg.add("Fontconfig")
-
 module FishABM
 
   #Gadfly is broken but will be required later

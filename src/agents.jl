@@ -6,11 +6,6 @@
 """
 
 
-Pkg.installed("Fontconfig")
-using Fontconfig
-Pkg.build("Fontconfig")
-
-
 function AgentDB(enviro::EnvironmentAssumptions)
   """
     A function which will create an empty agent_db for the specified simulation length
@@ -30,12 +25,6 @@ function AgentDB(enviro::EnvironmentAssumptions)
 
   return agent_db
 end
-
-using Gadfly
-using Fontconfig
-
-Pkg.rm("Fontconfig")
-Pkg.add("Gadfly")
 
 function injectAgents!(agent_db::Vector, spawn_agents::Vector, new_stock::Vector, week_num::Int64)
   """
