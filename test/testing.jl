@@ -12,7 +12,9 @@ May 2015
 File name: simulate.jl
 """
 
-function simulate_test(carrying_capacity::Vector, effort::Vector, bump::Vector, initStock::Vector, e_a::EnvironmentAssumptions, progress=true::Bool, limit=250000::Int64)
+function simulate_test(carrying_capacity::Vector, effort::Vector, bump::Vector, initStock::Vector,
+    e_a::EnvironmentAssumptions, a_assumpt::AdultAssumptions,
+    progress=true::Bool, limit=250000::Int64)
   """
     Brings together all of the functions necessary for a life cycle simulation
   """
@@ -23,9 +25,9 @@ function simulate_test(carrying_capacity::Vector, effort::Vector, bump::Vector, 
   #initialize the agent database and hash the enviro
   a_db = AgentDB(e_a); hashEnvironment!(a_db, e_a);
 
-  #initialize stock, add the agents to the database
+  #initialize stock, and
   globalPopulation = ClassPopulation(initStock, 0)
-  #could add init stock to initialize it based off of the carrying capacity, maybe 50%?
+  #could add init stock to initialize it based off of the carrying capacity, maybe 50% bump?
   injectAgents!(a_db, e_a.spawningHash, initStock, 0)
 
   bumpvec = fill(0, years)
@@ -35,25 +37,25 @@ function simulate_test(carrying_capacity::Vector, effort::Vector, bump::Vector, 
 
   #initialize the progress meter
   if progress
-    totalPopulation = globalPopulation.alive[1]+globalPopulation.alive[2]+globalPopulation.alive[3]+globalPopulation.alive[4]
-    progressBar = Progress(years*52, 30, " Year 1 (of $years), week 1 of simulation ($totalPopulation) fish, $(globalPopulation.alive[4]) adult fish) ", 30)
-    print(" Year 1, week 1 ($(round(Int, 1/(years*52)))%) of simulation ($(globalPopulation.alive[4]) adult fish, $totalPopulation total) \n")
+    totalPopulation = globalPopulation.stage[1]+globalPopulation.stage[2]+globalPopulation.stage[3]+globalPopulation.stage[4]
+    progressBar = Progress(years*52, 30, " Year 1 (of $years), week 1 of simulation ($totalPopulation) fish, $(globalPopulation.stage[4]) adult fish) ", 30)
+    print(" Year 1, week 1 ($(round(Int, 1/(years*52)))%) of simulation ($(globalPopulation.stage[4]) adult fish, $totalPopulation total) \n")
   end
 
   spawnWeek = 1; harvestWeek = 52;
 
   for y = 1:years
     for w = 1:52
-      totalPopulation = globalPopulation.alive[1]+globalPopulation.alive[2]+globalPopulation.alive[3]+globalPopulation.alive[4]
+      totalPopulation = globalPopulation.stage[1]+globalPopulation.stage[2]+globalPopulation.stage[3]+globalPopulation.stage[4]
       @assert(totalPopulation < limit, "> $limit agents in current simulation, stopping here.")
 
       if progress
-        progressBar.desc = " Year $y (of $years), week $w of simulation ($totalPopulation) fish, $(globalPopulation.alive[4]) adult fish) "
+        progressBar.desc = " Year $y (of $years), week $w of simulation ($totalPopulation) fish, $(globalPopulation.stage[4]) adult fish) "
         next!(progressBar)
         current = (y*52)+w
         if current%50 == 0
           total = (years+1)*52; percent = (current/total)*100;
-          print(" Year $y, week $w ($(round(Int, percent))%) of simulation ($(globalPopulation.alive[4]) adult fish, $totalPopulation total) \n")
+          print(" Year $y, week $w ($(round(Int, percent))%) of simulation ($(globalPopulation.stage[4]) adult fish, $totalPopulation total) \n")
         end
       end
 
@@ -72,6 +74,7 @@ function simulate_test(carrying_capacity::Vector, effort::Vector, bump::Vector, 
         #harvest!(harvest_effort[y], s_db, s_a)
       end
     end
+    removeEmptyClass!(a_db)
   end
 
   return a_db
@@ -107,7 +110,7 @@ spawnPath = string(split(Base.source_path(), "FishABM.jl")[1], "FishABM.jl/maps/
 habitatPath = string(split(Base.source_path(), "FishABM.jl")[1], "FishABM.jl/maps/LakeHuron_1km_habitat.csv")
 riskPath = string(split(Base.source_path(), "FishABM.jl")[1], "FishABM.jl/maps/LakeHuron_1km_risk.csv")
 
-e_a = initEnvironment(spawnPath, habitatPath, riskPath)
+enviro_a = initEnvironment(spawnPath, habitatPath, riskPath)
 
 
 
@@ -156,11 +159,12 @@ bumpVar = [100000]
 initialStock = [5000, 10000, 15000, 20000]
 
 using ProgressMeter
-adb = simulate_test(k, effortVar, bumpVar, initialStock, e_a)
+adb = simulate_test(k, effortVar, bumpVar, initialStock, enviro_a)
 
 #refactor to include class population instead of each different stage
 
-
+len = length(adb[enviro_a.spawningHash[1]].class)
+adb[e_a.spawningHash[1]].class[len].stage[4]
 
 #=
 *****
@@ -190,24 +194,35 @@ Files, specific file headers etc
 """
 
 
-
-#params
-env_a = initEnvironment(spawnPath, habitatPath, riskPath)
-age_db = AgentDB(e_a)
-hashEnvironment!(age_db, env_a)
-
-
-env_a = e_a
-a_db = adb
-
-#Write a function for cleaning up an empty class
-for i = 1:length(a_db)
-  if (a_db[i]).stageOne[1] == 0 && (a_db[i]).stageTwo[1] == 0 && (a_db[i]).stageThree[1] == 0 && (a_db[i]).stageFour[1] == 0
-    if (a_db[i]).stageThree[1] == 0 && (a_db[i]).stageFour[1] == 0
-
+function kill!_test(agent_db::DataFrame, EnvironmentAssumptions::EnvironmentAssumptions, AgentAssumptions::AgentAssumptions, cohort::Int, week::Int)
+  """
+  This function will kill agents based on all stage and location specific risk factors described in a `EnvironmentAssumptions`
+  """
+  for i = 1:length(agent_db[cohort, week][:alive])
+    if agent_db[cohort, week][:alive][i] > 0
+      killed = rand(Binomial(agent_db[cohort, week][:alive][i], AgentAssumptions.naturalmortality[EnvironmentAssumptions.habitat[agent_db[cohort, week][:location][i]],agent_db[cohort, week][:stage][i]][1]))
+      agent_db[cohort, week][:dead_natural][i] += killed
+      agent_db[cohort, week][:alive][i] -= killed
+      if agent_db[cohort, week][:alive][i] > 0
+        if EnvironmentAssumptions.risk[agent_db[cohort, week][:location][i]]
+          killed = rand(Binomial(agent_db[cohort, week][:alive][i], AgentAssumptions.extramortality[agent_db[cohort, week][:stage][i]][1]))
+          agent_db[cohort, week][:dead_risk][i] += killed
+          agent_db[cohort, week][:alive][i] -= killed
+        end
+      end
     end
   end
 end
+
+
+#params
+#Requires age_db, env_a, age_a, year, week)
+env_a = initEnvironment(spawnPath, habitatPath, riskPath)
+age_db = AgentDB(env_a)
+hashEnvironment!(age_db, env_a)
+
+
+#Write a function for killing agents
 
 
 

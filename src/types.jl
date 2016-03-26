@@ -1,9 +1,10 @@
 """
   Type definitions for the structured stock-level and agent-level model components
-  Justin Angevaare
+  Justin Angevaare, Devin Rose
   File name: types.jl
   May 2015
 """
+
 
 
 type AdultAssumptions
@@ -23,6 +24,8 @@ type AdultAssumptions
       strength is a divisor of K which will result in a 68% change in natural mortality - smaller
       values indicate lower compensation strength. Compensation function based on Normal CDF. Use NaN
       if compensation is assumed to not occur.
+
+      Last Update: March 2016
   """
   naturalmortality::Vector
   halfmature::Float64
@@ -32,15 +35,20 @@ type AdultAssumptions
   mortalitycompensation::Float64
   catchability::Vector
 
-  StockAssumptions() = new()
-  StockAssumptions(naturalmortality, halfmature, broodsize, fecunditycompensation, maturitycompensation, mortalitycompensation, catchability) =
+  AdultAssumptions() = new()
+  AdultAssumptions(naturalmortality, halfmature, broodsize, fecunditycompensation, maturitycompensation, mortalitycompensation, catchability) =
     new(naturalmortality, halfmature, broodsize, fecunditycompensation, maturitycompensation, mortalitycompensation, catchability)
 end
 
 
 
 type ClassPopulation
-  alive::Vector
+  """
+    Used to store information from a spawning class.
+
+    Last Update: March 2016
+  """
+  stage::Vector
   weekNum::Int64
 end
 
@@ -49,6 +57,8 @@ end
 type EnviroAgent
   """
     This is an "Environment agent" used to track fish population dynamics.
+
+    Last Update: March 2016
   """
   locationID::Int64
 
@@ -58,7 +68,9 @@ type EnviroAgent
   stageFour::Vector
   weekNum::Vector
 
-  EnviroAgent(locationID) = new(locationID, [0], [0], [0], [0], [0])
+  class::Vector
+
+  EnviroAgent(locationID) = new(locationID, [0], [0], [0], [0], [0], [ClassPopulation([0,0,0,0], 0)])
 end
 
 
@@ -67,6 +79,8 @@ type EnvironmentAssumptions
   """
     Precondition: Location id should be specified as NaN when a valid location does not exist.
     A specialized type which contains layers of information to indicate spawning area, habitat type, and additional risks.
+
+    Last Update: March 2016
   """
   spawning::Array
   spawningHash::Vector

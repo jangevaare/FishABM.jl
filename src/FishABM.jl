@@ -1,7 +1,13 @@
+"""
+  Module definition for an agent-based model
+  Justin Angevaare, Devin Rose
+  File name: agents.jl
+  May 2015
+"""
 
 module FishABM
 
-  #Gadfly is broken but will be required later
+  #Gadfly is broken (Fontconfig.jl issue) but will be required later
   using Distributions, ProgressMeter
 
   export
@@ -16,6 +22,7 @@ module FishABM
     # agents.jl functions
     AgentDB,
     injectAgents!,
+    removeEmptyClass!,
 
     # environment.jl functions
     hashEnvironment!,
@@ -32,11 +39,11 @@ module FishABM
 
     #include types in the module first, they are used in various .jl files
     include("types.jl")
-    include("environment.jl")
-    include("utilities.jl")
-    include("agents.jl")
-    include("stock.jl")
     include("agent_stock_interaction.jl")
+    include("agents.jl")
+    include("environment.jl")
     include("simulate.jl")
     include("simulationResults.jl")
+    include("stock.jl")
+    include("utilities.jl")
 end
