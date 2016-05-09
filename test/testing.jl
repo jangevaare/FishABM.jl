@@ -4,7 +4,6 @@
 using  FishABM
 
 
-
 """
 Combine agent and stock level functions into a simulation framework
 Justin Angevaare
@@ -12,9 +11,9 @@ May 2015
 File name: simulate.jl
 """
 
-function simulate_test(carrying_capacity::Vector, effort::Vector, bump::Vector, initStock::Vector,
-    e_a::EnvironmentAssumptions, a_assumpt::AdultAssumptions,
-    progress=true::Bool, limit=250000::Int64)
+function simulate_test(carrying_capacity::Vector, effort::Vector, bump::Vector,
+  initStock::Vector, e_a::EnvironmentAssumptions, a_assumpt::AdultAssumptions,
+  age_assumpt::AgentAssumptions, progress=true::Bool, limit=250000::Int64)
   """
     Brings together all of the functions necessary for a life cycle simulation
   """
@@ -28,7 +27,9 @@ function simulate_test(carrying_capacity::Vector, effort::Vector, bump::Vector, 
   #initialize stock, and
   globalPopulation = ClassPopulation(initStock, 0)
   #could add init stock to initialize it based off of the carrying capacity, maybe 50% bump?
-  injectAgents!(a_db, e_a.spawningHash, initStock, 0)
+  for i = 1:4
+    injectAgents!(a_db, e_a.spawningHash, initStock[5-i], -age_assumpt.growth[((7-i)%4)+1])
+  end
 
   bumpvec = fill(0, years)
   bumpvec[1:length(bump)] = bump
@@ -75,6 +76,8 @@ function simulate_test(carrying_capacity::Vector, effort::Vector, bump::Vector, 
       end
     end
     removeEmptyClass!(a_db)
+    #updateAgentLocationArray!()
+    #
   end
 
   return a_db
@@ -93,7 +96,7 @@ end
 # * s_a.maturitycompensation = Compensatory strength - age at 50% maturity
 # * s_a.mortalitycompensation = Compensatory strength - adult natural mortality
 # * s_a.catchability = Age specific catchability
-s_a = StockAssumptions([0.35, 0.40, 0.45, 0.50, 0.55, 0.60, 0.65],
+adult_a = AdultAssumptions([0.35, 0.40, 0.45, 0.50, 0.55, 0.60, 0.65],
                        5,
                        [2500, 7500, 15000, 20000, 22500, 27500, 32500],
                        2,
@@ -105,7 +108,6 @@ s_a = StockAssumptions([0.35, 0.40, 0.45, 0.50, 0.55, 0.60, 0.65],
 # * e_a.spawning = Spawning areas
 # * e_a.habitat = Habitat types
 # * e_a.risk = Risk areas
-
 spawnPath = string(split(Base.source_path(), "FishABM.jl")[1], "FishABM.jl/maps/LakeHuron_1km_spawning.csv")
 habitatPath = string(split(Base.source_path(), "FishABM.jl")[1], "FishABM.jl/maps/LakeHuron_1km_habitat.csv")
 riskPath = string(split(Base.source_path(), "FishABM.jl")[1], "FishABM.jl/maps/LakeHuron_1km_risk.csv")
@@ -126,14 +128,14 @@ enviro_a = initEnvironment(spawnPath, habitatPath, riskPath)
 # * a_a.movement = Movement weight matrices
 # * a_a.autonomy =  Movement autonomy
 
-a_a = AdultAssumptions([[0.80 0.095 0.09 0.05]
+a_a = AgentAssumptions([[0.80 0.095 0.09 0.05]
                         [0.10 0.095 0.09 0.10]
                         [0.80 0.095 0.09 0.20]
                         [0.80 0.80 0.09 0.30]
                         [0.80 0.80 0.80 0.40]
                         [0.80 0.80 0.80 0.50]],
                        [0.0, 0.0, 0.0, 0.0],
-                       [19, 52, 104, 1040],
+                       [19, 52, 104, 0],
                        Array[[[0. 0. 0.]
                               [0. 1. 0.]
                               [0. 0. 0.]], [[1. 2. 1.]
@@ -159,12 +161,13 @@ bumpVar = [100000]
 initialStock = [5000, 10000, 15000, 20000]
 
 using ProgressMeter
-adb = simulate_test(k, effortVar, bumpVar, initialStock, enviro_a)
+adb = simulate_test(k, effortVar, bumpVar, initialStock, enviro_a, adult_a, a_a)
 
 #refactor to include class population instead of each different stage
 
 len = length(adb[enviro_a.spawningHash[1]].class)
-adb[e_a.spawningHash[1]].class[len].stage[4]
+adb[enviro_a.spawningHash[1]].alive[3]
+adb[enviro_a.spawningHash[1]].weekNum[3]
 
 #=
 *****
@@ -174,6 +177,130 @@ Files, specific file headers etc
 *****
 =#
 
+function localmove(location::Int, stage::Int, AgentAssumptions::AgentAssumptions, EnvironmentAssumptions::EnvironmentAssumptions)
+  """
+  A function which generates movement to a neighbouring location based on movement weights
+  """
+  @assert(0.<= AgentAssumptions.autonomy[stage] <=1., "Autonomy level must be between 0 and 1")
+  # location id to coordinates
+  id=ind2sub(size(EnvironmentAssumptions.habitat), location)
+  # Select surrounding block of IDs, match up with weights
+  choices = [sub2ind(size(EnvironmentAssumptions.habitat), [id[1]-1,id[1],id[1]+1,id[1]-1,id[1],id[1]+1,id[1]-1,id[1],id[1]+1], [id[2]-1, id[2]-1, id[2]-1, id[2], id[2], id[2], id[2]+1, id[2]+1, id[2]+1]) [AgentAssumptions.movement[stage][:]]]
+  # If habitat type is 0, remove row
+  choices = choices[EnvironmentAssumptions.habitat[choices[:,1]] .> 0, :]
+  # Match locations with natural mortality rates
+  choices = hcat(choices, 1-AgentAssumptions.naturalmortality[EnvironmentAssumptions.habitat[choices[:,1]], stage])
+  # Normalize into probabilities
+  choices[:,2]=choices[:,2]/sum(choices[:,2])
+  choices[:,3]=choices[:,3]/sum(choices[:,3])
+  # Weight options by autonomy
+  return int(choices[findfirst(rand(Multinomial(1, choices[:,2]*(1-AgentAssumptions.autonomy[stage]) + choices[:,3]*(AgentAssumptions.autonomy[stage])))), 1])
+end
+
+function move!(agent_db::DataFrame, AgentAssumptions::AgentAssumptions, EnvironmentAssumptions::EnvironmentAssumptions, cohort::Int, week::Int)
+  """
+  This function will move agents based on stage and location
+  """
+  for i = 1:length(agent_db[cohort, week][:alive])
+    if agent_db[cohort, week][:alive][i] > 0
+      agent_db[cohort, week][:location][i] = localmove(agent_db[cohort, week][:location][i], agent_db[cohort, week][:stage][i], AgentAssumptions, EnvironmentAssumptions)
+    end
+  end
+end
+
+#Write a function to move! the fish of a single enviro agent
+using Gadfly
+#required params
+agent_db = adb
+agent_a = a_a
+enviro_types = enviro_a.habitat
+current_week = 104
+
+
+popDensity = Array(Int64, size(enviro_a.habitat)[1], size(enviro_a.habitat)[2])
+
+for i = 1:size(enviro_a.habitat)[1]
+  for j = 1:size(enviro_a.habitat)[2]
+    popDensity[i, j] = 0
+  end
+end
+
+classLen = length(agent_db[1].alive)
+
+for k = 1:length(agent_db)
+  popDensity[agent_db[k].locationID] = 1
+
+  for m = 1:classLen
+    popDensity[agent_db[k].locationID] += agent_db[k].alive[m]
+  end
+end
+
+spy(popDensity)
+
+
+#=
+
+Done the update pop density function
+
+=#
+
+#@assert(0.<= AgentAssumptions.autonomy[stage] <=1., "Autonomy level must be between 0 and 1")
+classLen = length(agent_db[1].alive)
+totalHeight = size(enviro_a.habitat)[1]
+
+stageWeeks = [agent_a.growth[4], agent_a.growth[3],agent_a.growth[2],agent_a.growth[1]]
+
+int(choices[findfirst(rand(Multinomial(1, choices[:,2]*(1-AgentAssumptions.autonomy[stage]) + choices[:,3]*(AgentAssumptions.autonomy[stage])))), 1])
+
+for n= 1:length(agent_db)
+  id = agent_db[n].locationID
+  #normally check if the enviro agent is empty
+  moveChoices=[
+    id-totalHeight-1, id-1, id+totalHeight-1,
+    id-totalHeight, id, id+totalHeight,
+    id-totalHeight+1, id+1, id+totalHeight+1]
+
+  #remove all non water choices
+  moveChoices = moveChoices[enviro_a.habitat[moveChoices[:,1]] .> 0, :]
+
+  #for each cohort
+  for cohort = 1:length(classLen)
+    weekDifferential = current_week - agent_db.weekNum[cohort]
+
+    for q = length(agent_a.growth):1
+      if weekDifferential >= agent_a.growth[q]
+        stage = q
+        q = 1
+      end
+    end
+
+    #return int(choices[findfirst(rand(Multinomial(1, choices[:,2]*(1-AgentAssumptions.autonomy[stage]) + choices[:,3]*(AgentAssumptions.autonomy[stage])))), 1])
+  end
+
+  moveChoices = hcat(moveChoices, 1-agent_a.naturalmortality[enviro_a.habitat[choices[:,1]], stage])
+
+end
+
+
+testVisual = Array(Int64, 25, 25)
+
+for i = 1:size(testVisual)[1]
+  for j = 1:size(testVisual)[2]
+    testVisual[i,j] = 1
+  end
+end
+
+
+for i = 1:(size(testVisual)[1]*size(testVisual)[2])
+  if (i%25)-5 == 0
+    testVisual[i] = 1
+  else
+    testVisual[i] = i
+  end
+  
+  imStoopid = spy(testVisual)
+  display(imStoopid)
+end
 
 
 
@@ -193,10 +320,11 @@ Files, specific file headers etc
   May 2015
 """
 
-
+#Write a function to graduate the fish of a single enviro agent
 function kill!_test(agent_db::DataFrame, EnvironmentAssumptions::EnvironmentAssumptions, AgentAssumptions::AgentAssumptions, cohort::Int, week::Int)
   """
-  This function will kill agents based on all stage and location specific risk factors described in a `EnvironmentAssumptions`
+    This function will kill agents based on all stage and location specific risk
+    factors described in a `EnvironmentAssumptions`
   """
   for i = 1:length(agent_db[cohort, week][:alive])
     if agent_db[cohort, week][:alive][i] > 0
@@ -215,23 +343,12 @@ function kill!_test(agent_db::DataFrame, EnvironmentAssumptions::EnvironmentAssu
 end
 
 
-#params
+#params, need to add the mortality summary typedef
 #Requires age_db, env_a, age_a, year, week)
+#Als
 env_a = initEnvironment(spawnPath, habitatPath, riskPath)
 age_db = AgentDB(env_a)
 hashEnvironment!(age_db, env_a)
 
 
 #Write a function for killing agents
-
-
-
-
-
-#=
-*****
-
-Code testing/scripting for new functionality below
-
-*****
-=#

@@ -13,6 +13,7 @@ module FishABM
   export
     # Types
     AdultAssumptions,
+    AgentAssumptions,
     ClassPopulation,
     EnviroAgent,
     EnvironmentAssumptions,

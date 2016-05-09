@@ -3,6 +3,8 @@
   Justin Angevaare, Devin Rose
   File name: types.jl
   May 2015
+
+  Last Update: April 2016
 """
 
 
@@ -42,6 +44,25 @@ end
 
 
 
+type AgentAssumptions
+  """
+    Assumptions regarding mortality, movement, and growth
+
+    Last Update: April 2016
+  """
+  naturalmortality::Array
+  extramortality::Vector
+  growth::Vector
+  movement::Array
+  autonomy::Vector
+
+  AgentAssumptions() = new()
+  AgentAssumptions(naturalmortality, extramortality, growth, movement, autonomy) =
+    new(naturalmortality, extramortality, growth, movement, autonomy)
+end
+
+
+
 type ClassPopulation
   """
     Used to store information from a spawning class.
@@ -58,19 +79,17 @@ type EnviroAgent
   """
     This is an "Environment agent" used to track fish population dynamics.
 
-    Last Update: March 2016
+    Last Update: April 2016
   """
   locationID::Int64
 
-  stageOne::Vector
-  stageTwo::Vector
-  stageThree::Vector
-  stageFour::Vector
+  alive::Vector
+
   weekNum::Vector
 
   class::Vector
 
-  EnviroAgent(locationID) = new(locationID, [0], [0], [0], [0], [0], [ClassPopulation([0,0,0,0], 0)])
+  EnviroAgent(locationID) = new(locationID, [0], [0], [ClassPopulation([0,0,0,0], 0)])
 end
 
 
@@ -92,4 +111,12 @@ type EnvironmentAssumptions
 
   EnvironmentAssumptions(spawning, spawningHash, habitat, risk, riskHash) =
   new(spawning, spawningHash, habitat, risk, riskHash)
+end
+
+
+
+type MortalitySummary
+  """
+    Last Update: March 2016
+  """
 end

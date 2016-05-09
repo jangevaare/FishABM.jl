@@ -28,48 +28,41 @@ function AgentDB(enviro::EnvironmentAssumptions)
   return agent_db
 end
 
-function injectAgents!(agent_db::Vector, spawn_agents::Vector, new_stock::Vector, week_num::Int64)
+
+function injectAgents!(agent_db::Vector, spawn_agents::Vector, new_stock::Int64, week_num::Int64)
   """
     This function injects agents into the environment.
     For now, all agents are evenly distributed throughout the spawning areas.
 
-    Last update: March 2016
+    Last update: April 2016
   """
   @assert(length(new_stock)<=4, "There can only by four independent life stages of fish.")
 
+  addToEach = round(Int, floor(new_stock/length(spawn_agents)))
+  leftOver = new_stock%length(spawn_agents)
+  randomAgent = rand(1:length(spawn_agents))
+
   for agentRef = 1:length(agent_db) #add a new population class to every agent
-    push!((agent_db[agentRef]).stageOne, 0)
-    push!((agent_db[agentRef]).stageTwo, 0)
-    push!((agent_db[agentRef]).stageThree, 0)
-    push!((agent_db[agentRef]).stageFour, 0)
+    #push!((agent_db[agentRef]).stageOne, 0)
+    #push!((agent_db[agentRef]).stageTwo, 0)
+    #push!((agent_db[agentRef]).stageThree, 0)
+    #push!((agent_db[agentRef]).stageFour, 0)
+    push!((agent_db[agentRef]).alive, 0)
     push!((agent_db[agentRef]).weekNum, week_num)
-    push!((agent_db[agentRef]).class, ClassPopulation([0,0,0,0], week_num))
+    #push!((agent_db[agentRef]).class, ClassPopulation([0,0,0,0], week_num))
   end
 
   classLength = length((agent_db[1]).weekNum)
-  classLen = length((agent_db[1]).class)
-  for fishStage = 1:length(new_stock)
-    addToEach = round(Int, floor(new_stock[fishStage]/length(spawn_agents)))
-    leftOver = new_stock[fishStage]%length(spawn_agents)
-    randomAgent = rand(1:length(spawn_agents))
-    for agentNum = 1:length(spawn_agents)
-      addToAgent = addToEach
-      if agentNum == randomAgent
-        addToAgent += leftOver
-      end
+  #classLen = length((agent_db[1]).class)
 
-      #Unfortunately, we need to do an if conditional for each agent stage
-      if fishStage == 1
-        (agent_db[spawn_agents[agentNum]]).stageOne[classLength] = addToAgent
-      elseif fishStage == 2
-        (agent_db[spawn_agents[agentNum]]).stageTwo[classLength] = addToAgent
-      elseif fishStage == 3
-        (agent_db[spawn_agents[agentNum]]).stageThree[classLength] = addToAgent
-      else
-        (agent_db[spawn_agents[agentNum]]).stageFour[classLength] = addToAgent
-      end
-      ((agent_db[spawn_agents[agentNum]]).class)[classLen].stage[fishStage] = addToAgent
+  for agentNum = 1:length(spawn_agents)
+    addToAgent = addToEach
+    if agentNum == randomAgent
+      addToAgent += leftOver
     end
+
+    (agent_db[spawn_agents[agentNum]]).alive[classLength] = addToAgent
+    #((agent_db[spawn_agents[agentNum]]).class)[classLen].stage[fishStage] = addToAgent
   end
 
   return agent_db
@@ -84,7 +77,7 @@ function removeEmptyClass!(age_db::Vector)
   """
   removeClass = true
   for i = 1:length(age_db)
-    if ((age_db[i]).class[1]).stage[1] != 0 || ((age_db[i]).class[1]).stage[2] != 0 || ((age_db[i]).class[1]).stage[3] != 0 || ((age_db[i]).class[1]).stage[4] != 0
+    if (age_db[i]).alive[1] != 0
       removeClass = false
       i = length(age_db)
     end
@@ -93,10 +86,11 @@ function removeEmptyClass!(age_db::Vector)
   if removeClass
     for j = 1:length(age_db)
       shift!((age_db[j]).class)
-      shift!((age_db[j]).stageOne)
-      shift!((age_db[j]).stageTwo)
-      shift!((age_db[j]).stageThree)
-      shift!((age_db[j]).stageFour)
+      #shift!((age_db[j]).stageOne)
+      #shift!((age_db[j]).stageTwo)
+      #shift!((age_db[j]).stageThree)
+      #shift!((age_db[j]).stageFour)
+      shift!((age_db[j]).alive)
       shift!((age_db[j]).weekNum)
     end
   end
