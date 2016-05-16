@@ -11,7 +11,7 @@ module FishABM
   using Distributions, ProgressMeter
 
   export
-    # Types
+    # types.jl
     AdultAssumptions,
     AgentAssumptions,
     ClassPopulation,
@@ -22,6 +22,7 @@ module FishABM
 
     # agents.jl functions
     AgentDB,
+    findCurrentStage,
     injectAgents!,
     removeEmptyClass!,
 
@@ -33,11 +34,11 @@ module FishABM
 
     # simulationResults.jl functions
 
+    # simulate.jl functions
+
     # stock.jl functions
 
     # utilities.jl functions
-
-    # simulate.jl functions
 
     #include types in the module first, they are used in various .jl files
     include("types.jl")

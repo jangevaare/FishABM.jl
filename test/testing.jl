@@ -216,27 +216,6 @@ agent_a = a_a
 enviro_types = enviro_a.habitat
 current_week = 4
 
-function findCurrentStage(current_age::Int64, growth_age::Vector)
-  """
-    Simple function used to find the current stage of a cohort from the current
-    age using the agent assumptions growth vector.
-
-    Last update: May 2016
-  """
-  #Initialize the life stage number to 4
-  currentStage = 4
-  q = length(growth_age)-1
-
-  #Most cohorts are likely to be adults, thus check stages from old to young
-  while q > 0 && current_age < growth_age[q]
-    currentStage = q
-    q-=1
-  end
-
-  return currentStage
-end
-
-
 
 #@assert(0.<= AgentAssumptions.autonomy[stage] <=1., "Autonomy level must be between 0 and 1")
 lifeStages = Array(Int64, length(agent_db[1].alive)); classStages[:] = 0;

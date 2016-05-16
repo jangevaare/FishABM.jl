@@ -28,7 +28,7 @@ end
 
 function initEnvironment(pathToSpawn::ASCIIString, pathToHabitat::ASCIIString, pathToRisk::ASCIIString)
   """
-    Brief description: Generates an environment for the simulation. Both the
+    Description: Generates an environment for the simulation. Both the
     risk assessment and spawning environments are abstracted to a list of
     integer values.
 

@@ -29,6 +29,27 @@ function AgentDB(enviro::EnvironmentAssumptions)
 end
 
 
+function findCurrentStage(current_age::Int64, growth_age::Vector)
+  """
+    Description: Simple function used to find the current stage of a cohort from
+    the current age using the agent assumptions growth vector.
+
+    Last update: May 2016
+  """
+  #Initialize the life stage number to 4
+  currentStage = 4
+  q = length(growth_age)-1
+
+  #Most cohorts are likely to be adults, thus check stages from old to young
+  while q > 0 && current_age < growth_age[q]
+    currentStage = q
+    q-=1
+  end
+
+  return currentStage
+end
+
+
 function injectAgents!(agent_db::Vector, spawn_agents::Vector, new_stock::Int64, week_num::Int64)
   """
     This function injects agents into the environment.
@@ -67,6 +88,7 @@ function injectAgents!(agent_db::Vector, spawn_agents::Vector, new_stock::Int64,
 
   return agent_db
 end
+
 
 function removeEmptyClass!(age_db::Vector)
   """
