@@ -65,10 +65,9 @@ function simulate_test(carrying_capacity::Vector, effort::Vector, bump::Vector,
         #spawn!(a_db, s_db, s_a, e_a, y, carrying_capacity[y])
       end
 
-      #Agents are killed, moved, and aged weekly
+      #Agents are killed and moved weekly
       #kill!(a_db, e_a, a_a, y, c[w])
       #move!(a_db, a_a, e_a, y, c[w])
-      #graduate!(a_db, s_db, a_a, y, w, c[w])
 
       if w == harvestWeek
         #harvest can be set to any week(s)
@@ -210,97 +209,146 @@ end
 
 #Write a function to move! the fish of a single enviro agent
 using Gadfly
+
 #required params
 agent_db = adb
 agent_a = a_a
 enviro_types = enviro_a.habitat
-current_week = 104
+current_week = 4
 
+function findCurrentStage(current_age::Int64, growth_age::Vector)
+  """
+    Simple function used to find the current stage of a cohort from the current
+    age using the agent assumptions growth vector.
 
-popDensity = Array(Int64, size(enviro_a.habitat)[1], size(enviro_a.habitat)[2])
+    Last update: May 2016
+  """
+  #Initialize the life stage number to 4
+  currentStage = 4
+  q = length(growth_age)-1
 
-for i = 1:size(enviro_a.habitat)[1]
-  for j = 1:size(enviro_a.habitat)[2]
-    popDensity[i, j] = 0
+  #Most cohorts are likely to be adults, thus check stages from old to young
+  while q > 0 && current_age < growth_age[q]
+    currentStage = q
+    q-=1
   end
+
+  return currentStage
 end
 
-classLen = length(agent_db[1].alive)
+function isEmpty(empty_check::EnviroAgent)
+  """
+    Add to environment.jl
 
-for k = 1:length(agent_db)
-  popDensity[agent_db[k].locationID] = 1
-
-  for m = 1:classLen
-    popDensity[agent_db[k].locationID] += agent_db[k].alive[m]
+    Last update: May 2016
+  """
+  #check length of vector
+  for i = 1:length(empty_check.alive)
+    #if agents are in the location
+    if empty_check.alive[i] != 0
+      return false
+    end
   end
+
+  #if no agents are found, function returns true
+  return true
 end
-
-spy(popDensity)
-
-
-#=
-
-Done the update pop density function
-
-=#
 
 #@assert(0.<= AgentAssumptions.autonomy[stage] <=1., "Autonomy level must be between 0 and 1")
-classLen = length(agent_db[1].alive)
+lifeStages = Array(Int64, length(agent_db[1].alive)); classStages[:] = 0;
 totalHeight = size(enviro_a.habitat)[1]
 
-stageWeeks = [agent_a.growth[4], agent_a.growth[3],agent_a.growth[2],agent_a.growth[1]]
+stageWeeks = [agent_a.growth[4], agent_a.growth[3], agent_a.growth[2], agent_a.growth[1]]
 
-int(choices[findfirst(rand(Multinomial(1, choices[:,2]*(1-AgentAssumptions.autonomy[stage]) + choices[:,3]*(AgentAssumptions.autonomy[stage])))), 1])
+#find the age and stage of each current cohort
+for m = 1:length(classStages)
+  currentAge = current_week - agent_db[1].weekNum[m]
+  lifeStages[m] = findCurrentStage(currentAge, agent_a.growth)
+end
 
-for n= 1:length(agent_db)
+
+
+
+
+#For each agent
+@time for n = 1:length(agent_db)
+  #simply the location id of the enviro agent
   id = agent_db[n].locationID
-  #normally check if the enviro agent is empty
+
+
+  #id=ind2sub(size(EnvironmentAssumptions.habitat), location)
+
+  #=# Select surrounding block of IDs, match up with weights
+  #choices = [sub2ind(size(EnvironmentAssumptions.habitat), [id[1]-1,id[1],id[1]+1,id[1]-1,id[1],id[1]+1,id[1]-1,id[1],id[1]+1], [id[2]-1, id[2]-1, id[2]-1, id[2], id[2], id[2], id[2]+1, id[2]+1, id[2]+1]) [AgentAssumptions.movement[stage][:]]]
   moveChoices=[
     id-totalHeight-1, id-1, id+totalHeight-1,
     id-totalHeight, id, id+totalHeight,
     id-totalHeight+1, id+1, id+totalHeight+1]
 
-  #remove all non water choices
-  moveChoices = moveChoices[enviro_a.habitat[moveChoices[:,1]] .> 0, :]
+  id=ind2sub(size(enviro_a.habitat), moveChoices[:,1])
 
-  #for each cohort
-  for cohort = 1:length(classLen)
-    weekDifferential = current_week - agent_db.weekNum[cohort]
+  # If habitat type is 0, remove row
+  #choices = choices[EnvironmentAssumptions.habitat[choices[:,1]] .> 0, :]
+  choices = [sub2ind(
+    size(enviro_a.habitat),
+    [id[1]-1,id[1],id[1]+1,id[1]-1,id[1],id[1]+1,id[1]-1,id[1],id[1]+1],
+    [id[2]-1, id[2]-1, id[2]-1, id[2], id[2], id[2], id[2]+1, id[2]+1, id[2]+1]), [agent_a.movement[1][:]]]
 
-    for q = length(agent_a.growth):1
-      if weekDifferential >= agent_a.growth[q]
-        stage = q
-        q = 1
-      end
-    end
+  # Match locations with natural mortality rates
+  #choices = hcat(choices, 1-AgentAssumptions.naturalmortality[EnvironmentAssumptions.habitat[choices[:,1]], stage])
 
-    #return int(choices[findfirst(rand(Multinomial(1, choices[:,2]*(1-AgentAssumptions.autonomy[stage]) + choices[:,3]*(AgentAssumptions.autonomy[stage])))), 1])
-  end
+  # Normalize into probabilities
+  #choices[:,2]=choices[:,2]/sum(choices[:,2])
+  #choices[:,3]=choices[:,3]/sum(choices[:,3])=#
 
-  moveChoices = hcat(moveChoices, 1-agent_a.naturalmortality[enviro_a.habitat[choices[:,1]], stage])
 
+
+  #Check if the enviro agent is empty before preceeding to movement prep
+  if isEmpty(agent_db[n]) == false
+    #find local movement avalibility
+    moveChoices=[
+      id-totalHeight-1, id-1, id+totalHeight-1,
+      id-totalHeight, id, id+totalHeight,
+      id-totalHeight+1, id+1, id+totalHeight+1]
+
+    #remove all non water choices
+    moveChoices = moveChoices[enviro_a.habitat[moveChoices[:,1]] .> 0, :]
+
+    #for each cohort in the agent database
+    for cohort = 1:length(classStages)
+      stage = lifeStages[cohort]
+      choices = deepcopy(moveChoices)
+      choices = hcat(choices, 1-agent_a.naturalmortality[enviro_a.habitat[choices[:,1]], stage])
+
+      #print testing message
+      #print("cohort = $cohort, currentAge = $currentAge weeks old, stage = $stage \n")
+
+      choices[:,2]=choices[:,2]/sum(choices[:,2])
+
+      chocOne = choices[:,2]
+      one = 1-agent_a.autonomy[stage]
+      partOne = chocOne*one
+
+      chocTwo = choices[:,2+1-1]
+      two = agent_a.autonomy[stage]
+      partTwo = chocTwo*two
+
+      Multinomial(1,partOne+partTwo)
+
+      #=return int(
+        choices[findfirst(
+          rand(Multinomial(
+            1,
+            choices[:,2]*(1-AgentAssumptions.autonomy[stage]) + choices[:,3]*(AgentAssumptions.autonomy[stage])
+            )
+          )
+        ),
+        1]
+      )=#
+    end #for
+  end #if
 end
 
-
-testVisual = Array(Int64, 25, 25)
-
-for i = 1:size(testVisual)[1]
-  for j = 1:size(testVisual)[2]
-    testVisual[i,j] = 1
-  end
-end
-
-
-for i = 1:(size(testVisual)[1]*size(testVisual)[2])
-  if (i%25)-5 == 0
-    testVisual[i] = 1
-  else
-    testVisual[i] = i
-  end
-  
-  imStoopid = spy(testVisual)
-  display(imStoopid)
-end
 
 
 
