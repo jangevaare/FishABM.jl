@@ -29,6 +29,10 @@ function AgentDB(enviro::EnvironmentAssumptions)
 end
 
 
+#=
+  Tweak this to find the current stage from the current_week and spawn_week
+=#
+#Add a function for getStageVector(::EnviroAgent, ::AgentAssumptions, curr_week::Int64)
 function findCurrentStage(current_age::Int64, growth_age::Vector)
   """
     Description: Simple function used to find the current stage of a cohort from
