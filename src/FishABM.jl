@@ -26,6 +26,7 @@ module FishABM
     removeEmptyClass!,
 
     # environment.jl functions
+    isEmpty,
     hashEnvironment!,
     initEnvironment,
     pad_environment!

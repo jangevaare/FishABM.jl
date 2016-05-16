@@ -7,12 +7,34 @@
 """
 
 
+function isEmpty(empty_check::EnviroAgent)
+  """
+    Add description.
+
+    Last update: May 2016
+  """
+  #check length of vector
+  for i = 1:length(empty_check.alive)
+    #if agents are in the location
+    if empty_check.alive[i] != 0
+      return false
+    end
+  end
+
+  #if no agents are found, function returns true
+  return true
+end
+
+
 function initEnvironment(pathToSpawn::ASCIIString, pathToHabitat::ASCIIString, pathToRisk::ASCIIString)
   """
-    Generates an environment for the simulation.
-    Both the risk assessment and spawning environments are abstracted to a list of integer values.
+    Brief description: Generates an environment for the simulation. Both the
+    risk assessment and spawning environments are abstracted to a list of
+    integer values.
 
     Precondition: The files containing the spawn, habitat and risk data are all csv files.
+
+    Last update: March 2016
   """
   #Pad all incoming arrays
   spawn = readdlm(pathToSpawn, ',', Bool)[150:end, 200:370]; spawn = pad_environment!(spawn);
@@ -50,14 +72,6 @@ function initEnvironment(pathToSpawn::ASCIIString, pathToHabitat::ASCIIString, p
   return e_a
 end
 
-#=
-*****
-
-There is something wrong with the hash mapping, revaluate what
-enviro.spawning and enviro.risk elements actually are.
-
-*****
-=#
 
 function hashEnvironment!(a_db::Vector, enviro::EnvironmentAssumptions)
   """
@@ -89,15 +103,15 @@ function hashEnvironment!(a_db::Vector, enviro::EnvironmentAssumptions)
 end
 
 
-
 function pad_environment!(pad_array::Array)
   """
     Taken from FishABM.utilities.jl
     Justin Angevaare
     Created: May 2015
 
-    A basic utility function which will pad the EnvironmentAssumptions such that bounds
-    errors do not occur when performing hashing and movement.
+    Description: A basic utility function which will pad the
+    EnvironmentAssumptions such that bounds errors do not occur when performing
+    hashing and movement.
 
     Postcondition: When padding takes place, any boolean arrays will be given a false
       value instead of 0 automatically.

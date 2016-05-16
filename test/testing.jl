@@ -236,23 +236,7 @@ function findCurrentStage(current_age::Int64, growth_age::Vector)
   return currentStage
 end
 
-function isEmpty(empty_check::EnviroAgent)
-  """
-    Add to environment.jl
 
-    Last update: May 2016
-  """
-  #check length of vector
-  for i = 1:length(empty_check.alive)
-    #if agents are in the location
-    if empty_check.alive[i] != 0
-      return false
-    end
-  end
-
-  #if no agents are found, function returns true
-  return true
-end
 
 #@assert(0.<= AgentAssumptions.autonomy[stage] <=1., "Autonomy level must be between 0 and 1")
 lifeStages = Array(Int64, length(agent_db[1].alive)); classStages[:] = 0;
